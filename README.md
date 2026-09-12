@@ -13,3 +13,10 @@ This build keeps the working archive desktop and adds real content inside the ar
 Root directory: `/`
 Build command: none
 Output directory: none
+
+
+V34 updates:
+- Who is dcut.chase photo updated
+- 8-bit black and white cursor refreshed
+- Dust overlay added to archive desktop
+- Subtle ambient light flickers added behind the monitor
