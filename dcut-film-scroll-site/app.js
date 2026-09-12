@@ -33,12 +33,25 @@ const obs=new IntersectionObserver(entries=>{
 document.querySelectorAll(".category-row").forEach(el=>obs.observe(el));
 
 let ticking=false;
-addEventListener("scroll",()=>{
-  if(!ticking){
-    requestAnimationFrame(()=>{
-      reel.style.transform=`rotate(${scrollY*.12}deg)`;
-      ticking=false;
-    });
-    ticking=true;
-  }
-},{passive:true});
+
+function updateFilm(){
+  const maxReveal = film.scrollHeight;
+  // At the very top only a short leader is visible.
+  // As the page scrolls, the strip feeds out almost 1:1 with scroll distance.
+  const reveal = Math.min(maxReveal, 24 + window.scrollY * 1.08);
+  film.style.setProperty("--reveal", `${reveal}px`);
+  reel.style.transform = `rotate(${window.scrollY * .12}deg)`;
+}
+
+function requestUpdate(){
+  if(ticking) return;
+  ticking=true;
+  requestAnimationFrame(()=>{
+    updateFilm();
+    ticking=false;
+  });
+}
+
+addEventListener("scroll", requestUpdate, {passive:true});
+addEventListener("resize", requestUpdate);
+updateFilm();
