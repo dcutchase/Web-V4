@@ -1,74 +1,37 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="theme-color" content="#030403" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#000000">
   <title>DCUT</title>
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="pixel-room" aria-hidden="true">
-    <div class="ceiling-grid"></div>
-    <div class="wall-panel panel-left">
-      <div class="poster poster-a">
-        <span>A CREATIVE<br>COLLECTIVE</span>
-        <b>DRIVEN<br>CREATIVES<br>UNITED<br>TOGETHER</b>
-      </div>
-      <div class="crt">
-        <div class="crt-screen"></div>
-        <div class="crt-base"></div>
-      </div>
-    </div>
-
-    <div class="wall-panel panel-right">
-      <div class="poster poster-b">
-        <b>FILM<br>PHOTO<br>VFX<br>BTS<br>ARCHIVE</b>
-        <div class="tiny-swatches"><i></i><i></i><i></i><i></i></div>
-      </div>
-      <div class="plant">
-        <i></i><i></i><i></i><i></i><i></i>
-      </div>
-      <div class="cases"><span>DCUT</span><span>DCUT</span></div>
-    </div>
-
-    <div class="floor-grid"></div>
-    <div class="dither dither-a"></div>
-    <div class="dither dither-b"></div>
-  </div>
-
+  <div class="world-plate" aria-hidden="true"></div>
+  <div class="center-matte" aria-hidden="true"></div>
+  <div class="pixel-noise" aria-hidden="true"></div>
   <div class="scanlines" aria-hidden="true"></div>
-  <div class="noise" aria-hidden="true"></div>
-  <div class="vignette" aria-hidden="true"></div>
 
-  <main id="world">
-    <div class="intro-space" aria-hidden="true"></div>
-
-    <section class="reel-zone" aria-label="DCUT archive">
-      <div class="reel-shadow" aria-hidden="true"></div>
-
-      <div class="reel-stage" id="reelStage" aria-hidden="true">
-        <div class="reel-side">
-          <span>D</span><span>C</span><span>U</span><span>T</span>
-        </div>
-        <div class="reel" id="reel">
-          <div class="reel-ring"></div>
-          <div class="reel-hub"></div>
-          <i class="spoke s1"></i><i class="spoke s2"></i><i class="spoke s3"></i>
-          <i class="spoke s4"></i><i class="spoke s5"></i><i class="spoke s6"></i>
-        </div>
+  <main id="page">
+    <section class="archive">
+      <div class="reel-anchor" id="reelAnchor">
+        <img class="reel-sprite" id="reelSprite" src="assets/reel-8bit.png" alt="">
       </div>
 
-      <div class="feed-slot" aria-hidden="true"></div>
+      <div class="film-mouth" aria-hidden="true"></div>
 
-      <div class="film-mask" id="filmMask">
+      <div class="film-reveal" id="filmReveal">
         <div class="film" id="film"></div>
       </div>
+
+      <div class="scroll-track" id="scrollTrack" aria-hidden="true"></div>
     </section>
 
-    <div class="end-space">
-      <span class="end-mark">DCUT</span>
-    </div>
+    <footer class="footer-mark" aria-hidden="true">
+      <span>DCUT</span>
+      <div><i></i><i></i><i></i><i></i></div>
+    </footer>
   </main>
 
   <script src="site-data.js"></script>

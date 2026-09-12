@@ -1,130 +1,113 @@
 const film = document.querySelector("#film");
-const filmMask = document.querySelector("#filmMask");
-const reel = document.querySelector("#reel");
-const reelZone = document.querySelector(".reel-zone");
-const categories = window.DCUT.categories;
+const filmReveal = document.querySelector("#filmReveal");
+const reelSprite = document.querySelector("#reelSprite");
+const scrollTrack = document.querySelector("#scrollTrack");
 
-function blankRow() {
-  const row = document.createElement("div");
-  row.className = "frame-row";
-  const frame = document.createElement("div");
-  frame.className = "frame empty";
+function blankFrame(){
+  const row=document.createElement("div");
+  row.className="frame-row";
+  const frame=document.createElement("div");
+  frame.className="frame blank";
   row.appendChild(frame);
   return row;
 }
 
-function categoryRow(category, index) {
-  const row = document.createElement("div");
-  row.className = "frame-row category-row";
-  row.dataset.category = category.id;
+function categoryFrame(cat,index){
+  const row=document.createElement("div");
+  row.className="frame-row category-row";
 
-  const frame = document.createElement("button");
-  frame.className = "frame category";
-  frame.type = "button";
-  frame.setAttribute("aria-label", category.title);
+  const frame=document.createElement("div");
+  frame.className="frame category";
 
-  const media = document.createElement("div");
-  media.className = "media";
-
-  if (category.image) {
-    media.style.backgroundImage = `url("${category.image}")`;
-  } else {
+  const media=document.createElement("div");
+  media.className="media";
+  if(cat.image){
+    media.style.backgroundImage=`url("${cat.image}")`;
+  }else{
     media.classList.add("placeholder");
   }
-
   frame.appendChild(media);
 
-  const label = document.createElement("div");
-  label.className = `label ${index % 2 === 0 ? "left" : "right"}`;
+  const label=document.createElement("div");
+  label.className=`label ${index%2===0?"left":"right"}`;
 
-  const heading = document.createElement("h2");
-  heading.textContent = category.title;
+  const h=document.createElement("h2");
+  h.textContent=cat.title;
 
-  const connector = document.createElement("span");
-  connector.className = "connector";
+  const connector=document.createElement("span");
+  connector.className="connector";
 
-  const detail = document.createElement("p");
-  detail.innerHTML = category.lines.join("<br>");
+  const p=document.createElement("p");
+  p.innerHTML=cat.lines.join("<br>");
 
-  label.append(heading, connector, detail);
-  row.append(frame, label);
-
+  label.append(h,connector,p);
+  row.append(frame,label);
   return row;
 }
 
-// Two blank frames + one category frame = a thumbnail every third frame.
-film.append(blankRow(), blankRow());
-categories.forEach((category, index) => {
-  film.append(categoryRow(category, index));
-  if (index < categories.length - 1) {
-    film.append(blankRow(), blankRow());
+// The concept: a category thumbnail every third film frame.
+film.append(blankFrame(),blankFrame());
+window.DCUT.categories.forEach((cat,index)=>{
+  film.append(categoryFrame(cat,index));
+  if(index<window.DCUT.categories.length-1){
+    film.append(blankFrame(),blankFrame());
   }
 });
-film.append(blankRow(), blankRow());
+film.append(blankFrame(),blankFrame());
 
-const rows = [...document.querySelectorAll(".category-row")];
-const labels = [...document.querySelectorAll(".label")];
+const categoryRows=[...document.querySelectorAll(".category-row")];
 
-function setFilmGeometry() {
-  const height = film.scrollHeight;
-  document.documentElement.style.setProperty("--film-height", `${height}px`);
-
-  // Give the page real scroll distance. The film itself is revealed by a mask,
-  // so the hidden part still needs layout space to scroll through.
-  reelZone.style.height = `${height + Math.max(360, window.innerHeight * 0.45)}px`;
-  filmMask.style.height = `${height + 20}px`;
+function layout(){
+  const filmHeight=film.scrollHeight;
+  // enough document height to unspool the full strip
+  scrollTrack.style.height=`${filmHeight + window.innerHeight*.72}px`;
 }
 
-function updateScene() {
-  const zoneRect = reelZone.getBoundingClientRect();
-  const filmTopInDocument =
-    window.scrollY + zoneRect.top + parseFloat(getComputedStyle(filmMask).top);
+function update(){
+  const filmTop =
+    filmReveal.getBoundingClientRect().top + window.scrollY;
 
-  // Reveal begins only once the viewport reaches the reel.
-  // The visible end of the strip follows the scroll downward.
-  const viewportHead = window.scrollY + window.innerHeight * 0.70;
+  // Start only once the viewport has passed the reel.
+  // This gives the feeling that the strip is physically coming out.
+  const revealHead = window.scrollY + window.innerHeight * .64;
   const reveal = Math.max(
     0,
-    Math.min(film.scrollHeight + 10, viewportHead - filmTopInDocument)
+    Math.min(film.scrollHeight, revealHead - filmTop)
   );
 
-  filmMask.style.setProperty("--reveal", `${reveal}px`);
+  filmReveal.style.height = `${reveal}px`;
 
-  // Reel rotates while it naturally scrolls with the page.
-  // It is NOT fixed/stuck to the top anymore.
-  const progress = Math.max(0, reveal);
-  reel.style.transform = `rotate(${progress * 0.19}deg)`;
+  // Subtle reel movement tied directly to released film.
+  reelSprite.style.transform =
+    `translateY(${Math.min(5,reveal*.002)}px) rotate(${reveal*.045}deg)`;
 
-  // Labels appear only after their frame has actually been "developed"
-  // out of the reel and is near the middle of the viewport.
-  rows.forEach((row) => {
-    const rect = row.getBoundingClientRect();
-    const label = row.querySelector(".label");
-    const rowCenter = rect.top + rect.height / 2;
-    const active =
-      rect.top < window.innerHeight * 0.78 &&
-      rect.bottom > window.innerHeight * 0.22 &&
-      rowCenter < filmTopInDocument - window.scrollY + reveal + 12;
-
-    label.classList.toggle("visible", active);
+  // Only show label once that category frame has actually emerged.
+  categoryRows.forEach(row=>{
+    const rowBottom=row.offsetTop + row.offsetHeight*.78;
+    const rect=row.getBoundingClientRect();
+    const nearViewport=rect.top<window.innerHeight*.82 && rect.bottom>window.innerHeight*.16;
+    row.querySelector(".label").classList.toggle(
+      "visible",
+      reveal>rowBottom && nearViewport
+    );
   });
 }
 
-let ticking = false;
-function onMove() {
-  if (ticking) return;
-  ticking = true;
-  requestAnimationFrame(() => {
-    updateScene();
-    ticking = false;
+let raf=false;
+function requestUpdate(){
+  if(raf)return;
+  raf=true;
+  requestAnimationFrame(()=>{
+    update();
+    raf=false;
   });
 }
 
-window.addEventListener("scroll", onMove, { passive: true });
-window.addEventListener("resize", () => {
-  setFilmGeometry();
-  updateScene();
+window.addEventListener("scroll",requestUpdate,{passive:true});
+window.addEventListener("resize",()=>{
+  layout();
+  update();
 });
 
-setFilmGeometry();
-updateScene();
+layout();
+update();

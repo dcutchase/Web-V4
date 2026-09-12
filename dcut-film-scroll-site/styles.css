@@ -1,305 +1,308 @@
 
 :root{
-  --bg:#030403;
-  --ink:#e6e6df;
-  --muted:#7b7f79;
-  --metal-1:#6a6d68;
-  --metal-2:#30322f;
-  --metal-3:#111311;
-  --film-w:118px;
-  --frame-w:96px;
-  --row-h:164px;
+  --film-w: 104px;
+  --frame-w: 84px;
+  --row-h: 172px;
+  --reel-top: 10vh;
+  --reel-w: 126px;
+  --mouth-top: calc(var(--reel-top) + 188px);
+  --label-gap: 64px;
 }
 
 *{box-sizing:border-box}
-html{background:var(--bg);scroll-behavior:auto}
+html,body{margin:0;background:#000;color:#e3e3dc;min-height:100%;overflow-x:hidden}
 body{
-  margin:0;
-  min-height:100vh;
-  overflow-x:hidden;
-  background:var(--bg);
-  color:var(--ink);
   font-family:"Courier New",ui-monospace,monospace;
   image-rendering:pixelated;
 }
-button{font:inherit}
 
-.pixel-room{
-  position:fixed; inset:0; z-index:0; overflow:hidden;
+/* The actual concept image is the environment now. */
+.world-plate{
+  position:fixed;
+  inset:0;
+  z-index:0;
   pointer-events:none;
   background:
-    linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px) 0 0/32px 32px,
-    linear-gradient(rgba(255,255,255,.012) 1px,transparent 1px) 0 0/32px 32px,
-    radial-gradient(ellipse at 50% 20%,rgba(138,143,132,.07),transparent 34%),
-    #030403;
-}
-.pixel-room:before{
-  content:""; position:absolute; inset:0;
-  background:
-    linear-gradient(90deg,rgba(0,0,0,.7),transparent 20%,transparent 80%,rgba(0,0,0,.7)),
-    linear-gradient(to bottom,rgba(0,0,0,.08),transparent 55%,rgba(0,0,0,.55));
-}
-.ceiling-grid{
-  position:absolute; left:12%; right:12%; top:-10px; height:18vh;
-  opacity:.18;
-  background:
-    repeating-linear-gradient(90deg,transparent 0 42px,#31342f 43px 46px),
-    repeating-linear-gradient(0deg,transparent 0 26px,#232520 27px 30px);
-  clip-path:polygon(11% 0,89% 0,100% 100%,0 100%);
-}
-.wall-panel{position:absolute;top:7vh;bottom:7vh;width:24vw;min-width:190px;opacity:.55}
-.panel-left{left:1.8vw}
-.panel-right{right:1.8vw}
-
-.poster{
-  position:absolute;
-  border:4px solid #20231f;
-  outline:2px solid #080908;
-  background:#070807;
-  box-shadow:10px 10px 0 rgba(0,0,0,.55);
-  color:#747a73;
-  letter-spacing:.08em;
-  text-transform:uppercase;
-}
-.poster-a{left:8%;top:1%;width:170px;height:320px;padding:22px 15px}
-.poster-a span{display:block;font-size:15px;line-height:1.15;margin-bottom:94px}
-.poster-a b{font-size:14px;line-height:1.22}
-.poster-b{right:5%;top:3%;width:170px;height:300px;padding:22px 18px}
-.poster-b b{font-size:21px;line-height:1.16}
-.tiny-swatches{display:flex;gap:6px;margin-top:25px}
-.tiny-swatches i{width:19px;height:8px;display:block}
-.tiny-swatches i:nth-child(1){background:#bc4a58}
-.tiny-swatches i:nth-child(2){background:#525bd0}
-.tiny-swatches i:nth-child(3){background:#4b9279}
-.tiny-swatches i:nth-child(4){background:#bc9a45}
-
-.crt{position:absolute;left:0;top:42%;width:180px;height:126px;background:#171917;border:5px solid #30332e;box-shadow:10px 12px 0 #010201}
-.crt-screen{position:absolute;inset:13px 15px 28px;background:
-  repeating-linear-gradient(0deg,#858b83 0 4px,#41443f 5px 8px),
-  repeating-linear-gradient(90deg,transparent 0 5px,#151714 6px 9px);
-  opacity:.65;border:5px solid #080908}
-.crt-base{position:absolute;left:30px;right:30px;bottom:-18px;height:12px;background:#1a1c19}
-
-.cases{position:absolute;right:0;bottom:12%;width:150px}
-.cases span{display:grid;place-items:center;height:72px;margin-top:8px;border:4px solid #232622;background:#0a0b0a;color:#555b55;font-weight:700;font-size:20px;box-shadow:8px 8px 0 #000}
-.plant{position:absolute;right:3%;top:42%;width:120px;height:200px}
-.plant:after{content:"";position:absolute;left:42px;bottom:0;width:55px;height:68px;background:#10120f;border:4px solid #262a24}
-.plant i{position:absolute;background:#111510;width:55px;height:16px;transform-origin:right center}
-.plant i:nth-child(1){left:0;top:25px;transform:rotate(22deg)}
-.plant i:nth-child(2){left:20px;top:60px;transform:rotate(-34deg)}
-.plant i:nth-child(3){left:2px;top:90px;transform:rotate(38deg)}
-.plant i:nth-child(4){left:28px;top:117px;transform:rotate(-23deg)}
-.plant i:nth-child(5){left:20px;top:140px;transform:rotate(18deg)}
-
-.floor-grid{
-  position:absolute;left:12%;right:12%;bottom:-14vh;height:34vh;opacity:.12;
-  background:
-    repeating-linear-gradient(90deg,transparent 0 59px,#454840 60px 63px),
-    repeating-linear-gradient(0deg,transparent 0 39px,#363932 40px 43px);
-  transform:perspective(380px) rotateX(62deg);
-  transform-origin:bottom;
-}
-.dither{position:absolute;width:180px;height:180px;opacity:.07;background:
-  radial-gradient(circle,#d7d8cf 0 1px,transparent 1.5px) 0 0/7px 7px}
-.dither-a{left:19%;top:19%}.dither-b{right:18%;bottom:20%}
-
-.scanlines,.noise,.vignette{position:fixed;inset:0;pointer-events:none;z-index:30}
-.scanlines{opacity:.10;background:repeating-linear-gradient(to bottom,transparent 0 3px,rgba(255,255,255,.14) 4px)}
-.noise{opacity:.05;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='1' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
-.vignette{box-shadow:inset 0 0 190px 60px #000}
-
-main{position:relative;z-index:2;min-height:100vh}
-.intro-space{height:18vh}
-
-.reel-zone{
-  position:relative;
-  width:min(100%,1180px);
-  margin:0 auto;
-  min-height:1800px;
-}
-.reel-shadow{
-  position:absolute;left:50%;top:54px;transform:translateX(-50%);
-  width:260px;height:120px;
-  background:radial-gradient(ellipse,rgba(170,170,155,.11),transparent 67%);
-  filter:blur(13px);
-}
-.reel-stage{
-  position:absolute;
-  left:50%; top:0;
-  width:138px; height:138px;
-  margin-left:-69px;
-  z-index:12;
-  transform:translateZ(0);
-  filter:drop-shadow(10px 14px 0 rgba(0,0,0,.62));
-  will-change:transform;
-}
-.reel{
-  position:absolute;inset:7px 0 0 14px;
-  border-radius:50%;
-  background:
-    radial-gradient(circle at 50% 50%,#0b0c0b 0 11px,#747771 12px 18px,#191b18 19px 27px,transparent 28px),
-    conic-gradient(from 0deg,#5d605b 0 7deg,#262824 7deg 20deg,#5d605b 20deg 28deg,#242622 28deg 52deg,#676a64 52deg 59deg,#242622 59deg 84deg,#656861 84deg 91deg,#242622 91deg 116deg,#666962 116deg 123deg,#242622 123deg 148deg,#656861 148deg 155deg,#242622 155deg 180deg,#656861 180deg 187deg,#242622 187deg 212deg,#646760 212deg 219deg,#242622 219deg 244deg,#646760 244deg 251deg,#242622 251deg 276deg,#646760 276deg 283deg,#242622 283deg 308deg,#646760 308deg 315deg,#242622 315deg 340deg,#646760 340deg 347deg,#242622 347deg 360deg);
-  border:5px solid #747770;
-  box-shadow:inset 0 0 0 4px #171917,inset 0 0 0 8px #343732;
-  transform:rotate(0deg);
+    #000 url("assets/dcut-world-reference.png") center top / auto 100vh no-repeat;
   image-rendering:pixelated;
 }
-.reel-ring{position:absolute;inset:11px;border:4px solid #151714;border-radius:50%;box-shadow:inset 0 0 0 3px #555851}
-.reel-hub{position:absolute;left:50%;top:50%;width:24px;height:24px;margin:-12px;border-radius:50%;background:#0d0e0d;border:5px solid #73766f;z-index:5}
-.spoke{position:absolute;left:50%;top:50%;width:26px;height:44px;margin-left:-13px;margin-top:-48px;background:#050605;border:4px solid #4b4e49;border-radius:45% 45% 42% 42%;transform-origin:13px 48px}
-.s1{transform:rotate(0)}.s2{transform:rotate(60deg)}.s3{transform:rotate(120deg)}.s4{transform:rotate(180deg)}.s5{transform:rotate(240deg)}.s6{transform:rotate(300deg)}
-.reel-side{
-  position:absolute;left:0;top:25px;width:29px;height:91px;z-index:15;
-  border:3px solid #494c46;background:linear-gradient(90deg,#090a09,#2a2d29,#090a09);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;
-  font-size:12px;font-weight:900;line-height:1;
-}
-.reel-side span:nth-child(1){color:#f2525b}.reel-side span:nth-child(2){color:#5a64ff}.reel-side span:nth-child(3){color:#5bd49e}.reel-side span:nth-child(4){color:#e5b947}
 
-.feed-slot{
-  position:absolute;left:50%;top:119px;width:var(--film-w);height:24px;margin-left:calc(var(--film-w) / -2);
-  z-index:10;
-  background:#090a09;
-  border-left:10px solid #242722;border-right:10px solid #242722;
+/* Hide the film/reel/labels that were baked into the reference image.
+   We preserve the exact surrounding room art. */
+.center-matte{
+  position:fixed;
+  z-index:1;
+  top:0;bottom:0;
+  left:50%;
+  width:min(57vw,590px);
+  transform:translateX(-50%);
+  pointer-events:none;
+  background:
+    linear-gradient(90deg,transparent 0,#000 8%,#000 92%,transparent 100%);
 }
-.film-mask{
-  --reveal:0px;
+
+/* Harder 8-bit atmosphere rather than smooth gradients. */
+.pixel-noise,.scanlines{
+  position:fixed;inset:0;pointer-events:none;z-index:40
+}
+.pixel-noise{
+  opacity:.12;
+  background:
+    radial-gradient(circle,#8b8b82 0 1px,transparent 1px) 0 0/7px 7px;
+  mix-blend-mode:screen;
+  mask-image:linear-gradient(to bottom,rgba(0,0,0,.34),transparent 72%);
+}
+.scanlines{
+  opacity:.12;
+  background:repeating-linear-gradient(to bottom,transparent 0 3px,rgba(255,255,255,.15) 4px);
+}
+
+#page{position:relative;z-index:4;min-height:100vh}
+.archive{position:relative;width:100%;min-height:100vh}
+
+/* Reel is in document flow-space, not fixed to the viewport. */
+.reel-anchor{
   position:absolute;
-  left:50%;top:137px;
-  width:920px;
-  margin-left:-460px;
-  height:calc(var(--film-height) + 40px);
-  overflow:hidden;
-  clip-path:inset(0 0 calc(100% - var(--reveal)) 0);
-  will-change:clip-path;
+  z-index:15;
+  top:var(--reel-top);
+  left:50%;
+  width:var(--reel-w);
+  height:205px;
+  transform:translateX(-50%);
+  overflow:visible;
 }
-.film{
-  position:relative;
+.reel-sprite{
+  display:block;
+  width:var(--reel-w);
+  height:auto;
+  image-rendering:pixelated;
+  filter:contrast(1.12) brightness(.88);
+  transform-origin:59% 48%;
+  will-change:transform;
+}
+
+/* Where the strip visibly exits the reel. */
+.film-mouth{
+  position:absolute;
+  z-index:11;
+  top:var(--mouth-top);
+  left:50%;
   width:var(--film-w);
-  margin:0 auto;
-  padding:10px 0 40px;
+  height:22px;
+  transform:translateX(-50%);
+  background:#111;
+  border-left:9px solid #3a3a37;
+  border-right:9px solid #3a3a37;
+  box-shadow:0 4px 0 #080808;
+}
+
+/* This height is changed in JS.
+   Using real height instead of clip-path fixes the failed reveal behavior. */
+.film-reveal{
+  position:absolute;
+  z-index:10;
+  top:calc(var(--mouth-top) + 18px);
+  left:50%;
+  width:min(820px,100vw);
+  height:0;
+  transform:translateX(-50%);
+  overflow:hidden;
+  will-change:height;
+}
+
+.film{
+  position:absolute;
+  top:0;
+  left:50%;
+  width:var(--film-w);
+  transform:translateX(-50%);
+  padding:0 0 60px;
 }
 .film:before,.film:after{
-  content:"";position:absolute;top:0;bottom:0;width:10px;z-index:6;
-  background:repeating-linear-gradient(to bottom,#50534d 0 6px,#0a0b0a 6px 13px,#22241f 13px 16px);
-  border-left:2px solid #171917;border-right:2px solid #171917;
+  content:"";
+  position:absolute;
+  top:0;bottom:0;
+  width:9px;
+  z-index:7;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      #565650 0 5px,
+      #080808 5px 12px,
+      #2f302d 12px 15px
+    );
+  border-left:2px solid #121312;
+  border-right:2px solid #121312;
 }
-.film:before{left:0}.film:after{right:0}
+.film:before{left:0}
+.film:after{right:0}
 
 .frame-row{
   position:relative;
-  width:100%;
   height:var(--row-h);
   display:flex;
   align-items:center;
   justify-content:center;
 }
 .frame{
-  width:var(--frame-w);height:138px;
-  position:relative;z-index:4;
-  border-top:4px solid #30332e;border-bottom:4px solid #30332e;
-  background:
-    radial-gradient(circle at 67% 30%,rgba(220,220,200,.04),transparent 35%),
-    #0b0c0b;
+  position:relative;
+  z-index:4;
+  width:var(--frame-w);
+  height:142px;
+  padding:0;
+  border:0;
+  border-top:4px solid #333431;
+  border-bottom:4px solid #333431;
+  background:#101110;
+  box-shadow:
+    inset 0 0 0 3px #070807,
+    0 0 0 1px #1e201d;
   overflow:hidden;
-  box-shadow:inset 0 0 0 2px #050605;
 }
-.frame.empty:before{
-  content:"";position:absolute;inset:12px;
+.frame.blank:after{
+  content:"";
+  position:absolute;
+  inset:7px;
   background:
-    linear-gradient(90deg,transparent 49%,rgba(255,255,255,.025) 50%,transparent 51%),
-    linear-gradient(0deg,transparent 49%,rgba(255,255,255,.02) 50%,transparent 51%);
+    linear-gradient(135deg,#0a0b0a 0 25%,#101210 25% 50%,#090a09 50% 75%,#111310 75%);
+  background-size:18px 18px;
+  opacity:.55;
 }
 .frame.category{
-  border-color:#71746d;
-  box-shadow:inset 0 0 0 2px #050605,0 0 0 1px #343631;
+  border-top-color:#74746c;
+  border-bottom-color:#74746c;
 }
 .media{
-  position:absolute;inset:7px;
-  background-position:center;
-  background-size:cover;
+  position:absolute;
+  inset:8px;
+  background:center/cover no-repeat;
   image-rendering:auto;
 }
 .media.placeholder{
   image-rendering:pixelated;
   background:
-    linear-gradient(135deg,transparent 0 35%,rgba(195,198,188,.09) 36% 41%,transparent 42%),
-    linear-gradient(45deg,#111310 25%,#1f221e 25% 50%,#0d0f0d 50% 75%,#191b18 75%);
-  background-size:22px 22px;
+    linear-gradient(90deg,transparent 45%,rgba(235,235,220,.11) 45% 55%,transparent 55%),
+    linear-gradient(0deg,#090a09 0 30%,#2c2f2a 30% 62%,#121411 62%);
 }
 .media.placeholder:after{
-  content:"MEDIA";
-  position:absolute;left:8px;bottom:8px;
-  padding:4px 5px;
-  background:#050605;color:#858a82;
-  border:2px solid #484b45;
-  font-size:8px;letter-spacing:.12em;
+  content:"";
+  position:absolute;
+  width:28px;height:44px;
+  left:50%;top:52%;
+  transform:translate(-50%,-50%);
+  background:#050505;
+  box-shadow:
+    -18px 12px 0 #050505,
+    17px 18px 0 #050505,
+    0 -18px 0 #31342f;
 }
+
+/* labels mimic the concept more literally */
 .label{
-  position:absolute;top:50%;
-  width:270px;
-  z-index:7;
+  position:absolute;
+  top:50%;
+  width:260px;
   opacity:0;
-  transition:opacity .16s steps(2,end),transform .26s steps(4,end);
+  z-index:9;
   text-transform:uppercase;
+  transition:
+    opacity .12s steps(2,end),
+    transform .18s steps(3,end);
 }
-.label.left{right:calc(50% + 97px);text-align:right;transform:translate(-18px,-50%)}
-.label.right{left:calc(50% + 97px);text-align:left;transform:translate(18px,-50%)}
-.label.visible{opacity:1;transform:translate(0,-50%)}
+.label.left{
+  right:calc(50% + var(--label-gap));
+  text-align:right;
+  transform:translate(-14px,-50%);
+}
+.label.right{
+  left:calc(50% + var(--label-gap));
+  text-align:left;
+  transform:translate(14px,-50%);
+}
+.label.visible{
+  opacity:1;
+  transform:translate(0,-50%);
+}
 .label h2{
   margin:0;
+  font-weight:700;
+  color:#ededE8;
   font-size:20px;
   line-height:1;
-  letter-spacing:.10em;
-  font-weight:700;
-  color:#e3e4dd;
-  text-shadow:3px 3px 0 #0a0b0a;
+  letter-spacing:.08em;
+  text-shadow:3px 3px 0 #000;
 }
 .label p{
-  margin:9px 0 0;
-  color:#8b8f88;
+  margin:8px 0 0;
+  color:#969990;
   font-size:10px;
-  line-height:1.48;
-  letter-spacing:.09em;
+  line-height:1.45;
+  letter-spacing:.055em;
 }
-.label .connector{
-  position:absolute;top:9px;width:61px;height:3px;background:#c2c3bc;
+.connector{
+  position:absolute;
+  top:9px;
+  width:58px;
+  height:2px;
+  background:#d2d2ca;
 }
-.label.left .connector{right:-72px}.label.right .connector{left:-72px}
-.label .connector:after{
-  content:"";position:absolute;top:-2px;width:7px;height:7px;background:#c2c3bc
-}
-.label.left .connector:after{right:0}.label.right .connector:after{left:0}
+.label.left .connector{right:-68px}
+.label.right .connector{left:-68px}
 
-.end-space{height:48vh;position:relative;display:flex;align-items:flex-start;justify-content:center}
-.end-mark{margin-top:13vh;color:#393d38;font-size:21px;font-weight:700;letter-spacing:.14em}
-
-@media(max-width:760px){
-  :root{--film-w:94px;--frame-w:74px;--row-h:145px}
-  .wall-panel{opacity:.26;width:28vw;min-width:110px}
-  .poster-a,.poster-b{transform:scale(.62);transform-origin:top left}
-  .poster-b{right:-70px}
-  .crt{transform:scale(.65);transform-origin:left center;left:-35px}
-  .cases{transform:scale(.68);transform-origin:right bottom;right:-26px}
-  .plant{transform:scale(.65);transform-origin:right center;right:-25px}
-  .vignette{box-shadow:inset 0 0 100px 20px #000}
-  .intro-space{height:14vh}
-  .reel-zone{min-height:1600px}
-  .reel-stage{width:116px;height:116px;margin-left:-58px}
-  .reel{inset:6px 0 0 12px;border-width:4px}
-  .reel-side{height:76px;width:25px;top:22px;font-size:10px}
-  .feed-slot{top:101px}
-  .film-mask{top:119px;width:100vw;margin-left:-50vw}
-  .frame{height:118px}
-  .label{width:118px}
-  .label.left{right:calc(50% + 66px)}
-  .label.right{left:calc(50% + 66px)}
-  .label h2{font-size:12px;line-height:1.08}
-  .label p{font-size:7px;line-height:1.35;margin-top:6px}
-  .label .connector{width:25px;height:2px;top:6px}
-  .label.left .connector{right:-33px}
-  .label.right .connector{left:-33px}
+/* This is the invisible page height that makes scroll possible
+   while the film itself grows independently. */
+.scroll-track{
+  height:2400px;
+  pointer-events:none;
 }
+
+.footer-mark{
+  position:relative;
+  z-index:6;
+  height:42vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-start;
+  align-items:flex-end;
+  padding:13vh 7vw 0 0;
+  color:#51534e;
+  font-weight:700;
+  letter-spacing:.12em;
+  font-size:23px;
+}
+.footer-mark div{display:flex;gap:5px;margin-top:9px}
+.footer-mark i{display:block;width:16px;height:7px}
+.footer-mark i:nth-child(1){background:#f25461}
+.footer-mark i:nth-child(2){background:#5c63ff}
+.footer-mark i:nth-child(3){background:#54bd91}
+.footer-mark i:nth-child(4){background:#ddb64d}
+
+@media(max-width:720px){
+  :root{
+    --film-w:90px;
+    --frame-w:72px;
+    --row-h:150px;
+    --reel-w:108px;
+    --mouth-top:calc(var(--reel-top) + 161px);
+    --label-gap:55px;
+  }
+  .world-plate{
+    background-size:auto 100vh;
+    opacity:.92;
+  }
+  .center-matte{width:72vw}
+  .reel-anchor{height:175px}
+  .film-reveal{width:100vw}
+  .frame{height:119px}
+  .label{width:115px}
+  .label h2{font-size:12px;line-height:1.05}
+  .label p{font-size:7px;line-height:1.3;margin-top:5px}
+  .connector{width:24px;height:2px;top:5px}
+  .label.left .connector{right:-31px}
+  .label.right .connector{left:-31px}
+  .pixel-noise{opacity:.08}
+}
+
 @media(prefers-reduced-motion:reduce){
   .label{transition:none}
 }

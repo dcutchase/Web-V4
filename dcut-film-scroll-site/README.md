@@ -1,24 +1,21 @@
-# DCUT 16-Bit Scroll V4
+# DCUT 8-bit Reference V5
 
-This is a static, no-build replacement for the current DCUT Vercel site.
+This pass intentionally stops trying to fake pixel art with CSS alone.
 
-## What changed
-- The entire coded environment is now a dark 16-bit/pixel-art studio/archive.
-- The reel is no longer `position: fixed`, so it will not stay stuck to the top of the screen.
-- The film is hidden at first and physically reveals farther down the page as you scroll.
-- The reel rotates in response to the amount of film revealed.
-- Every third film frame is a category thumbnail.
-- Category labels alternate left/right and appear only after their frame has unspooled.
-- Actual category media can stay crisp/full-resolution while the surrounding world stays pixelated.
+The site now uses the exact generated DCUT pixel-art concept as the environment/background reference, with the original center covered so the live coded film/reel can sit inside the same world.
 
-## Replace your current site
-Upload all files from this folder to the ROOT of the same GitHub repository and replace matching files. Commit the changes. Vercel should redeploy automatically.
+Important fixes:
+- Reel is not fixed to the viewport.
+- Film reveal no longer uses clip-path.
+- The film-reveal container physically grows in height as you scroll.
+- Scroll height is handled by a separate invisible track, making the reveal reliable.
+- Reel sprite is cropped directly from the generated concept image.
+- Surrounding room art is the actual generated concept.
+- Actual media inserted in category frames remains crisp.
 
-## Add your own thumbnails later
-Put the image files inside `assets/`, then edit `site-data.js`.
+Upload every file from this folder into the root of your existing GitHub repo and replace the matching files.
 
-Example:
-
-    image: "assets/film-thumbnail.jpg"
-
-Leave `image: ""` for the built-in 16-bit MEDIA placeholder.
+To use real category thumbnails:
+1. Put image files in /assets
+2. Edit site-data.js
+3. Set e.g. image:"assets/film.jpg"
