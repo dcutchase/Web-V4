@@ -248,6 +248,7 @@ if (contactForm) {
 
       contactForm.reset();
       setContactState("success", "MESSAGE SENT");
+      contactForm.dispatchEvent(new CustomEvent("dcut:submission-success"));
     } catch (error) {
       console.error("Contact form error:", error);
       setContactState("error", "SEND FAILED — TRY AGAIN");
@@ -261,4 +262,100 @@ if (contactForm) {
 const sentParams = new URLSearchParams(window.location.search);
 if (sentParams.get("sent") === "1" && contactForm) {
   setContactState("success", "MESSAGE SENT");
+}
+
+
+/* =========================
+   V9: 24-HOUR CLIENT-SIDE LOCKDOWN
+   ========================= */
+
+const CONTACT_LOCK_KEY = "dcut_contact_last_success_v1";
+const CONTACT_LOCK_DURATION = 24 * 60 * 60 * 1000;
+
+const contactLock = document.querySelector("#contactLock");
+const contactShell = document.querySelector(".contact-shell");
+const lockCountdown = document.querySelector("#lockCountdown");
+
+let lockTimer = null;
+
+function getLockTimestamp() {
+  const raw = localStorage.getItem(CONTACT_LOCK_KEY);
+  const value = Number(raw);
+  return Number.isFinite(value) ? value : 0;
+}
+
+function getRemainingLockTime() {
+  const lastSuccess = getLockTimestamp();
+  if (!lastSuccess) return 0;
+
+  return Math.max(
+    0,
+    CONTACT_LOCK_DURATION - (Date.now() - lastSuccess)
+  );
+}
+
+function formatLockTime(ms) {
+  const totalSeconds = Math.max(0, Math.ceil(ms / 1000));
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+
+  return [hours, minutes, seconds]
+    .map(value => String(value).padStart(2, "0"))
+    .join(":");
+}
+
+function showContactLock() {
+  if (!contactForm || !contactLock) return;
+
+  contactForm.hidden = true;
+  contactLock.hidden = false;
+  contactShell?.classList.add("is-locked");
+
+  updateLockCountdown();
+
+  clearInterval(lockTimer);
+  lockTimer = setInterval(updateLockCountdown, 1000);
+}
+
+function hideContactLock() {
+  if (!contactForm || !contactLock) return;
+
+  contactForm.hidden = false;
+  contactLock.hidden = true;
+  contactShell?.classList.remove("is-locked");
+
+  clearInterval(lockTimer);
+  lockTimer = null;
+
+  setContactState("", "LINE READY");
+}
+
+function updateLockCountdown() {
+  const remaining = getRemainingLockTime();
+
+  if (remaining <= 0) {
+    localStorage.removeItem(CONTACT_LOCK_KEY);
+    hideContactLock();
+    return;
+  }
+
+  if (lockCountdown) {
+    lockCountdown.textContent = formatLockTime(remaining);
+  }
+}
+
+function startContactLockdown() {
+  localStorage.setItem(CONTACT_LOCK_KEY, String(Date.now()));
+  showContactLock();
+}
+
+// Apply persisted lock immediately on page load.
+if (getRemainingLockTime() > 0) {
+  showContactLock();
+}
+
+// Hook the successful V8 submission without changing FormSubmit itself.
+if (contactForm) {
+  contactForm.addEventListener("dcut:submission-success", startContactLockdown);
 }

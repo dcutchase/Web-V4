@@ -979,3 +979,251 @@ body.frame-hover .pixel-noise{
     animation:none !important;
   }
 }
+
+
+/* =========================
+   V9: 24-HOUR TERMINAL LOCKDOWN
+   ========================= */
+
+.contact-lock[hidden]{display:none !important}
+
+.contact-lock{
+  min-height:430px;
+  display:grid;
+  grid-template-columns:160px 1fr;
+  gap:28px;
+  align-items:center;
+  padding:28px;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(255,255,255,.018) 0 3px,
+      transparent 3px 7px
+    ),
+    #070807;
+  border:2px solid #343731;
+  box-shadow:
+    inset 0 0 0 3px #020302,
+    6px 6px 0 #000;
+  position:relative;
+  overflow:hidden;
+}
+
+.contact-lock:before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:
+    linear-gradient(90deg,transparent 0 48%,rgba(242,84,97,.035) 48% 49%,transparent 49%),
+    linear-gradient(0deg,transparent 0 61%,rgba(92,99,255,.03) 61% 62%,transparent 62%);
+  animation:lock-screen-jitter .55s steps(4,end) infinite;
+}
+
+.contact-lock:after{
+  content:"ACCESS RESTRICTED";
+  position:absolute;
+  right:14px;
+  top:12px;
+  color:#482229;
+  font-size:8px;
+  letter-spacing:.18em;
+}
+
+.lock-icon{
+  position:relative;
+  width:128px;
+  height:150px;
+  margin:0 auto;
+  filter:drop-shadow(8px 8px 0 #000);
+}
+
+.lock-shackle{
+  position:absolute;
+  left:30px;
+  top:0;
+  width:68px;
+  height:74px;
+  border:14px solid #7b7e77;
+  border-bottom:0;
+  background:transparent;
+}
+
+.lock-shackle:before,
+.lock-shackle:after{
+  content:"";
+  position:absolute;
+  width:10px;height:10px;
+  background:#b7b9b1;
+}
+.lock-shackle:before{left:-14px;top:-14px}
+.lock-shackle:after{right:-14px;top:-14px}
+
+.lock-body{
+  position:absolute;
+  left:13px;
+  right:13px;
+  bottom:0;
+  height:92px;
+  background:#1b1d1a;
+  border:8px solid #6e716a;
+  box-shadow:
+    inset 0 0 0 5px #0b0c0b,
+    6px 6px 0 #000;
+}
+
+.lock-body i{
+  position:absolute;
+  display:block;
+  background:#050605;
+}
+.lock-body i:nth-child(1){
+  width:20px;height:20px;
+  left:50%;top:21px;
+  transform:translateX(-50%);
+}
+.lock-body i:nth-child(2){
+  width:10px;height:28px;
+  left:50%;top:36px;
+  transform:translateX(-50%);
+}
+.lock-body i:nth-child(3){
+  left:11px;right:11px;bottom:9px;height:5px;
+  background:
+    linear-gradient(90deg,
+      #f25461 0 22%,
+      transparent 22% 28%,
+      #5c63ff 28% 50%,
+      transparent 50% 56%,
+      #54bd91 56% 78%,
+      transparent 78% 84%,
+      #ddb64d 84% 100%
+    );
+}
+
+.lock-copy{
+  position:relative;
+  z-index:2;
+}
+
+.lock-kicker{
+  color:#8f484f;
+  font-size:8px;
+  letter-spacing:.19em;
+  margin-bottom:8px;
+}
+
+.lock-copy h3{
+  margin:0 0 14px;
+  color:#e9eae3;
+  font-size:20px;
+  line-height:1;
+  letter-spacing:.10em;
+  text-shadow:
+    3px 0 0 rgba(242,84,97,.25),
+    -3px 0 0 rgba(92,99,255,.22);
+}
+
+.lock-copy p{
+  margin:0;
+  color:#777c74;
+  font-size:9px;
+  line-height:1.65;
+  letter-spacing:.07em;
+}
+
+.lock-countdown{
+  margin-top:26px;
+  padding:14px;
+  border:2px solid #2c2f2a;
+  background:#050605;
+  box-shadow:inset 0 0 0 2px #0c0e0c;
+}
+
+.lock-label{
+  display:block;
+  color:#60655e;
+  font-size:7px;
+  letter-spacing:.17em;
+  margin-bottom:7px;
+}
+
+.lock-countdown strong{
+  display:block;
+  color:#ededE7;
+  font-size:26px;
+  line-height:1;
+  letter-spacing:.12em;
+  text-shadow:3px 3px 0 #000;
+}
+
+.lock-bars{
+  display:flex;
+  gap:5px;
+  margin-top:18px;
+}
+.lock-bars i{
+  display:block;
+  height:6px;
+  flex:1;
+  opacity:.65;
+  animation:lock-bars-pulse 1.1s steps(4,end) infinite;
+}
+.lock-bars i:nth-child(1){background:#f25461;animation-delay:0s}
+.lock-bars i:nth-child(2){background:#5c63ff;animation-delay:.12s}
+.lock-bars i:nth-child(3){background:#54bd91;animation-delay:.24s}
+.lock-bars i:nth-child(4){background:#ddb64d;animation-delay:.36s}
+
+.contact-shell.is-locked{
+  border-color:#4b2b2f;
+}
+.contact-shell.is-locked .contact-title{
+  color:#8a8c85;
+}
+.contact-shell.is-locked .contact-intro{
+  color:#4f534e;
+}
+
+@keyframes lock-screen-jitter{
+  0%{transform:translate(0,0)}
+  25%{transform:translate(1px,0)}
+  50%{transform:translate(-1px,1px)}
+  75%{transform:translate(0,-1px)}
+  100%{transform:translate(0,0)}
+}
+
+@keyframes lock-bars-pulse{
+  0%,45%{opacity:.85}
+  46%,100%{opacity:.22}
+}
+
+@media(max-width:720px){
+  .contact-lock{
+    grid-template-columns:1fr;
+    min-height:520px;
+    gap:18px;
+    padding:22px 16px;
+    text-align:center;
+  }
+  .lock-icon{
+    transform:scale(.84);
+    transform-origin:center bottom;
+    margin-bottom:-10px;
+  }
+  .lock-copy h3{
+    font-size:15px;
+  }
+  .lock-copy p{
+    font-size:8px;
+  }
+  .lock-countdown strong{
+    font-size:22px;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .contact-lock:before,
+  .lock-bars i{
+    animation:none !important;
+  }
+}

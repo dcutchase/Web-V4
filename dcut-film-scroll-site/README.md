@@ -59,3 +59,15 @@ The form uses FormSubmit's AJAX endpoint so users stay on the DCUT page and rece
 IMPORTANT FIRST-TIME ACTIVATION:
 The first form submission triggers a FormSubmit activation email to chasefilms@icloud.com.
 Open that email and confirm the form once. After confirmation, future website inquiries are delivered to that inbox.
+
+
+## V9 24-hour lockdown
+After a successful contact form submission:
+- The form disappears.
+- The contact terminal transforms into an 8-bit lock screen.
+- A live HH:MM:SS countdown shows when the next transmission is available.
+- The lock survives page refreshes using browser localStorage.
+- After 24 hours, the form automatically unlocks.
+
+Important:
+This V9 limit is enforced in the visitor's browser. A determined visitor can bypass it by clearing browser storage, changing browsers/devices, or using private browsing. True anti-abuse enforcement would require server-side rate limiting.
