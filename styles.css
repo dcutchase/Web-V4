@@ -1577,3 +1577,18 @@ a.frame.category{
   color:inherit;
   text-decoration:none;
 }
+
+
+/* V26: make the full linked category row visibly/clickably interactive */
+.category-row.linked-category{
+  cursor:pointer;
+}
+.category-row.linked-category .label{
+  pointer-events:auto;
+}
+@media (hover:hover) and (pointer:fine){
+  .category-row.linked-category,
+  .category-row.linked-category .label{
+    cursor:none !important;
+  }
+}

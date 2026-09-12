@@ -46,3 +46,17 @@ This should be treated as the new master copy of the website on your new desktop
 - Disabled dependency on Vercel cleanUrls for category routing.
 - Kept `archive.html` as an extra direct fallback.
 - Homepage FILM and ARCHIVE tiles use canonical `/film` and `/archive` paths.
+
+
+## V25 direct Archive route fix
+- Archive homepage tile now links directly to `/archive.html`.
+- This avoids all Vercel cleanUrls/rewrite inference.
+- `archive.html` is the canonical Archive OS page at the project root.
+- `/archive/index.html` is retained only as a fallback redirect to `/archive.html`.
+
+
+## V26 Archive click fix
+- Entire FILM and ARCHIVE category rows are now navigation targets.
+- Clicking the Archive thumbnail, text label, connector, or surrounding row navigates directly to `/archive.html`.
+- Keyboard Enter/Space navigation is included.
+- This is a full-project package.

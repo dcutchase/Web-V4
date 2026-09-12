@@ -15,7 +15,30 @@ function categoryFrame(cat,index){
   const row=document.createElement("div");
   row.className="frame-row category-row";
 
+  row.dataset.category = cat.id;
+
   const isLinkedCategory = cat.id === "film" || cat.id === "archive";
+  if (isLinkedCategory) {
+    row.classList.add("linked-category");
+    row.tabIndex = 0;
+    row.setAttribute("role", "link");
+    row.setAttribute("aria-label", cat.id === "film" ? "Open Film category" : "Open Archive category");
+
+    const destination = cat.id === "film" ? "/film/" : "/archive.html";
+    const navigate = () => window.location.assign(destination);
+
+    row.addEventListener("click", (event) => {
+      // Let normal anchor clicks work, but force navigation for every other visible part
+      // of the category row (label, connector, spacing, etc.).
+      if (!event.target.closest("a")) navigate();
+    });
+    row.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        navigate();
+      }
+    });
+  }
   const frame=document.createElement(isLinkedCategory ? "a" : "div");
   frame.className="frame category";
 
@@ -25,7 +48,7 @@ function categoryFrame(cat,index){
   }
 
   if (cat.id === "archive") {
-    frame.href = "/archive";
+    frame.href = "/archive.html";
     frame.setAttribute("aria-label", "Open Archive category");
   }
 
@@ -429,6 +452,6 @@ document.querySelectorAll('.category-row').forEach((row) => {
 
   if (id === 'archive') {
     frame.style.cursor = 'pointer';
-    frame.addEventListener('click', () => { window.location.href = '/archive'; });
+    frame.addEventListener('click', () => { window.location.href = '/archive.html'; });
   }
 });
