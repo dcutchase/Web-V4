@@ -1556,11 +1556,17 @@ body.frame-hover .pixel-noise{
 
 
 /* =========================
-   V15: STATIC REEL OVERRIDES
+   V16: CLEAN STATIC REEL
    ========================= */
-.reel-sprite,
-.reel-letter-glows,
-.reel-rotating-face{
-  transform:none !important;
+.reel-body,
+.reel-face-rotor,
+.reel-letter-glows{
   animation:none !important;
+}
+.reel-body,
+.reel-face-rotor{
+  transform:none !important;
+}
+.reel-letter-glows{
+  transform:none !important;
 }

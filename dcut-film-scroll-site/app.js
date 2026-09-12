@@ -1,7 +1,5 @@
 const film = document.querySelector("#film");
 const filmReveal = document.querySelector("#filmReveal");
-const reelBody = document.querySelector("#reelBody");
-const reelFaceRotor = document.querySelector("#reelFaceRotor");
 const scrollTrack = document.querySelector("#scrollTrack");
 
 function blankFrame(){
@@ -396,59 +394,10 @@ if (dustField && !window.matchMedia("(prefers-reduced-motion: reduce)").matches)
   }
 }
 
-/* Reel body stays still. Only the front spool face turns as film is released. */
-const reelGlowLayer = document.querySelector(".reel-letter-glows");
-
-(function(){
-  const originalUpdate = update;
-
-  update = function(){
-    originalUpdate();
-
-    const filmTop =
-      filmReveal.getBoundingClientRect().top + window.scrollY;
-    const revealHead = window.scrollY + window.innerHeight * .64;
-    const reveal = Math.max(
-      0,
-      Math.min(film.scrollHeight, revealHead - filmTop)
-    );
-
-    // About one full spool revolution per 300px of released film.
-    // 4-degree quantization keeps it mechanical / 8-bit.
-    const rawRotation = reveal * 1.2;
-    const steppedRotation = Math.round(rawRotation / 4) * 4;
-
-    if (reelFaceRotor) {
-      reelFaceRotor.style.transform = `rotate(${steppedRotation}deg)`;
-    }
-
-    // DCUT side lettering belongs to the stationary reel body, so its glow stays put.
-    if (reelGlowLayer) {
-      reelGlowLayer.style.transform = "none";
-    }
-  };
-
-  update();
-})();
 
 
 /* =========================
-   V15: STATIC REEL
-   ========================= */
-(function(){
-  const originalUpdate = update;
-  update = function(){
-    originalUpdate();
-    if (typeof reelSprite !== 'undefined' && reelSprite) {
-      reelSprite.style.transform = 'none';
-    }
-    if (typeof reelGlowLayer !== 'undefined' && reelGlowLayer) {
-      reelGlowLayer.style.transform = 'none';
-    }
-    const rotatingFace = document.querySelector('.reel-rotating-face');
-    if (rotatingFace) {
-      rotatingFace.style.transform = 'none';
-    }
-  };
-  update();
-})();
+   V16: CLEAN STATIC REEL
+   =========================
+   Reel is intentionally static. No reel transform logic.
+*/

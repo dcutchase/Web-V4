@@ -114,6 +114,7 @@ All effects are CSS/JavaScript. No new rendered background image was added.
 - This removes the previous orbiting/spinning-image effect.
 
 
-## V15 static reel
-- Removed reel/spool rotation entirely.
-- Reel is now a fully static asset while the film still feeds downward.
+## V16 clean static reel
+- Removed the V14 reel rotation code entirely instead of trying to override it.
+- The reel body and front face are now both static layers.
+- The film still feeds downward, but the reel itself does not animate.
