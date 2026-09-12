@@ -1,19 +1,15 @@
-# DCUT Full Master V31
+# DCUT Full Master V33
 
-This is the full merged project with a Vimeo-hosted Archive desktop background.
+This build keeps the working archive desktop and adds real content inside the archive files.
 
-## Included
-- Homepage / main film-scroll site
-- Film CRT wall page
-- Archive desktop page at `/archive/`
-- Vimeo background video behind Archive desktop icons
-- VHS / scanline / tracking overlays preserved
-- DCUT Pong desktop app slowed by 30%
+## Added
+- Updated `who_is_dcutchase` with bio and skills
+- Updated `dcut_orgins` with DCUT background, Montreality mention, and 5M+ views
+- Added YouTube embed inside `archive_mp4`
+- Added curated BTS / photo gallery inside `archive_jpg`
+- Preserved Vimeo desktop wallpaper, scanlines, back button, and slower Pong
 
-## Archive background
-Vimeo video ID: `1226258378`
-
-The Archive background iframe is configured to autoplay muted, loop, hide controls, and ignore pointer input so the desktop icons stay clickable.
-
-## Why this version is smaller
-The background MP4 is no longer bundled inside the project. Vimeo hosts and streams it instead.
+## Deploy
+Root directory: `/`
+Build command: none
+Output directory: none

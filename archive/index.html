@@ -79,7 +79,7 @@
     .icon-sprite.pong::after{left:16px;top:15px;width:12px;height:8px;background:linear-gradient(90deg, #f25a63 0 16%, transparent 16% 42%, #ffffff 42% 58%, transparent 58% 84%, #6470ff 84% 100%)}
 
     .taskbar{position:absolute;left:0;right:0;bottom:0;height:30px;background:linear-gradient(180deg,#d5d8d7,#a9afaf);border-top:2px solid #f3f4f3;display:flex;align-items:center;padding:0 6px;gap:6px;z-index:4}
-    .start-btn{height:22px;padding:0 10px;border:2px solid;border-color:#fbfbfb #3d4242 #3d4242 #fbfbfb;background:#c2c7c7;display:inline-flex;align-items:center;gap:7px;font-weight:700}
+    .start-btn{text-decoration:none;color:#101314;height:22px;padding:0 10px;border:2px solid;border-color:#fbfbfb #3d4242 #3d4242 #fbfbfb;background:#c2c7c7;display:inline-flex;align-items:center;gap:7px;font-weight:700}
     .start-logo{width:12px;height:12px;background:linear-gradient(90deg,var(--red) 0 50%, var(--blue) 50% 100%), linear-gradient(90deg,var(--green) 0 50%, var(--yellow) 50% 100%);background-size:100% 50%,100% 50%;background-position:0 0, 0 100%;background-repeat:no-repeat}
     .task-sep{width:1px;height:18px;background:#666b6b}
     .task-button{height:22px;min-width:124px;padding:0 8px;border:2px solid;border-color:#fbfbfb #3d4242 #3d4242 #fbfbfb;background:#c5caca;display:none;align-items:center;justify-content:flex-start;font-size:11px}
@@ -110,6 +110,29 @@
     .inline-links{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
     .inline-link{padding:7px 10px;border:2px solid;border-color:#fff #6b7070 #6b7070 #fff;background:#cdd2d2;color:#0e1112;text-decoration:none;font-size:12px}
 
+    .info-rich{display:flex;flex-direction:column;gap:14px}
+    .hero-card{background:#eef1f0;border:2px solid;border-color:#fff #717676 #717676 #fff;padding:10px;display:flex;flex-direction:column;gap:8px}
+    .hero-image{width:100%;max-height:340px;object-fit:cover;display:block;border:2px solid #505656;background:#111;image-rendering:auto}
+    .hero-caption{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#4a5353}
+    .intro-panel{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(220px,.9fr);gap:14px;align-items:start}
+    .plain-copy{font-size:13px;line-height:1.7;color:#131718}
+    .skills-wrap{display:flex;flex-wrap:wrap;gap:8px}
+    .skill-chip{display:inline-flex;align-items:center;min-height:30px;padding:7px 10px;background:#d4d9d9;border:2px solid;border-color:#fff #707575 #707575 #fff;font-size:12px;line-height:1.2;color:#111516}
+    .stat-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+    .stat-card{background:#e8ebea;border:2px solid;border-color:#fff #737878 #737878 #fff;padding:10px;display:flex;flex-direction:column;gap:6px}
+    .stat-value{font-size:18px;font-weight:700;line-height:1.2;color:#0f1c2d}
+    .embed-card{background:#eef1f0;border:2px solid;border-color:#fff #717676 #717676 #fff;padding:10px}
+    .embed-shell{position:relative;width:100%;padding-top:56.25%;background:#000;border:2px solid #505656}
+    .embed-shell iframe{position:absolute;inset:0;width:100%;height:100%}
+    .archive-gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+    .gallery-card{margin:0;background:#e9eceb;border:2px solid;border-color:#fff #727777 #727777 #fff;padding:8px;display:flex;flex-direction:column;gap:8px}
+    .gallery-card img{width:100%;height:220px;object-fit:cover;display:block;border:2px solid #505656;background:#111;image-rendering:auto}
+    .gallery-card.tall img{height:300px}
+    .gallery-card.wide{grid-column:span 2}
+    .gallery-card.wide img{height:250px}
+    .gallery-caption{font-size:11px;line-height:1.35;letter-spacing:.08em;text-transform:uppercase;color:#4a5353}
+    .micro-note{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#566060}
+
     .pong-wrap{display:grid;grid-template-columns:minmax(0,1fr) 190px;gap:12px;height:100%}
     .pong-cabinet{background:#0a0a0a;border:2px solid #596060;padding:12px;display:flex;align-items:center;justify-content:center;position:relative}
     #pongCanvas{display:block;background:#050505;border:2px solid #8c9393;width:min(100%, 540px);aspect-ratio:4/3;image-rendering:pixelated}
@@ -127,7 +150,9 @@
       .icons-region{inset:42px 10px 46px 10px}
       .icon-grid{grid-template-columns:repeat(2, 102px)}
       .window{width:calc(100% - 30px);height:min(78%, 720px)}
-      .content-grid,.pong-wrap{grid-template-columns:1fr}
+      .content-grid,.pong-wrap,.intro-panel{grid-template-columns:1fr}
+      .archive-gallery{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .gallery-card.wide{grid-column:span 2}
     }
     @media (max-width: 640px){
       .wallpaper-video{width:177.77777778vh;min-width:100%;height:56.25vw;min-height:100%;}
@@ -140,7 +165,11 @@
       .desktop-icon .icon-label{font-size:11px}
       .window{left:50%;top:52%;width:calc(100% - 12px);height:calc(100% - 56px)}
       .content-title{font-size:20px}
-      .content-copy{font-size:12px}
+      .content-copy,.plain-copy{font-size:12px}
+      .archive-gallery{grid-template-columns:1fr}
+      .gallery-card,.gallery-card.wide{grid-column:span 1}
+      .gallery-card img,.gallery-card.wide img,.gallery-card.tall img{height:220px}
+      .stat-grid{grid-template-columns:1fr}
       .task-button{min-width:88px;font-size:10px}
       .start-btn{padding:0 8px;font-size:11px}
     }
@@ -156,7 +185,7 @@
           <div class="wallpaper-layer"></div>
           <div class="vhs-overlay"><div class="tracking"></div><div class="noise"></div><div class="rgb-split"></div></div>
           <div class="desktop-header">
-            <div class="desktop-title"><span class="status-light"></span><span>DCUT_ARCHIVE_OS // DESKTOP READY</span></div>
+            <div class="desktop-title"><span class="status-light"></span><span>DCUT_ARCHIVE_OS // LIVE FILES</span></div>
             <div>USER: DCUTCHASE // MODE: VHS_DESKTOP</div>
           </div>
           <div class="icons-region">
@@ -164,7 +193,7 @@
           </div>
           <div class="window-layer" id="windowLayer"></div>
           <div class="taskbar">
-            <button class="start-btn" type="button"><span class="start-logo"></span><span>Start</span></button>
+            <a class="start-btn" href="/" aria-label="Back to main page"><span class="start-logo"></span><span>Back</span></a>
             <div class="task-sep"></div>
             <button class="task-button" type="button" id="taskButton">archive.html</button>
             <div class="clock" id="clock">12:00 PM</div>
@@ -210,47 +239,114 @@
   </template>
 
   <script>
+
     const FILES = [
       {
-        id:'file_1', type:'info', icon:'file', name:'who_is_dcutchase', title:'WHO IS DCUT CHASE', kicker:'FILE_1 // IDENTITY RECORD',
-        body:'This file is ready to become your personal introduction. Use it to explain who you are, what you do, and how you approach creative work. It can hold your name, role, founder statement, and a professional summary without losing the DCUT aesthetic.',
-        blocks:[
-          {title:'Suggested Content', items:['Name + creative title','Short personal bio','Skills / focus areas','Founder note or personal statement']},
-          {title:'Good Visuals Here', items:['Portrait of you','Behind-the-scenes still','Short intro paragraph','A clean signature quote']}
-        ],
-        side:[['Status','Ready for customization'],['Primary Use','About Me / Founder Intro'],['Format','Text + portrait + short note'],['Visibility','Professional overview']]
+        id:'file_1', type:'info', icon:'file', name:'who_is_dcutchase', title:'WHO IS DCUT CHASE',
+        content:`
+          <div class="info-rich">
+            <div class="content-kicker">FILE_1 // IDENTITY RECORD</div>
+            <h1 class="content-title">WHO IS DCUT CHASE</h1>
+            <div class="intro-panel">
+              <section class="hero-card">
+                <img class="hero-image" src="../assets/archive-content/who-is-dcutchase.jpg" alt="Chase Strothman operating a Sony camera on a bridge during a shoot">
+                <div class="hero-caption">Chase on set operating camera during a BTS capture.</div>
+              </section>
+              <div class="meta-list">
+                <section class="card meta-row"><span class="meta-label">Name</span><span class="meta-value">Chase Strothman</span></section>
+                <section class="card meta-row"><span class="meta-label">Role</span><span class="meta-value">Creative Director / Founder of DCUT</span></section>
+                <section class="card meta-row"><span class="meta-label">Age</span><span class="meta-value">21</span></section>
+                <section class="card meta-row"><span class="meta-label">Primary Focus</span><span class="meta-value">Music videos, visual worlds, and artist-focused storytelling.</span></section>
+              </div>
+            </div>
+            <section class="card">
+              <h3>About</h3>
+              <div class="plain-copy">Chase Strothman is a 21-year-old Creative Director and founder of his own brand, DCUT. Chase likes to direct music videos, create visual worlds around art, and provide an experience fans can share with each other forever through cinema.</div>
+            </section>
+            <section class="card">
+              <h3>Skills</h3>
+              <div class="skills-wrap">
+                <span class="skill-chip">Creative Direction</span>
+                <span class="skill-chip">Music Video Direction</span>
+                <span class="skill-chip">Cinematography</span>
+                <span class="skill-chip">Videography</span>
+                <span class="skill-chip">Video Editing</span>
+                <span class="skill-chip">Visual Storytelling</span>
+                <span class="skill-chip">Artist Branding</span>
+                <span class="skill-chip">World Building</span>
+              </div>
+            </section>
+            <div class="inline-links"><a class="inline-link" href="/">Back Home</a><a class="inline-link" href="/film/">Open Film Page</a></div>
+          </div>`
       },
       {
-        id:'file_2', type:'info', icon:'folder', name:'dcut_orgins', title:'DCUT ORIGINS', kicker:'FILE_2 // BRAND ORIGIN LOG',
-        body:'This file is set up to tell the story behind DCUT: what it stands for, why you created it, and what the collective is meant to become. Keep this one brand-focused and mission-driven so visitors understand the purpose behind the work.',
-        blocks:[
-          {title:'Suggested Content', items:['Meaning of DCUT','How the brand started','Who it is for','Core mission and values']},
-          {title:'Good Visuals Here', items:['Logo / symbol usage','Early brand images','Mission statement','Key timeline notes']}
-        ],
-        side:[['Status','Ready for customization'],['Primary Use','Brand Story / Mission'],['Format','Text + timeline + graphics'],['Visibility','Professional brand context']]
+        id:'file_2', type:'info', icon:'folder', name:'dcut_orgins', title:'DCUT ORIGINS',
+        content:`
+          <div class="info-rich">
+            <div class="content-kicker">FILE_2 // BRAND ORIGIN LOG</div>
+            <h1 class="content-title">DCUT ORIGINS</h1>
+            <section class="hero-card">
+              <img class="hero-image" src="../assets/archive-content/dcut-origins.jpg" alt="Chase and an artist standing together over a camera on a bridge during golden hour">
+              <div class="hero-caption">DCUT built through collaboration, artist development, and visual storytelling.</div>
+            </section>
+            <section class="card">
+              <h3>Subtle Background</h3>
+              <div class="plain-copy">DCUT stands for <strong>Driven Creatives United Together</strong>. It was built as a creative brand focused on visual storytelling, artist development, and giving talent a stronger world, image, and direction. The vision is to bridge the gap between underground artists and the industry through cinematic work, stronger presentation, and a community-centered approach.</div>
+            </section>
+            <div class="stat-grid">
+              <section class="stat-card"><span class="meta-label">Featured On</span><span class="stat-value">Montreality</span><span class="plain-copy">A notable placement that helped expand reach and visibility.</span></section>
+              <section class="stat-card"><span class="meta-label">Views</span><span class="stat-value">5M+</span><span class="plain-copy">Accumulated across all platforms through DCUT-led and DCUT-supported work.</span></section>
+            </div>
+            <div class="inline-links"><a class="inline-link" href="/">Back Home</a><a class="inline-link" href="/film/">Open Film Page</a></div>
+          </div>`
       },
       {
-        id:'file_3', type:'info', icon:'video', name:'archive_mp4', title:'ARCHIVE MP4', kicker:'FILE_3 // MOTION DIRECTORY',
-        body:'This file can become a motion-based overview of your work. It is ideal for selected clips, short embeds, featured edits, music video references, or a simplified work log that complements the dedicated FILM page.',
-        blocks:[
-          {title:'Suggested Content', items:['Featured clips','Selected edits','Highlight reel','Motion work summary']},
-          {title:'Good Visuals Here', items:['Embedded video previews','MP4 thumbnails','Short project notes','Role / credit labels']}
-        ],
-        side:[['Status','Ready for customization'],['Primary Use','Motion archive / reel'],['Format','Videos + short notes'],['Visibility','Selected work highlights']]
+        id:'file_3', type:'info', icon:'video', name:'archive_mp4', title:'ARCHIVE MP4',
+        content:`
+          <div class="info-rich">
+            <div class="content-kicker">FILE_3 // MOTION DIRECTORY</div>
+            <h1 class="content-title">ARCHIVE MP4</h1>
+            <section class="embed-card">
+              <div class="embed-shell">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/BturNbGLy5s?si=A5zn9aA6f_FeZJ8_" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+              </div>
+            </section>
+            <section class="card">
+              <h3>Featured Motion Archive</h3>
+              <div class="plain-copy">A direct embed for featured motion work. This window acts as a simple archive player while keeping the retro desktop look intact.</div>
+            </section>
+            <div class="inline-links"><a class="inline-link" href="/">Back Home</a><a class="inline-link" href="/film/">Open Film Page</a></div>
+          </div>`
       },
       {
-        id:'file_4', type:'info', icon:'image', name:'archive_jpg', title:'ARCHIVE JPG', kicker:'FILE_4 // IMAGE DIRECTORY',
-        body:'This file can become an image-driven archive with photography, stills, BTS, design frames, or visual references. It is a good place for grids, contact-sheet layouts, and carefully selected static work.',
-        blocks:[
-          {title:'Suggested Content', items:['Photo archive','Still frames','BTS images','Design / graphic selections']},
-          {title:'Good Visuals Here', items:['Contact sheets','Image grid','Captioned stills','Short context notes']}
-        ],
-        side:[['Status','Ready for customization'],['Primary Use','Image archive'],['Format','Gallery + captions'],['Visibility','Visual library / stills']]
+        id:'file_4', type:'info', icon:'image', name:'archive_jpg', title:'ARCHIVE JPG',
+        content:`
+          <div class="info-rich">
+            <div class="content-kicker">FILE_4 // IMAGE DIRECTORY</div>
+            <h1 class="content-title">ARCHIVE JPG</h1>
+            <div class="micro-note">Photos, BTS moments, process stills, and on-set documentation.</div>
+            <section class="archive-gallery">
+              <figure class="gallery-card tall"><img src="../assets/archive-content/gallery-ladder.jpg" alt="Chase standing on a ladder holding a camera"><figcaption class="gallery-caption">Studio setup / ladder angle</figcaption></figure>
+              <figure class="gallery-card"><img src="../assets/archive-content/gallery-bridge-bts.jpg" alt="Chase filming an artist on a bridge"><figcaption class="gallery-caption">Bridge shoot BTS</figcaption></figure>
+              <figure class="gallery-card"><img src="../assets/archive-content/gallery-sidewalk.jpg" alt="Chase talking with an artist while holding a camera on a city sidewalk at night"><figcaption class="gallery-caption">Night city shoot</figcaption></figure>
+              <figure class="gallery-card wide"><img src="../assets/archive-content/gallery-bridge-wide.jpg" alt="Chase standing with camera while an artist sits near a red bag during a bridge shoot"><figcaption class="gallery-caption">On-set direction / artist performance setup</figcaption></figure>
+              <figure class="gallery-card"><img src="../assets/archive-content/gallery-purple-studio.jpg" alt="Chase in a purple-lit studio operating a camera"><figcaption class="gallery-caption">Studio session</figcaption></figure>
+              <figure class="gallery-card"><img src="../assets/archive-content/gallery-gear-shelf.jpg" alt="A shelf of camera gear and lenses"><figcaption class="gallery-caption">Tools of the craft</figcaption></figure>
+              <figure class="gallery-card"><img src="../assets/archive-content/gallery-editing-screen.jpg" alt="Editing timeline showing a red title card for CRASH by Quintellii"><figcaption class="gallery-caption">Post-production / edit bay</figcaption></figure>
+              <figure class="gallery-card"><img src="../assets/archive-content/gallery-red-venue.jpg" alt="Chase standing in a red-lit venue holding a camera"><figcaption class="gallery-caption">Concert and event coverage</figcaption></figure>
+              <figure class="gallery-card"><img src="../assets/archive-content/gallery-blue-crowd.jpg" alt="A blue-lit concert crowd with a performer on stage"><figcaption class="gallery-caption">Performance atmosphere</figcaption></figure>
+              <figure class="gallery-card"><img src="../assets/archive-content/gallery-cash-bts.jpg" alt="Chase and an artist arranging cash on the floor during a shoot"><figcaption class="gallery-caption">Music video prop setup</figcaption></figure>
+              <figure class="gallery-card"><img src="../assets/archive-content/gallery-horse-location.jpg" alt="Chase holding a camera in a dim horse stable location"><figcaption class="gallery-caption">Location scouting / late-night capture</figcaption></figure>
+              <figure class="gallery-card"><img src="../assets/archive-content/gallery-night-shoot.jpg" alt="Chase filming an artist on a city street at night"><figcaption class="gallery-caption">Street visual session</figcaption></figure>
+            </section>
+            <div class="inline-links"><a class="inline-link" href="/">Back Home</a><a class="inline-link" href="/film/">Open Film Page</a></div>
+          </div>`
       },
       {
         id:'exe_1', type:'pong', icon:'pong', name:'dcut_pong.exe'
       }
     ];
+
 
     const iconGrid = document.getElementById('iconGrid');
     const windowLayer = document.getElementById('windowLayer');
@@ -327,24 +423,11 @@
       return infoWindow;
     }
 
+
     function renderInfoWindow(item){
       if (!infoWindow) createInfoWindow();
       infoWindow.querySelector('#windowLabel').textContent = `${item.id} // ${item.name}`;
-      infoWindow.querySelector('#windowContent').innerHTML = `
-        <div class="content-kicker">${item.kicker}</div>
-        <h1 class="content-title">${item.title}</h1>
-        <div class="content-copy">${item.body}</div>
-        <div class="content-grid">
-          <div>
-            ${item.blocks.map(block => `<section class="card"><h3>${block.title}</h3><ul>${block.items.map(entry => `<li>${entry}</li>`).join('')}</ul></section>`).join('')}
-            <div class="inline-links"><a class="inline-link" href="/">Back Home</a><a class="inline-link" href="/film/">Open Film Page</a></div>
-          </div>
-          <div class="meta-list">
-            ${item.side.map(([label, value]) => `<section class="card meta-row"><span class="meta-label">${label}</span><span class="meta-value">${value}</span></section>`).join('')}
-            <section class="card meta-row"><span class="meta-label">Page Note</span><span class="meta-value">This file is still a scaffold. Next we can replace every placeholder with your real story, mission, work log, and future plans.</span></section>
-          </div>
-        </div>
-      `;
+      infoWindow.querySelector('#windowContent').innerHTML = item.content || '';
       infoWindow.classList.add('open');
       if (pongWindow) pongWindow.classList.remove('open');
       updateTask(item.name, true);
