@@ -25,3 +25,9 @@ This ZIP is the complete current project intended for transfer to a new computer
 Upload **everything inside this folder** to the root of your GitHub repo, replacing matching files, then commit. Vercel should redeploy automatically.
 
 This should be treated as the new master copy of the website on your new desktop.
+
+
+## V22 Archive navigation fix
+- Homepage ARCHIVE category now links directly to `/archive/`.
+- FILM link was also normalized to `/film/`.
+- Full project bundle includes homepage, assets, FILM page, and ARCHIVE OS page.

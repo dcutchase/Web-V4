@@ -15,11 +15,18 @@ function categoryFrame(cat,index){
   const row=document.createElement("div");
   row.className="frame-row category-row";
 
-  const frame=document.createElement(cat.id === "film" ? "a" : "div");
+  const isLinkedCategory = cat.id === "film" || cat.id === "archive";
+  const frame=document.createElement(isLinkedCategory ? "a" : "div");
   frame.className="frame category";
+
   if (cat.id === "film") {
-    frame.href = "film/";
+    frame.href = "/film/";
     frame.setAttribute("aria-label", "Open Film category");
+  }
+
+  if (cat.id === "archive") {
+    frame.href = "/archive/";
+    frame.setAttribute("aria-label", "Open Archive category");
   }
 
   const media=document.createElement("div");
