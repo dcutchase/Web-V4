@@ -1,1 +1,22 @@
-{"cleanUrls":true,"trailingSlash":false}
+{
+  "cleanUrls": false,
+  "trailingSlash": false,
+  "rewrites": [
+    {
+      "source": "/archive",
+      "destination": "/archive/index.html"
+    },
+    {
+      "source": "/archive/",
+      "destination": "/archive/index.html"
+    },
+    {
+      "source": "/film",
+      "destination": "/film/index.html"
+    },
+    {
+      "source": "/film/",
+      "destination": "/film/index.html"
+    }
+  ]
+}

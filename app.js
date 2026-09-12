@@ -412,3 +412,23 @@ if (dustField && !window.matchMedia("(prefers-reduced-motion: reduce)").matches)
    =========================
    Reel is intentionally static. No reel transform logic.
 */
+
+
+/* =========================
+   V24: CANONICAL CATEGORY ROUTES
+   ========================= */
+document.querySelectorAll('.category-row').forEach((row) => {
+  const id = row.dataset.category;
+  const frame = row.querySelector('.frame.category');
+  if (!frame) return;
+
+  if (id === 'film') {
+    frame.style.cursor = 'pointer';
+    frame.addEventListener('click', () => { window.location.href = '/film'; });
+  }
+
+  if (id === 'archive') {
+    frame.style.cursor = 'pointer';
+    frame.addEventListener('click', () => { window.location.href = '/archive'; });
+  }
+});

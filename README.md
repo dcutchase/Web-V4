@@ -38,3 +38,11 @@ This should be treated as the new master copy of the website on your new desktop
 - Homepage ARCHIVE tile now links to `/archive`.
 - Kept `/archive/index.html` as a fallback copy.
 - This avoids the nested-folder + cleanUrls routing issue on Vercel.
+
+
+## V24 Vercel routing fix
+- `/archive` explicitly rewrites to `/archive/index.html`.
+- `/film` explicitly rewrites to `/film/index.html`.
+- Disabled dependency on Vercel cleanUrls for category routing.
+- Kept `archive.html` as an extra direct fallback.
+- Homepage FILM and ARCHIVE tiles use canonical `/film` and `/archive` paths.
