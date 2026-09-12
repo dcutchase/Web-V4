@@ -96,3 +96,11 @@ All effects are CSS/JavaScript. No new rendered background image was added.
 - Reel now performs strong, visible rotations tied to film release.
 - Rotation is quantized into 6-degree steps so it feels more mechanical / pixel-art instead of buttery-smooth.
 - Glow overlay rotates with the reel asset.
+
+
+## V13 category thumbnails
+- FILM: SCRL_0002.jpeg
+- PHOTOGRAPHY: tbfscover_notext.jpeg
+- VFX + DESIGN: IMG_0389.jpeg
+- BTS: A7404877.jpeg
+- ARCHIVE remains the existing placeholder.
