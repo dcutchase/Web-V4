@@ -1,9 +1,34 @@
 window.DCUT = {
   categories: [
-    { name: "FILM", detail: "MUSIC VIDEOS\nCOMMERCIAL\nNARRATIVE", image: "" },
-    { name: "PHOTOGRAPHY", detail: "PEOPLE\nPLACES\nMOMENTS", image: "" },
-    { name: "VFX + DESIGN", detail: "VISUAL EFFECTS\nMOTION\nGRAPHICS", image: "" },
-    { name: "BTS", detail: "ON SET\nPROCESS\nPEOPLE", image: "" },
-    { name: "ARCHIVE", detail: "EARLY WORK\nEXPERIMENTS\nEVERYTHING ELSE", image: "" }
+    {
+      id: "film",
+      title: "FILM",
+      lines: ["MUSIC", "DOCUMENTARY", "COMMERCIAL", "NARRATIVE"],
+      image: ""
+    },
+    {
+      id: "photography",
+      title: "PHOTOGRAPHY",
+      lines: ["PEOPLE", "PLACES", "MOMENTS", "STILLS"],
+      image: ""
+    },
+    {
+      id: "vfx",
+      title: "VFX + DESIGN",
+      lines: ["VISUAL EFFECTS", "MOTION", "GRAPHICS", "CREATIVE DIRECTION"],
+      image: ""
+    },
+    {
+      id: "bts",
+      title: "BTS",
+      lines: ["ON SET", "PROCESS", "PEOPLE", "REAL WORK"],
+      image: ""
+    },
+    {
+      id: "archive",
+      title: "ARCHIVE",
+      lines: ["EARLY WORK", "EXPERIMENTS", "UNRELEASED", "EVERYTHING ELSE"],
+      image: ""
+    }
   ]
 };

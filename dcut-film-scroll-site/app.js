@@ -1,57 +1,130 @@
 const film = document.querySelector("#film");
+const filmMask = document.querySelector("#filmMask");
 const reel = document.querySelector("#reel");
-const cats = window.DCUT.categories;
+const reelZone = document.querySelector(".reel-zone");
+const categories = window.DCUT.categories;
 
-function emptyFrame(){
-  const row=document.createElement("div"); row.className="frame-row";
-  const f=document.createElement("div"); f.className="frame empty"; row.appendChild(f);
+function blankRow() {
+  const row = document.createElement("div");
+  row.className = "frame-row";
+  const frame = document.createElement("div");
+  frame.className = "frame empty";
+  row.appendChild(frame);
   return row;
 }
-function categoryFrame(cat,index){
-  const row=document.createElement("div"); row.className="frame-row category-row";
-  const f=document.createElement("div"); f.className="frame category";
-  if(cat.image){
-    const t=document.createElement("div"); t.className="thumb"; t.style.backgroundImage=`url("${cat.image}")`; f.appendChild(t);
+
+function categoryRow(category, index) {
+  const row = document.createElement("div");
+  row.className = "frame-row category-row";
+  row.dataset.category = category.id;
+
+  const frame = document.createElement("button");
+  frame.className = "frame category";
+  frame.type = "button";
+  frame.setAttribute("aria-label", category.title);
+
+  const media = document.createElement("div");
+  media.className = "media";
+
+  if (category.image) {
+    media.style.backgroundImage = `url("${category.image}")`;
   } else {
-    const t=document.createElement("div"); t.className="thumb-placeholder"; t.textContent="DROP MEDIA HERE"; f.appendChild(t);
+    media.classList.add("placeholder");
   }
-  const l=document.createElement("div"); l.className=`label ${index%2===0?"left":"right"}`;
-  const h=document.createElement("h2"); h.textContent=cat.name;
-  const line=document.createElement("span"); line.className="line";
-  const p=document.createElement("p"); p.innerHTML=cat.detail.replaceAll("\n","<br>");
-  l.append(h,line,p); row.append(f,l); return row;
+
+  frame.appendChild(media);
+
+  const label = document.createElement("div");
+  label.className = `label ${index % 2 === 0 ? "left" : "right"}`;
+
+  const heading = document.createElement("h2");
+  heading.textContent = category.title;
+
+  const connector = document.createElement("span");
+  connector.className = "connector";
+
+  const detail = document.createElement("p");
+  detail.innerHTML = category.lines.join("<br>");
+
+  label.append(heading, connector, detail);
+  row.append(frame, label);
+
+  return row;
 }
-cats.forEach((cat,i)=>{
-  film.append(emptyFrame(),emptyFrame(),categoryFrame(cat,i));
+
+// Two blank frames + one category frame = a thumbnail every third frame.
+film.append(blankRow(), blankRow());
+categories.forEach((category, index) => {
+  film.append(categoryRow(category, index));
+  if (index < categories.length - 1) {
+    film.append(blankRow(), blankRow());
+  }
 });
-film.append(emptyFrame(),emptyFrame());
+film.append(blankRow(), blankRow());
 
-const labels=[...document.querySelectorAll(".label")];
-const obs=new IntersectionObserver(entries=>{
-  entries.forEach(e=>e.target.querySelector(".label")?.classList.toggle("visible",e.isIntersecting));
-},{threshold:.55});
-document.querySelectorAll(".category-row").forEach(el=>obs.observe(el));
+const rows = [...document.querySelectorAll(".category-row")];
+const labels = [...document.querySelectorAll(".label")];
 
-let ticking=false;
+function setFilmGeometry() {
+  const height = film.scrollHeight;
+  document.documentElement.style.setProperty("--film-height", `${height}px`);
 
-function updateFilm(){
-  const maxReveal = film.scrollHeight;
-  // At the very top only a short leader is visible.
-  // As the page scrolls, the strip feeds out almost 1:1 with scroll distance.
-  const reveal = Math.min(maxReveal, 24 + window.scrollY * 1.08);
-  film.style.setProperty("--reveal", `${reveal}px`);
-  reel.style.transform = `rotate(${window.scrollY * .12}deg)`;
+  // Give the page real scroll distance. The film itself is revealed by a mask,
+  // so the hidden part still needs layout space to scroll through.
+  reelZone.style.height = `${height + Math.max(360, window.innerHeight * 0.45)}px`;
+  filmMask.style.height = `${height + 20}px`;
 }
 
-function requestUpdate(){
-  if(ticking) return;
-  ticking=true;
-  requestAnimationFrame(()=>{
-    updateFilm();
-    ticking=false;
+function updateScene() {
+  const zoneRect = reelZone.getBoundingClientRect();
+  const filmTopInDocument =
+    window.scrollY + zoneRect.top + parseFloat(getComputedStyle(filmMask).top);
+
+  // Reveal begins only once the viewport reaches the reel.
+  // The visible end of the strip follows the scroll downward.
+  const viewportHead = window.scrollY + window.innerHeight * 0.70;
+  const reveal = Math.max(
+    0,
+    Math.min(film.scrollHeight + 10, viewportHead - filmTopInDocument)
+  );
+
+  filmMask.style.setProperty("--reveal", `${reveal}px`);
+
+  // Reel rotates while it naturally scrolls with the page.
+  // It is NOT fixed/stuck to the top anymore.
+  const progress = Math.max(0, reveal);
+  reel.style.transform = `rotate(${progress * 0.19}deg)`;
+
+  // Labels appear only after their frame has actually been "developed"
+  // out of the reel and is near the middle of the viewport.
+  rows.forEach((row) => {
+    const rect = row.getBoundingClientRect();
+    const label = row.querySelector(".label");
+    const rowCenter = rect.top + rect.height / 2;
+    const active =
+      rect.top < window.innerHeight * 0.78 &&
+      rect.bottom > window.innerHeight * 0.22 &&
+      rowCenter < filmTopInDocument - window.scrollY + reveal + 12;
+
+    label.classList.toggle("visible", active);
   });
 }
 
-addEventListener("scroll", requestUpdate, {passive:true});
-addEventListener("resize", requestUpdate);
-updateFilm();
+let ticking = false;
+function onMove() {
+  if (ticking) return;
+  ticking = true;
+  requestAnimationFrame(() => {
+    updateScene();
+    ticking = false;
+  });
+}
+
+window.addEventListener("scroll", onMove, { passive: true });
+window.addEventListener("resize", () => {
+  setFilmGeometry();
+  updateScene();
+});
+
+setFilmGeometry();
+updateScene();
