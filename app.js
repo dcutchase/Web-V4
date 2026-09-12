@@ -25,7 +25,7 @@ function categoryFrame(cat,index){
   }
 
   if (cat.id === "archive") {
-    frame.href = "/archive/";
+    frame.href = "/archive";
     frame.setAttribute("aria-label", "Open Archive category");
   }
 

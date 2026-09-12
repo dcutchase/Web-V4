@@ -31,3 +31,10 @@ This should be treated as the new master copy of the website on your new desktop
 - Homepage ARCHIVE category now links directly to `/archive/`.
 - FILM link was also normalized to `/film/`.
 - Full project bundle includes homepage, assets, FILM page, and ARCHIVE OS page.
+
+
+## V23 Archive route fix
+- Added root-level `archive.html`.
+- Homepage ARCHIVE tile now links to `/archive`.
+- Kept `/archive/index.html` as a fallback copy.
+- This avoids the nested-folder + cleanUrls routing issue on Vercel.

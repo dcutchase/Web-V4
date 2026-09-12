@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#040404" />
+  <title>DCUT Archive</title>
+  <style>
+    :root{
+      --bg:#020202;
+      --screen:#0a0d0a;
+      --screen-2:#0f130f;
+      --line:#2d342e;
+      --bezel:#62665f;
+      --bezel-2:#252924;
+      --text:#e8e7dc;
+      --muted:#8f928a;
+      --accent:#d8d7c8;
+      --red:#f25a63;
+      --blue:#6772ff;
+      --green:#57c894;
+      --yellow:#ddba52;
+      --shadow:#000;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:"Courier New",monospace;image-rendering:pixelated}
+    body{overflow-x:hidden}
+    .page{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px 18px;background:radial-gradient(ellipse at center, rgba(255,255,255,.03), transparent 48%), #020202}
+
+    .archive-cursor{position:fixed;left:0;top:0;width:18px;height:18px;pointer-events:none;z-index:200;transform:translate(-50%,-50%);opacity:0;mix-blend-mode:difference}
+    .archive-cursor.visible{opacity:1}
+    .archive-cursor .dot{position:absolute;left:7px;top:7px;width:4px;height:4px;background:#fff;box-shadow:0 -4px 0 #fff,0 4px 0 #fff,-4px 0 0 #fff,4px 0 0 #fff}
+    .archive-cursor .corner{position:absolute;width:4px;height:4px;background:#fff}
+    .archive-cursor .c1{left:0;top:0}.archive-cursor .c2{right:0;top:0}.archive-cursor .c3{left:0;bottom:0}.archive-cursor .c4{right:0;bottom:0}
+    .archive-cursor.hovering{width:28px;height:28px;mix-blend-mode:normal}
+    .archive-cursor.hovering .dot{left:12px;top:12px;box-shadow:0 -8px 0 #f1f1e8,0 8px 0 #f1f1e8,-8px 0 0 #f1f1e8,8px 0 0 #f1f1e8;background:#f1f1e8}
+    .archive-cursor.hovering .c1{background:var(--red)} .archive-cursor.hovering .c2{background:var(--blue)} .archive-cursor.hovering .c3{background:var(--green)} .archive-cursor.hovering .c4{background:var(--yellow)}
+
+    @media (hover:hover) and (pointer:fine){ body, button, .desktop-icon, .tab-btn, .window-action, .mini-link{cursor:none !important} }
+
+    .machine{width:min(1120px, 100%);filter:drop-shadow(0 24px 60px rgba(0,0,0,.8));}
+    .monitor{background:linear-gradient(180deg,#6d7169,#4f534d 18%,#2d302d 18%,#2a2d2a 100%);border:4px solid #121412;padding:18px 18px 20px;box-shadow:0 0 0 2px #757a72, 0 0 0 8px #1b1e1a, 18px 18px 0 rgba(0,0,0,.55)}
+    .screen-wrap{background:#0b0d0b;border:3px solid #7b7f77;box-shadow:inset 0 0 0 3px #1a1d1a, inset 0 0 0 8px #040504;padding:14px;aspect-ratio:4/3;position:relative}
+    .screen{position:relative;height:100%;background:linear-gradient(180deg,#0d110d,#0a0d0a 24%,#080b08);border:2px solid #2b302a;overflow:hidden}
+    .screen::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(to bottom, transparent 0 3px, rgba(255,255,255,.08) 4px);opacity:.16;pointer-events:none}
+    .screen::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at center, transparent 44%, rgba(0,0,0,.42) 100%);pointer-events:none}
+
+    .topbar{height:34px;background:#101410;border-bottom:2px solid #30352f;display:flex;align-items:center;justify-content:space-between;padding:0 10px;letter-spacing:.1em;font-size:11px;text-transform:uppercase;position:relative;z-index:2}
+    .topbar .brand{display:flex;align-items:center;gap:10px;color:#ecece5}
+    .brand-swatches{display:flex;gap:3px}
+    .brand-swatches i{display:block;width:8px;height:8px}
+    .brand-swatches i:nth-child(1){background:var(--red)} .brand-swatches i:nth-child(2){background:var(--blue)} .brand-swatches i:nth-child(3){background:var(--green)} .brand-swatches i:nth-child(4){background:var(--yellow)}
+    .status{color:var(--muted);font-size:10px}
+
+    .workspace{display:grid;grid-template-columns:186px 1fr;height:calc(100% - 34px);position:relative;z-index:2}
+    .desktop{border-right:2px solid #2a2f2a;padding:14px;background:linear-gradient(180deg, rgba(255,255,255,.02), transparent 55%)}
+    .desktop-title{font-size:9px;letter-spacing:.16em;color:#676c66;text-transform:uppercase;margin-bottom:12px}
+    .icon-grid{display:grid;grid-template-columns:1fr;gap:10px}
+    .desktop-icon{background:#0d110d;border:2px solid #252925;box-shadow:inset 0 0 0 2px #040504;padding:10px;text-align:left;display:grid;grid-template-columns:38px 1fr;gap:10px;align-items:center;transition:transform .12s steps(2,end), border-color .12s steps(2,end), background .12s steps(2,end)}
+    .desktop-icon:hover,.desktop-icon.active{transform:translate(-2px,-2px);border-color:#d5d4c9;background:#111611;box-shadow:inset 0 0 0 2px #040504, 2px 0 0 rgba(242,90,99,.6), -2px 0 0 rgba(103,114,255,.52), 0 2px 0 rgba(87,200,148,.35)}
+    .icon-art{width:38px;height:34px;position:relative}
+    .icon-art::before{content:"";position:absolute;left:0;top:8px;width:38px;height:24px;background:#d7d7cd;border:2px solid #51554f;box-shadow:inset 0 0 0 2px #f1f1ea}
+    .icon-art::after{content:"";position:absolute;left:4px;top:0;width:14px;height:12px;background:#d7d7cd;border:2px solid #51554f;border-bottom:0}
+    .icon-meta{min-width:0}
+    .icon-file{display:block;color:#636861;font-size:8px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:3px}
+    .icon-name{display:block;color:#eeeee7;font-size:11px;letter-spacing:.03em;overflow-wrap:anywhere}
+
+    .window-zone{padding:14px;display:flex;flex-direction:column;gap:10px}
+    .file-tabs{display:flex;gap:6px;flex-wrap:wrap}
+    .tab-btn{padding:7px 10px;background:#0e120e;border:2px solid #262b26;color:#9da199;font-size:9px;text-transform:uppercase;letter-spacing:.14em;transition:transform .1s steps(2,end), border-color .1s steps(2,end), color .1s steps(2,end)}
+    .tab-btn:hover,.tab-btn.active{transform:translate(-1px,-1px);border-color:#d9d8cb;color:#ecece5}
+
+    .window{flex:1;min-height:0;background:#0d110d;border:2px solid #313731;box-shadow:inset 0 0 0 2px #040504;display:flex;flex-direction:column;overflow:hidden}
+    .window-head{height:34px;background:#121712;border-bottom:2px solid #2b302a;display:flex;align-items:center;justify-content:space-between;padding:0 10px;font-size:10px;letter-spacing:.12em;text-transform:uppercase}
+    .window-head .title{display:flex;align-items:center;gap:8px}
+    .window-head .title::before{content:"";width:8px;height:8px;background:#e7e7df;box-shadow:12px 0 0 var(--red),24px 0 0 var(--blue),36px 0 0 var(--green)}
+    .window-actions{display:flex;gap:6px}
+    .window-action{width:18px;height:18px;border:2px solid #424740;background:#090b09}
+    .window-body{padding:18px;overflow:auto;display:grid;grid-template-columns:minmax(0,1fr) 230px;gap:16px;align-items:start}
+    .window-main{display:flex;flex-direction:column;gap:14px}
+    .placeholder-kicker{font-size:9px;color:#6a6f69;letter-spacing:.16em;text-transform:uppercase}
+    .placeholder-title{font-size:26px;line-height:1;letter-spacing:.08em;margin:0;color:#efefe8;text-transform:uppercase}
+    .placeholder-copy{font-size:12px;line-height:1.75;color:#b7b9b1;max-width:58ch}
+    .placeholder-block{background:#0a0d0a;border:2px solid #252a25;padding:14px;box-shadow:inset 0 0 0 2px #040504}
+    .placeholder-block h3{margin:0 0 8px;font-size:12px;letter-spacing:.1em;color:#ecece5;text-transform:uppercase}
+    .placeholder-list{margin:0;padding-left:18px;color:#a6a9a2;font-size:11px;line-height:1.8}
+    .window-side{display:flex;flex-direction:column;gap:10px}
+    .meta-card{background:#090c09;border:2px solid #262b26;padding:12px;box-shadow:inset 0 0 0 2px #040504}
+    .meta-label{display:block;font-size:8px;color:#6d726b;letter-spacing:.16em;text-transform:uppercase;margin-bottom:6px}
+    .meta-value{display:block;font-size:11px;color:#ecece5;line-height:1.6}
+    .screen-note{font-size:10px;color:#80857f;line-height:1.7}
+    .mini-links{display:flex;gap:8px;flex-wrap:wrap;padding-top:4px}
+    .mini-link{display:inline-flex;align-items:center;gap:6px;padding:8px 10px;background:#0d110d;border:2px solid #282d28;color:#deded4;text-decoration:none;font-size:9px;text-transform:uppercase;letter-spacing:.12em;transition:transform .1s steps(2,end), border-color .1s steps(2,end)}
+    .mini-link:hover{transform:translate(-1px,-1px);border-color:#d5d4c9}
+    .mini-link i{display:block;width:7px;height:7px;background:var(--green)}
+
+    .monitor-bottom{display:flex;justify-content:space-between;align-items:flex-end;padding:16px 8px 4px;color:#71756f;font-size:10px;text-transform:uppercase;letter-spacing:.12em}
+    .power-cluster{display:flex;align-items:center;gap:8px}
+    .power-light{width:10px;height:10px;background:#59cb96;box-shadow:0 0 0 2px #1b3d2c, 0 0 10px rgba(89,203,150,.25)}
+    .monitor-stand{width:200px;height:18px;background:linear-gradient(180deg,#6b7068,#41453f);margin:0 auto;border:4px solid #1a1d1a;border-top:0}
+    .monitor-foot{width:320px;height:20px;background:linear-gradient(180deg,#5b6059,#383c37);margin:0 auto;border:4px solid #171917;border-top:0}
+
+    @media (max-width: 960px){
+      .workspace{grid-template-columns:1fr}
+      .desktop{border-right:0;border-bottom:2px solid #2a2f2a}
+      .icon-grid{grid-template-columns:1fr 1fr}
+      .window-body{grid-template-columns:1fr}
+    }
+    @media (max-width: 680px){
+      .page{padding:20px 10px}
+      .monitor{padding:12px 12px 16px}
+      .screen-wrap{aspect-ratio:auto;min-height:78vh}
+      .topbar{font-size:9px;height:auto;padding:8px 10px;gap:8px;flex-wrap:wrap}
+      .workspace{height:auto}
+      .icon-grid{grid-template-columns:1fr}
+      .window-body{padding:14px}
+      .placeholder-title{font-size:18px}
+      .placeholder-copy{font-size:11px;line-height:1.65}
+      .monitor-stand{width:128px}
+      .monitor-foot{width:200px}
+    }
+    @media (prefers-reduced-motion: reduce){
+      *{scroll-behavior:auto}
+    }
+  </style>
+</head>
+<body>
+  <div class="archive-cursor" id="archiveCursor" aria-hidden="true">
+    <span class="dot"></span>
+    <span class="corner c1"></span><span class="corner c2"></span><span class="corner c3"></span><span class="corner c4"></span>
+  </div>
+  <main class="page">
+    <div class="machine">
+      <div class="monitor">
+        <div class="screen-wrap">
+          <section class="screen">
+            <div class="topbar">
+              <div class="brand"><span>DCUT_ARCHIVE_OS</span><div class="brand-swatches"><i></i><i></i><i></i><i></i></div></div>
+              <div class="status">USER: DCUT // ACCESS: GRANTED // SYSTEM: ONLINE</div>
+            </div>
+            <div class="workspace">
+              <aside class="desktop">
+                <div class="desktop-title">Desktop Files</div>
+                <div class="icon-grid" id="iconGrid"></div>
+              </aside>
+              <section class="window-zone">
+                <div class="file-tabs" id="fileTabs"></div>
+                <article class="window">
+                  <div class="window-head">
+                    <div class="title"><span id="windowLabel">file_1 // who_is_dcutchase</span></div>
+                    <div class="window-actions"><button class="window-action" type="button" aria-label="minimize"></button><button class="window-action" type="button" aria-label="maximize"></button><button class="window-action" type="button" aria-label="close"></button></div>
+                  </div>
+                  <div class="window-body">
+                    <div class="window-main" id="windowMain"></div>
+                    <aside class="window-side" id="windowSide"></aside>
+                  </div>
+                </article>
+              </section>
+            </div>
+          </section>
+        </div>
+        <div class="monitor-bottom">
+          <div>DCUT ARCHIVE TERMINAL // 1980S OS INSPIRED</div>
+          <div class="power-cluster"><span>POWER</span><span class="power-light"></span></div>
+        </div>
+      </div>
+      <div class="monitor-stand"></div>
+      <div class="monitor-foot"></div>
+    </div>
+  </main>
+
+  <script>
+    const FILES = [
+      {
+        id:'file_1',
+        name:'who_is_dcutchase',
+        title:'WHO IS DCUT CHASE',
+        kicker:'FILE_1 // IDENTITY RECORD',
+        body:'This file is ready to become your personal introduction. Use it to explain who you are, what you do, and how you approach creative work. It can hold your name, role, founder statement, and a professional summary without losing the DCUT aesthetic.',
+        blocks:[
+          {title:'Suggested Content', items:['Name + creative title','Short personal bio','Skills / focus areas','Founder note or personal statement']},
+          {title:'Good Visuals Here', items:['Portrait of you','Behind-the-scenes still','Short intro paragraph','A clean signature quote']}
+        ],
+        side:[['Status','Ready for customization'],['Primary Use','About Me / Founder Intro'],['Format','Text + portrait + short note'],['Visibility','Professional overview']],
+      },
+      {
+        id:'file_2',
+        name:'dcut_orgins',
+        title:'DCUT ORIGINS',
+        kicker:'FILE_2 // BRAND ORIGIN LOG',
+        body:'This file is set up to tell the story behind DCUT: what it stands for, why you created it, and what the collective is meant to become. Keep this one brand-focused and mission-driven so visitors understand the purpose behind the work.',
+        blocks:[
+          {title:'Suggested Content', items:['Meaning of DCUT','How the brand started','Who it is for','Core mission and values']},
+          {title:'Good Visuals Here', items:['Logo / symbol usage','Early brand images','Mission statement','Key timeline notes']}
+        ],
+        side:[['Status','Ready for customization'],['Primary Use','Brand Story / Mission'],['Format','Text + timeline + graphics'],['Visibility','Professional brand context']],
+      },
+      {
+        id:'file_3',
+        name:'archive_mp4',
+        title:'ARCHIVE MP4',
+        kicker:'FILE_3 // MOTION DIRECTORY',
+        body:'This file can become a motion-based overview of your work. It is ideal for selected clips, short embeds, featured edits, music video references, or a simplified work log that complements the dedicated FILM page.',
+        blocks:[
+          {title:'Suggested Content', items:['Featured clips','Selected edits','Highlight reel','Motion work summary']},
+          {title:'Good Visuals Here', items:['Embedded video previews','MP4 thumbnails','Short project notes','Role / credit labels']}
+        ],
+        side:[['Status','Ready for customization'],['Primary Use','Motion archive / reel'],['Format','Videos + short notes'],['Visibility','Selected work highlights']],
+      },
+      {
+        id:'file_4',
+        name:'archive_jpg',
+        title:'ARCHIVE JPG',
+        kicker:'FILE_4 // IMAGE DIRECTORY',
+        body:'This file can become an image-driven archive with photography, stills, BTS, design frames, or visual references. It is a good place for grids, contact-sheet layouts, and carefully selected static work.',
+        blocks:[
+          {title:'Suggested Content', items:['Photo archive','Still frames','BTS images','Design / graphic selections']},
+          {title:'Good Visuals Here', items:['Contact sheets','Image grid','Captioned stills','Short context notes']}
+        ],
+        side:[['Status','Ready for customization'],['Primary Use','Image archive'],['Format','Gallery + captions'],['Visibility','Visual library / stills']],
+      }
+    ];
+
+    const iconGrid = document.getElementById('iconGrid');
+    const fileTabs = document.getElementById('fileTabs');
+    const windowLabel = document.getElementById('windowLabel');
+    const windowMain = document.getElementById('windowMain');
+    const windowSide = document.getElementById('windowSide');
+
+    let activeId = FILES[0].id;
+
+    function makeIcon(file){
+      const btn = document.createElement('button');
+      btn.className = 'desktop-icon';
+      btn.type = 'button';
+      btn.dataset.id = file.id;
+      btn.innerHTML = `<span class="icon-art" aria-hidden="true"></span><span class="icon-meta"><span class="icon-file">${file.id}</span><span class="icon-name">${file.name}</span></span>`;
+      btn.addEventListener('click', ()=> setActive(file.id));
+      return btn;
+    }
+
+    function makeTab(file){
+      const btn = document.createElement('button');
+      btn.className = 'tab-btn';
+      btn.type = 'button';
+      btn.dataset.id = file.id;
+      btn.textContent = file.name;
+      btn.addEventListener('click', ()=> setActive(file.id));
+      return btn;
+    }
+
+    function renderContent(file){
+      windowLabel.textContent = `${file.id} // ${file.name}`;
+      windowMain.innerHTML = `
+        <span class="placeholder-kicker">${file.kicker}</span>
+        <h1 class="placeholder-title">${file.title}</h1>
+        <div class="placeholder-copy">${file.body}</div>
+        ${file.blocks.map(block => `<section class="placeholder-block"><h3>${block.title}</h3><ul class="placeholder-list">${block.items.map(item=>`<li>${item}</li>`).join('')}</ul></section>`).join('')}
+        <div class="mini-links">
+          <a href="/" class="mini-link"><i></i><span>Back Home</span></a>
+          <a href="/film/" class="mini-link"><i></i><span>Open Film Page</span></a>
+        </div>
+      `;
+      windowSide.innerHTML = `
+        ${file.side.map(([label, value]) => `<section class="meta-card"><span class="meta-label">${label}</span><span class="meta-value">${value}</span></section>`).join('')}
+        <section class="meta-card"><span class="meta-label">Page Note</span><div class="screen-note">This archive page is intentionally ready for customization. The structure is in place so we can swap placeholder copy for your real story, mission, work log, and future vision next.</div></section>
+      `;
+    }
+
+    function syncActiveUI(){
+      document.querySelectorAll('.desktop-icon, .tab-btn').forEach(el => {
+        el.classList.toggle('active', el.dataset.id === activeId);
+      });
+    }
+
+    function setActive(id){
+      activeId = id;
+      const file = FILES.find(f => f.id === id) || FILES[0];
+      renderContent(file);
+      syncActiveUI();
+    }
+
+    FILES.forEach(file => {
+      iconGrid.appendChild(makeIcon(file));
+      fileTabs.appendChild(makeTab(file));
+    });
+    setActive(activeId);
+
+    const cursor = document.getElementById('archiveCursor');
+    const fine = window.matchMedia('(hover:hover) and (pointer:fine)').matches;
+    if (fine && cursor){
+      let raf = null;
+      let mx = 0, my = 0;
+      const hoverables = () => [...document.querySelectorAll('.desktop-icon,.tab-btn,.window-action,.mini-link')];
+
+      const draw = () => {
+        cursor.style.transform = `translate(${mx-9}px, ${my-9}px)`;
+        raf = null;
+      };
+      window.addEventListener('mousemove', e => {
+        mx = e.clientX; my = e.clientY;
+        cursor.classList.add('visible');
+        if (!raf) raf = requestAnimationFrame(draw);
+      }, {passive:true});
+      document.addEventListener('mouseleave', ()=> cursor.classList.remove('visible'));
+      document.addEventListener('mouseenter', ()=> cursor.classList.add('visible'));
+      const bindHover = (el) => {
+        el.addEventListener('mouseenter', ()=> cursor.classList.add('hovering'));
+        el.addEventListener('mouseleave', ()=> cursor.classList.remove('hovering'));
+      };
+      hoverables().forEach(bindHover);
+    }
+  </script>
+</body>
+</html>
