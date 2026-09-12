@@ -71,3 +71,16 @@ After a successful contact form submission:
 
 Important:
 This V9 limit is enforced in the visitor's browser. A determined visitor can bypass it by clearing browser storage, changing browsers/devices, or using private browsing. True anti-abuse enforcement would require server-side rate limiting.
+
+
+## V10 atmosphere
+Added subtle coded environmental effects:
+- Soft spotlight-style vignette over the entire site
+- Irregular low-frequency light flicker
+- Constant low-density drifting dust
+- Separate randomized dust speeds, sizes, opacity, and drift
+- Individual intermittent glow flickers over the colored DCUT marks on the reel
+- Reel glow layer follows the reel rotation
+- Reduced-motion accessibility disables animated atmosphere
+
+All effects are CSS/JavaScript. No new rendered background image was added.

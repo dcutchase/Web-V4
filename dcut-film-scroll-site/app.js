@@ -359,3 +359,65 @@ if (getRemainingLockTime() > 0) {
 if (contactForm) {
   contactForm.addEventListener("dcut:submission-success", startContactLockdown);
 }
+
+
+/* =========================
+   V10: SUBTLE DUST FIELD
+   ========================= */
+
+const dustField = document.querySelector("#dustField");
+
+// Keep the particle count intentionally low so the site stays readable.
+if (dustField && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  const dustCount = window.innerWidth < 720 ? 11 : 18;
+
+  for (let i = 0; i < dustCount; i++) {
+    const particle = document.createElement("i");
+    particle.className = "dust-particle";
+
+    if (i % 6 === 0) {
+      particle.classList.add("big");
+    }
+
+    const size = i % 6 === 0 ? 2.5 : (1 + Math.random() * 1.2);
+    const opacity = 0.08 + Math.random() * 0.12;
+    const drift = -30 + Math.random() * 60;
+    const duration = 14 + Math.random() * 16;
+    const delay = -(Math.random() * duration);
+    const left = 3 + Math.random() * 94;
+
+    particle.style.left = `${left}%`;
+    particle.style.setProperty("--dust-size", `${size}px`);
+    particle.style.setProperty("--dust-opacity", opacity.toFixed(3));
+    particle.style.setProperty("--dust-drift", `${drift.toFixed(1)}px`);
+    particle.style.setProperty("--dust-duration", `${duration.toFixed(1)}s`);
+    particle.style.setProperty("--dust-delay", `${delay.toFixed(1)}s`);
+
+    dustField.appendChild(particle);
+  }
+}
+
+/* Keep the glow layer rotating with the reel sprite so it never drifts
+   away from the colored DCUT marks. */
+const reelGlowLayer = document.querySelector(".reel-letter-glows");
+
+if (reelGlowLayer) {
+  const originalUpdate = update;
+
+  update = function(){
+    originalUpdate();
+
+    const filmTop =
+      filmReveal.getBoundingClientRect().top + window.scrollY;
+    const revealHead = window.scrollY + window.innerHeight * .64;
+    const reveal = Math.max(
+      0,
+      Math.min(film.scrollHeight, revealHead - filmTop)
+    );
+
+    reelGlowLayer.style.transform =
+      `translateY(${Math.min(5,reveal*.002)}px) rotate(${reveal*.045}deg)`;
+  };
+
+  update();
+}

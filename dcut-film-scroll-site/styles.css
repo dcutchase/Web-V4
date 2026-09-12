@@ -1227,3 +1227,249 @@ body.frame-hover .pixel-noise{
     animation:none !important;
   }
 }
+
+
+/* =========================
+   V10: ATMOSPHERE / LIGHT FX
+   ========================= */
+
+/* Soft projector/spotlight feeling across the whole site.
+   It darkens edges but keeps the center of the film path readable. */
+.spotlight-vignette{
+  position:fixed;
+  inset:-4%;
+  z-index:34;
+  pointer-events:none;
+  background:
+    radial-gradient(
+      ellipse 36% 72% at 50% 37%,
+      rgba(231,229,208,.075) 0%,
+      rgba(176,178,163,.035) 30%,
+      rgba(0,0,0,.12) 56%,
+      rgba(0,0,0,.55) 79%,
+      rgba(0,0,0,.84) 100%
+    );
+  box-shadow:
+    inset 0 0 150px 38px rgba(0,0,0,.64),
+    inset 0 0 320px 110px rgba(0,0,0,.42);
+  opacity:.88;
+  transform:scale(1.01);
+  animation:spotlight-flicker 7.8s steps(1,end) infinite;
+}
+
+/* Irregular rather than rhythmic so it feels like an old practical light. */
+@keyframes spotlight-flicker{
+  0%,7%,9%,23%,25%,53%,55%,78%,80%,100%{
+    opacity:.88;
+    transform:scale(1.01) translate(0,0);
+  }
+  8%{
+    opacity:.82;
+    transform:scale(1.012) translate(1px,0);
+  }
+  24%{
+    opacity:.91;
+    transform:scale(1.008) translate(-1px,1px);
+  }
+  54%{
+    opacity:.84;
+    transform:scale(1.014) translate(0,-1px);
+  }
+  79%{
+    opacity:.90;
+    transform:scale(1.009) translate(1px,1px);
+  }
+}
+
+/* Dust lives over the environment but below the custom cursor. */
+.dust-field{
+  position:fixed;
+  inset:0;
+  z-index:35;
+  pointer-events:none;
+  overflow:hidden;
+}
+
+.dust-particle{
+  --dust-size:2px;
+  --dust-opacity:.18;
+  --dust-drift:20px;
+  --dust-duration:16s;
+  --dust-delay:0s;
+
+  position:absolute;
+  top:-7vh;
+  width:var(--dust-size);
+  height:var(--dust-size);
+  background:rgba(232,231,215,.95);
+  opacity:0;
+  image-rendering:pixelated;
+  box-shadow:0 0 2px rgba(224,222,205,.18);
+  animation:
+    dust-fall var(--dust-duration) linear var(--dust-delay) infinite,
+    dust-twinkle 4.8s steps(3,end) var(--dust-delay) infinite;
+  will-change:transform,opacity;
+}
+
+.dust-particle.big{
+  box-shadow:
+    0 0 3px rgba(225,223,207,.18),
+    1px 1px 0 rgba(255,255,255,.08);
+}
+
+@keyframes dust-fall{
+  0%{
+    transform:translate3d(0,-8vh,0);
+  }
+  35%{
+    transform:translate3d(calc(var(--dust-drift) * .35),36vh,0);
+  }
+  70%{
+    transform:translate3d(calc(var(--dust-drift) * -.20),79vh,0);
+  }
+  100%{
+    transform:translate3d(var(--dust-drift),114vh,0);
+  }
+}
+
+@keyframes dust-twinkle{
+  0%,100%{opacity:0}
+  8%{opacity:calc(var(--dust-opacity) * .35)}
+  22%{opacity:var(--dust-opacity)}
+  47%{opacity:calc(var(--dust-opacity) * .58)}
+  67%{opacity:var(--dust-opacity)}
+  90%{opacity:calc(var(--dust-opacity) * .28)}
+}
+
+/* Tiny glows are positioned directly over the colored DCUT pixels
+   already baked into the reel sprite. */
+.reel-letter-glows{
+  position:absolute;
+  inset:0;
+  z-index:5;
+  pointer-events:none;
+  mix-blend-mode:screen;
+  transform-origin:59% 48%;
+  will-change:transform;
+}
+
+.reel-letter-glow{
+  position:absolute;
+  left:27.5%;
+  width:11px;
+  height:10px;
+  opacity:.08;
+  background:currentColor;
+  image-rendering:pixelated;
+}
+
+.glow-d{
+  top:33%;
+  color:#ff5360;
+  animation:reel-glow-d 6.2s steps(1,end) infinite;
+}
+.glow-c{
+  top:40.6%;
+  color:#636cff;
+  animation:reel-glow-c 8.1s steps(1,end) .7s infinite;
+}
+.glow-u{
+  top:48.3%;
+  color:#59d99d;
+  animation:reel-glow-u 7.1s steps(1,end) 1.8s infinite;
+}
+.glow-t{
+  top:55.8%;
+  color:#efc24c;
+  animation:reel-glow-t 9.3s steps(1,end) 2.4s infinite;
+}
+
+/* Different timing per letter prevents them from blinking together. */
+@keyframes reel-glow-d{
+  0%,11%,13%,46%,48%,74%,76%,100%{
+    opacity:.06;
+    box-shadow:none;
+  }
+  12%,47%,75%{
+    opacity:.42;
+    box-shadow:
+      0 0 5px 2px currentColor,
+      0 0 11px 3px currentColor;
+  }
+}
+@keyframes reel-glow-c{
+  0%,20%,22%,58%,60%,89%,91%,100%{
+    opacity:.05;
+    box-shadow:none;
+  }
+  21%,59%,90%{
+    opacity:.38;
+    box-shadow:
+      0 0 5px 2px currentColor,
+      0 0 10px 3px currentColor;
+  }
+}
+@keyframes reel-glow-u{
+  0%,15%,17%,40%,42%,82%,84%,100%{
+    opacity:.05;
+    box-shadow:none;
+  }
+  16%,41%,83%{
+    opacity:.35;
+    box-shadow:
+      0 0 5px 2px currentColor,
+      0 0 10px 3px currentColor;
+  }
+}
+@keyframes reel-glow-t{
+  0%,31%,33%,65%,67%,94%,96%,100%{
+    opacity:.05;
+    box-shadow:none;
+  }
+  32%,66%,95%{
+    opacity:.38;
+    box-shadow:
+      0 0 5px 2px currentColor,
+      0 0 10px 3px currentColor;
+  }
+}
+
+/* Slightly reduce atmosphere on smaller screens so content remains legible. */
+@media(max-width:720px){
+  .spotlight-vignette{
+    background:
+      radial-gradient(
+        ellipse 56% 72% at 50% 35%,
+        rgba(231,229,208,.065) 0%,
+        rgba(176,178,163,.028) 32%,
+        rgba(0,0,0,.14) 58%,
+        rgba(0,0,0,.62) 84%,
+        rgba(0,0,0,.82) 100%
+      );
+    box-shadow:
+      inset 0 0 90px 22px rgba(0,0,0,.54),
+      inset 0 0 180px 56px rgba(0,0,0,.38);
+  }
+
+  .dust-field{
+    opacity:.72;
+  }
+
+  .reel-letter-glow{
+    left:27.5%;
+    width:9px;
+    height:8px;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .spotlight-vignette,
+  .dust-particle,
+  .reel-letter-glow{
+    animation:none !important;
+  }
+
+  .spotlight-vignette{opacity:.88}
+  .dust-field{display:none}
+  .reel-letter-glow{opacity:.08;box-shadow:none}
+}
