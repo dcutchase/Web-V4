@@ -84,3 +84,9 @@ Added subtle coded environmental effects:
 - Reduced-motion accessibility disables animated atmosphere
 
 All effects are CSS/JavaScript. No new rendered background image was added.
+
+
+## V11 transparent reel asset
+- Replaced the boxed reel crop with a transparent 2D reel sprite.
+- Reel now sits cleanly inside the vignette without a black rectangle around it.
+- Film mouth/reveal positions were adjusted so the strip appears to emerge from the reel itself.

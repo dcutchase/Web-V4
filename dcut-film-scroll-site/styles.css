@@ -1473,3 +1473,42 @@ body.frame-hover .pixel-noise{
   .dust-field{display:none}
   .reel-letter-glow{opacity:.08;box-shadow:none}
 }
+
+
+/* =========================
+   V11: TRANSPARENT 2D REEL ASSET
+   ========================= */
+.reel-anchor{
+  background:transparent !important;
+  isolation:isolate;
+}
+.reel-sprite{
+  background:transparent !important;
+  filter:contrast(1.14) brightness(.92) drop-shadow(0 10px 18px rgba(0,0,0,.55));
+}
+/* The film mouth should tuck directly under the reel asset. */
+.film-mouth{
+  top:calc(var(--reel-top) + 170px);
+  box-shadow:0 4px 0 #080808, 0 0 0 1px rgba(255,255,255,.04);
+}
+.film-reveal{
+  top:calc(var(--reel-top) + 188px);
+}
+/* Move glow overlays to match the transparent reel crop. */
+.reel-letter-glows{
+  left:0; top:0; right:0; bottom:0;
+}
+.reel-letter-glow{
+  left:20.5%;
+  width:12px;
+  height:10px;
+}
+.glow-d{top:35.5%}
+.glow-c{top:43.0%}
+.glow-u{top:50.6%}
+.glow-t{top:58.0%}
+@media(max-width:720px){
+  .film-mouth{top:calc(var(--reel-top) + 146px)}
+  .film-reveal{top:calc(var(--reel-top) + 164px)}
+  .reel-letter-glow{left:20.5%; width:10px; height:8px}
+}
