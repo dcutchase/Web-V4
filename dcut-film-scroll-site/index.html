@@ -2,44 +2,34 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#020202" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>DCUT</title>
+  <meta name="theme-color" content="#020202" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <div class="noise" aria-hidden="true"></div>
-  <div class="scanlines" aria-hidden="true"></div>
-  <div class="vignette" aria-hidden="true"></div>
+  <div class="noise"></div>
+  <div class="scanlines"></div>
+  <div class="room-glow"></div>
 
-  <main class="experience" id="experience">
-    <section class="reel-stage" aria-label="DCUT film archive">
-      <div class="ambient-glow" aria-hidden="true"></div>
-
-      <div class="reel-wrap" id="reelWrap" aria-hidden="true">
-        <div class="reel-depth reel-depth-back"></div>
+  <main>
+    <div class="reel-stage" aria-hidden="true">
+      <div class="reel-glow"></div>
+      <div class="reel-wrap">
+        <div class="reel-edge">
+          <div class="dcut-mark">
+            <span>D</span><span>C</span><span>U</span><span>T</span>
+          </div>
+        </div>
         <div class="reel" id="reel">
-          <div class="reel-core"></div>
-          <div class="reel-hole h1"></div>
-          <div class="reel-hole h2"></div>
-          <div class="reel-hole h3"></div>
-          <div class="reel-hole h4"></div>
-          <div class="reel-hole h5"></div>
-          <div class="reel-highlight"></div>
-        </div>
-        <div class="reel-side">
-          <span>D</span><span>C</span><span>U</span><span>T</span>
+          <div class="hub"></div>
+          <i class="hole h1"></i><i class="hole h2"></i><i class="hole h3"></i>
+          <i class="hole h4"></i><i class="hole h5"></i><i class="hole h6"></i>
         </div>
       </div>
+    </div>
 
-      <div class="film-track" id="filmTrack">
-        <div class="film-rail left-rail"></div>
-        <div class="film-rail right-rail"></div>
-        <div class="frames" id="frames"></div>
-      </div>
-
-      <div class="labels" id="labels"></div>
-    </section>
+    <section class="film" id="film" aria-label="DCUT creative categories"></section>
   </main>
 
   <script src="site-data.js"></script>

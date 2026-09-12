@@ -1,37 +1,9 @@
 window.DCUT = {
   categories: [
-    {
-      id: 'film',
-      title: 'FILM',
-      lines: ['MUSIC', 'DOCUMENTARY', 'COMMERCIAL', 'NARRATIVE'],
-      thumbClass: 'thumb-film'
-    },
-    {
-      id: 'photography',
-      title: 'PHOTOGRAPHY',
-      lines: ['PEOPLE', 'PLACES', 'MOMENTS', 'STILLS'],
-      thumbClass: 'thumb-photo'
-    },
-    {
-      id: 'vfx',
-      title: 'VFX + DESIGN',
-      lines: ['VISUAL EFFECTS', 'MOTION', 'GRAPHICS', 'CREATIVE DIRECTION'],
-      thumbClass: 'thumb-vfx'
-    },
-    {
-      id: 'bts',
-      title: 'BTS',
-      lines: ['ON SET', 'PROCESS', 'PEOPLE', 'REAL WORK'],
-      thumbClass: 'thumb-bts'
-    },
-    {
-      id: 'archive',
-      title: 'ARCHIVE',
-      lines: ['EARLY WORK', 'EXPERIMENTS', 'UNRELEASED', 'EVERYTHING ELSE'],
-      thumbClass: 'thumb-archive'
-    }
-  ],
-  framesBeforeFirstCategory: 4,
-  spacerFramesBetweenCategories: 2,
-  framesAfterLastCategory: 4
+    { name: "FILM", detail: "MUSIC VIDEOS\nCOMMERCIAL\nNARRATIVE", image: "" },
+    { name: "PHOTOGRAPHY", detail: "PEOPLE\nPLACES\nMOMENTS", image: "" },
+    { name: "VFX + DESIGN", detail: "VISUAL EFFECTS\nMOTION\nGRAPHICS", image: "" },
+    { name: "BTS", detail: "ON SET\nPROCESS\nPEOPLE", image: "" },
+    { name: "ARCHIVE", detail: "EARLY WORK\nEXPERIMENTS\nEVERYTHING ELSE", image: "" }
+  ]
 };

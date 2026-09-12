@@ -1,23 +1,20 @@
-# DCUT Film Scroll Site
+# DCUT Film Scroll V2
 
-Static, zero-build website made for direct GitHub -> Vercel deployment.
+Static, Vercel-ready website.
 
-## Deploy
-Upload these files to the repository root:
+## Replace your current version
+Upload these files to the ROOT of the same GitHub repository and overwrite matching files:
 - index.html
 - styles.css
 - app.js
 - site-data.js
 - vercel.json
-- assets/
 
-Vercel settings:
-- Framework preset: Other
-- Build command: blank
-- Output directory: blank
+Vercel should redeploy automatically.
 
-## Customize categories
-Edit `site-data.js`.
+## Add real thumbnails
+Put images in `assets/`, then edit `site-data.js`, for example:
 
-## Replace thumbnails later
-The current thumbnails are CSS placeholders. Replace each `.thumb-... .thumb-media::before` background in `styles.css` with `background-image: url(...)` or extend `site-data.js` with image paths.
+image: "assets/film.jpg"
+
+The reel/UI remains pixel-styled while the category media stays crisp.
