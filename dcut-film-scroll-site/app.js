@@ -15,8 +15,12 @@ function categoryFrame(cat,index){
   const row=document.createElement("div");
   row.className="frame-row category-row";
 
-  const frame=document.createElement("div");
+  const frame=document.createElement(cat.id === "film" ? "a" : "div");
   frame.className="frame category";
+  if (cat.id === "film") {
+    frame.href = "film/";
+    frame.setAttribute("aria-label", "Open Film category");
+  }
 
   const media=document.createElement("div");
   media.className="media";

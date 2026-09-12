@@ -118,3 +118,10 @@ All effects are CSS/JavaScript. No new rendered background image was added.
 - Removed the V14 reel rotation code entirely instead of trying to override it.
 - The reel body and front face are now both static layers.
 - The film still feeds downward, but the reel itself does not animate.
+
+
+## V17 Film category page
+- FILM frame on the homepage now links to `/film/`.
+- `/film/` is a black 3x3 wall of 8-bit CRT televisions.
+- All 9 supplied YouTube embeds are loaded directly inside the TV screens.
+- The page intentionally contains only the television wall against black, matching the approved concept.
