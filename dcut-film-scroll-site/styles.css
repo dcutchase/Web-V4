@@ -306,3 +306,200 @@ body{
 @media(prefers-reduced-motion:reduce){
   .label{transition:none}
 }
+
+
+/* =========================
+   V6: 8-BIT CURSOR
+   ========================= */
+@media (hover:hover) and (pointer:fine){
+  html,body,.frame.category{cursor:none !important}
+}
+
+.pixel-cursor{
+  position:fixed;
+  left:0;top:0;
+  width:18px;height:18px;
+  z-index:100;
+  pointer-events:none;
+  opacity:0;
+  transform:translate(-50%,-50%);
+  transition:
+    opacity .08s steps(2,end),
+    width .10s steps(2,end),
+    height .10s steps(2,end);
+  image-rendering:pixelated;
+  mix-blend-mode:difference;
+}
+.pixel-cursor.visible{opacity:1}
+
+.cursor-core{
+  position:absolute;
+  left:6px;top:6px;
+  width:6px;height:6px;
+  background:#fff;
+  box-shadow:
+    0 -6px 0 #fff,
+    0 6px 0 #fff,
+    -6px 0 0 #fff,
+    6px 0 0 #fff;
+}
+.cursor-corner{
+  position:absolute;
+  width:4px;height:4px;
+  background:#fff;
+}
+.c1{left:0;top:0}.c2{right:0;top:0}.c3{left:0;bottom:0}.c4{right:0;bottom:0}
+
+.pixel-cursor.hovering{
+  width:30px;height:30px;
+  mix-blend-mode:normal;
+}
+.pixel-cursor.hovering .cursor-core{
+  left:12px;top:12px;
+  background:#f1f1e8;
+  box-shadow:
+    0 -12px 0 #f1f1e8,
+    0 12px 0 #f1f1e8,
+    -12px 0 0 #f1f1e8,
+    12px 0 0 #f1f1e8;
+}
+.pixel-cursor.hovering .cursor-corner:nth-of-type(2){background:#f25461}
+.pixel-cursor.hovering .cursor-corner:nth-of-type(3){background:#5c63ff}
+.pixel-cursor.hovering .cursor-corner:nth-of-type(4){background:#54bd91}
+.pixel-cursor.hovering .cursor-corner:nth-of-type(5){background:#ddb64d}
+
+/* =========================
+   V6: FILM FRAME HOVER FX
+   ========================= */
+
+/* Media remains sharp. Only frame chrome/world FX react. */
+.frame.category{
+  transition:
+    transform .12s steps(3,end),
+    box-shadow .12s steps(3,end),
+    border-color .12s steps(2,end);
+  transform-origin:center;
+}
+.frame.category:hover,
+.frame.category.is-hovered{
+  transform:scale(1.055);
+  border-top-color:#d4d4cb;
+  border-bottom-color:#d4d4cb;
+  box-shadow:
+    inset 0 0 0 3px #050505,
+    4px 0 0 rgba(242,84,97,.65),
+    -4px 0 0 rgba(92,99,255,.55),
+    0 4px 0 rgba(84,189,145,.35),
+    0 0 0 2px #dddcd4;
+}
+
+/* Keep actual content crisp and neutral. */
+.frame.category:hover .media,
+.frame.category.is-hovered .media{
+  transform:none;
+  filter:none;
+  image-rendering:auto;
+}
+
+/* Pixel glitch blocks around the hovered frame */
+.frame.category::before,
+.frame.category::after{
+  content:"";
+  position:absolute;
+  z-index:10;
+  pointer-events:none;
+  opacity:0;
+}
+.frame.category::before{
+  left:-8px;right:-8px;top:18%;
+  height:8px;
+  background:
+    linear-gradient(90deg,
+      #f25461 0 14%,
+      transparent 14% 28%,
+      #5c63ff 28% 42%,
+      transparent 42% 66%,
+      #54bd91 66% 78%,
+      transparent 78%);
+}
+.frame.category::after{
+  left:-5px;right:-5px;bottom:18%;
+  height:5px;
+  background:
+    linear-gradient(90deg,
+      transparent 0 18%,
+      #ddb64d 18% 31%,
+      transparent 31% 58%,
+      #e8e8df 58% 69%,
+      transparent 69%);
+}
+.frame.category:hover::before,
+.frame.category:hover::after,
+.frame.category.is-hovered::before,
+.frame.category.is-hovered::after{
+  opacity:.82;
+  animation:pixel-glitch-bars .38s steps(4,end) infinite;
+}
+
+@keyframes pixel-glitch-bars{
+  0%{transform:translate(0,0)}
+  25%{transform:translate(5px,-2px)}
+  50%{transform:translate(-4px,3px)}
+  75%{transform:translate(2px,1px)}
+  100%{transform:translate(0,0)}
+}
+
+/* The surrounding 8-bit world reacts, not the crisp image. */
+body.frame-hover .world-plate{
+  animation:world-shift .32s steps(4,end) infinite;
+}
+body.frame-hover .center-matte{
+  animation:matte-pulse .32s steps(3,end) infinite;
+}
+body.frame-hover .scanlines{
+  opacity:.20;
+}
+body.frame-hover .pixel-noise{
+  opacity:.18;
+}
+
+@keyframes world-shift{
+  0%{transform:translate(0,0);filter:contrast(1)}
+  25%{transform:translate(2px,0);filter:contrast(1.12)}
+  50%{transform:translate(-2px,1px);filter:contrast(1.04)}
+  75%{transform:translate(1px,-1px);filter:contrast(1.15)}
+  100%{transform:translate(0,0);filter:contrast(1)}
+}
+@keyframes matte-pulse{
+  0%{opacity:1}
+  50%{opacity:.92}
+  100%{opacity:1}
+}
+
+/* Make labels react in blocky steps too */
+.category-row:has(.frame.category:hover) .label,
+.category-row.hovered .label{
+  color:#fff;
+  text-shadow:2px 0 0 rgba(242,84,97,.45),-2px 0 0 rgba(92,99,255,.42);
+}
+.category-row:has(.frame.category:hover) .connector,
+.category-row.hovered .connector{
+  box-shadow:3px 0 0 #f25461,-3px 0 0 #5c63ff;
+}
+
+/* Touch devices keep normal behavior; no fake cursor. */
+@media (hover:none), (pointer:coarse){
+  .pixel-cursor{display:none !important}
+  html,body,.frame.category{cursor:auto !important}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .frame.category:hover::before,
+  .frame.category:hover::after,
+  .frame.category.is-hovered::before,
+  .frame.category.is-hovered::after,
+  body.frame-hover .world-plate,
+  body.frame-hover .center-matte{
+    animation:none !important;
+  }
+}

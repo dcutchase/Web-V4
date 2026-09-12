@@ -19,3 +19,13 @@ To use real category thumbnails:
 1. Put image files in /assets
 2. Edit site-data.js
 3. Set e.g. image:"assets/film.jpg"
+
+
+## V6 interactions
+- Custom 8-bit cursor on desktop/fine-pointer devices.
+- Cursor expands and gains DCUT accent colors over interactive film frames.
+- Hovering a category frame glitches the surrounding pixel-art world.
+- Actual thumbnail/media stays crisp and undistorted.
+- Pixel glitch bars appear around the hovered film frame.
+- Labels/connectors pick up subtle RGB-style pixel offsets.
+- Touch devices automatically fall back to normal cursor/hover behavior.

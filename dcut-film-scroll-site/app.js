@@ -111,3 +111,60 @@ window.addEventListener("resize",()=>{
 
 layout();
 update();
+
+
+/* =========================
+   V6 INTERACTIONS
+   ========================= */
+const pixelCursor = document.querySelector("#pixelCursor");
+const hoverFrames = [...document.querySelectorAll(".frame.category")];
+
+const finePointer = window.matchMedia("(hover:hover) and (pointer:fine)");
+
+if (finePointer.matches && pixelCursor) {
+  let mouseX = -100;
+  let mouseY = -100;
+  let cursorRAF = null;
+
+  function drawCursor() {
+    pixelCursor.style.transform =
+      `translate(${mouseX - 9}px, ${mouseY - 9}px)`;
+    cursorRAF = null;
+  }
+
+  window.addEventListener("mousemove", (event) => {
+    mouseX = event.clientX;
+    mouseY = event.clientY;
+    pixelCursor.classList.add("visible");
+
+    if (!cursorRAF) {
+      cursorRAF = requestAnimationFrame(drawCursor);
+    }
+  }, { passive: true });
+
+  document.addEventListener("mouseleave", () => {
+    pixelCursor.classList.remove("visible");
+  });
+
+  document.addEventListener("mouseenter", () => {
+    pixelCursor.classList.add("visible");
+  });
+
+  hoverFrames.forEach((frame) => {
+    const row = frame.closest(".category-row");
+
+    frame.addEventListener("mouseenter", () => {
+      pixelCursor.classList.add("hovering");
+      frame.classList.add("is-hovered");
+      row?.classList.add("hovered");
+      document.body.classList.add("frame-hover");
+    });
+
+    frame.addEventListener("mouseleave", () => {
+      pixelCursor.classList.remove("hovering");
+      frame.classList.remove("is-hovered");
+      row?.classList.remove("hovered");
+      document.body.classList.remove("frame-hover");
+    });
+  });
+}
