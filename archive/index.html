@@ -44,7 +44,8 @@
     .monitor-foot{width:330px;height:22px;background:linear-gradient(180deg,#596060,#3c4040);margin:0 auto;border:4px solid #171919;border-top:0}
 
     .desktop-area{position:absolute;inset:0;background:#050505;overflow:hidden}
-    .wallpaper-layer{position:absolute;inset:0;background-image:linear-gradient(rgba(0,0,0,.34), rgba(0,0,0,.36)), url('/assets/archive-wallpaper.jpg');background-size:cover;background-position:center;filter:saturate(.85) contrast(.96) brightness(.8)}
+    .wallpaper-video{position:absolute;left:50%;top:50%;width:177.77777778vh;min-width:100%;height:56.25vw;min-height:100%;transform:translate(-50%,-50%);border:0;pointer-events:none;filter:saturate(.88) contrast(.96) brightness(.78);background:#050505}
+    .wallpaper-layer{position:absolute;inset:0;background:linear-gradient(rgba(0,0,0,.34), rgba(0,0,0,.36));}
     .wallpaper-layer::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(to bottom, rgba(255,255,255,.08) 0 1px, transparent 1px 4px), linear-gradient(90deg, rgba(255,0,30,.035), transparent 10%, transparent 90%, rgba(0,90,255,.04));opacity:.35;mix-blend-mode:screen}
     .wallpaper-layer::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at center, transparent 38%, rgba(0,0,0,.52) 100%), linear-gradient(180deg, transparent 0%, rgba(255,255,255,.07) 12%, transparent 24%, transparent 74%, rgba(255,255,255,.05) 83%, transparent 100%);pointer-events:none}
     .vhs-overlay{position:absolute;inset:0;pointer-events:none;z-index:1}
@@ -129,6 +130,7 @@
       .content-grid,.pong-wrap{grid-template-columns:1fr}
     }
     @media (max-width: 640px){
+      .wallpaper-video{width:177.77777778vh;min-width:100%;height:56.25vw;min-height:100%;}
       .desktop-shell{padding:6px}
       .monitor{height:96vh;width:100%}
       .monitor-bottom{font-size:10px;padding:8px}
@@ -150,6 +152,7 @@
     <div class="monitor">
       <div class="monitor-screen">
         <div class="desktop-area">
+          <iframe class="wallpaper-video" src="https://player.vimeo.com/video/1226258378?background=1&autoplay=1&muted=1&loop=1&autopause=0&controls=0&title=0&byline=0&portrait=0&playsinline=1" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; encrypted-media" referrerpolicy="strict-origin-when-cross-origin" title="DCUT archive background video" tabindex="-1" aria-hidden="true"></iframe>
           <div class="wallpaper-layer"></div>
           <div class="vhs-overlay"><div class="tracking"></div><div class="noise"></div><div class="rgb-split"></div></div>
           <div class="desktop-header">
@@ -396,6 +399,7 @@
     }
 
     let pong = null;
+    const GAME_SPEED = 0.7;
     function setupPong(win){
       const canvas = win.querySelector('#pongCanvas');
       const ctx = canvas.getContext('2d');
@@ -412,7 +416,7 @@
       };
       function resetBall(dir=1){
         pong.ball.x = canvas.width/2; pong.ball.y = canvas.height/2;
-        pong.ball.vx = 4 * dir; pong.ball.vy = (Math.random() > .5 ? 2 : -2);
+        pong.ball.vx = 4 * dir * GAME_SPEED; pong.ball.vy = (Math.random() > .5 ? 2 : -2) * GAME_SPEED;
       }
       function clampPaddles(){
         pong.left.y = Math.max(10, Math.min(canvas.height-pong.left.h-10, pong.left.y));
@@ -440,14 +444,14 @@
       }
       function step(){
         if (!pong.running) { draw(); return; }
-        const speed = 5;
+        const speed = 5 * GAME_SPEED;
         if (keys.has('w') || keys.has('ArrowUp')) pong.left.y -= speed;
         if (keys.has('s') || keys.has('ArrowDown')) pong.left.y += speed;
         // simple AI
         const aiCenter = pong.right.y + pong.right.h/2;
         const target = pong.ball.y + pong.ball.size/2;
-        if (aiCenter < target - 6) pong.right.y += 3.4;
-        if (aiCenter > target + 6) pong.right.y -= 3.4;
+        if (aiCenter < target - 6) pong.right.y += 3.4 * GAME_SPEED;
+        if (aiCenter > target + 6) pong.right.y -= 3.4 * GAME_SPEED;
         clampPaddles();
         pong.ball.x += pong.ball.vx;
         pong.ball.y += pong.ball.vy;
@@ -455,11 +459,11 @@
         const b = pong.ball;
         const lp = pong.left; const rp = pong.right;
         if (b.x <= lp.x + lp.w && b.x + b.size >= lp.x && b.y + b.size >= lp.y && b.y <= lp.y + lp.h && pong.ball.vx < 0){
-          pong.ball.vx = Math.abs(pong.ball.vx) + 0.2;
+          pong.ball.vx = Math.abs(pong.ball.vx) + 0.2 * GAME_SPEED;
           pong.ball.vy += ((b.y + b.size/2) - (lp.y + lp.h/2)) * 0.05;
         }
         if (b.x + b.size >= rp.x && b.x <= rp.x + rp.w && b.y + b.size >= rp.y && b.y <= rp.y + rp.h && pong.ball.vx > 0){
-          pong.ball.vx = -Math.abs(pong.ball.vx) - 0.2;
+          pong.ball.vx = -Math.abs(pong.ball.vx) - 0.2 * GAME_SPEED;
           pong.ball.vy += ((b.y + b.size/2) - (rp.y + rp.h/2)) * 0.05;
         }
         if (pong.ball.x < -20) scorePoint('right');
