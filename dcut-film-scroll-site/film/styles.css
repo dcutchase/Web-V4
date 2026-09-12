@@ -19,3 +19,28 @@ body{font-family:"Courier New",ui-monospace,monospace;overflow-x:hidden}
 @keyframes scanFlicker{0%,14%,16%,52%,54%,100%{opacity:.19}15%{opacity:.13}53%{opacity:.24}}
 @media(max-width:760px){.tv-wall{padding:3vh 3vw}.tv-grid{grid-template-columns:1fr;gap:12px;width:min(460px,94vw)}.crt{aspect-ratio:4/3}.crt-controls{font-size:8px}}
 @media(prefers-reduced-motion:reduce){.crt-scan{animation:none}}
+
+
+/* V18: explicit desktop CRT wall */
+@media(min-width:761px){
+  .tv-wall{
+    min-height:100vh;
+    width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:4vh 3vw;
+    background:#000;
+  }
+  .tv-grid{
+    width:min(1080px,94vw);
+    display:grid !important;
+    grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+    grid-template-rows:repeat(3,auto);
+    gap:8px;
+  }
+  .crt{
+    width:100%;
+    aspect-ratio:4 / 3;
+  }
+}

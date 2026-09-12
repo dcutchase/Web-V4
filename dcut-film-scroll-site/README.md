@@ -125,3 +125,9 @@ All effects are CSS/JavaScript. No new rendered background image was added.
 - `/film/` is a black 3x3 wall of 8-bit CRT televisions.
 - All 9 supplied YouTube embeds are loaded directly inside the TV screens.
 - The page intentionally contains only the television wall against black, matching the approved concept.
+
+
+## V18 FILM page fix
+- Fixed Vercel clean URL behavior causing /film to load root CSS instead of /film/styles.css.
+- FILM page now uses absolute CSS/JS paths.
+- Explicit 3x3 desktop CRT grid preserved.
