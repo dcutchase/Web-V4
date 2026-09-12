@@ -35,9 +35,9 @@
     @media (hover:hover) and (pointer:fine){ body, button, a, .desktop-icon, .window-btn, .start-btn, .task-button {cursor:none !important} }
 
     .desktop-shell{height:100vh;padding:18px;background:#040404;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
-    .desktop-shell::before,.desktop-shell::after{content:"";position:absolute;border-radius:50%;pointer-events:none;mix-blend-mode:screen;opacity:.16;filter:blur(26px);animation:ambientPulse 8s ease-in-out infinite}
-    .desktop-shell::before{width:240px;height:240px;left:6%;top:14%;background:radial-gradient(circle, rgba(255,244,182,.55) 0%, rgba(255,244,182,0) 68%)}
-    .desktop-shell::after{width:320px;height:320px;right:5%;bottom:10%;background:radial-gradient(circle, rgba(124,170,255,.34) 0%, rgba(124,170,255,0) 72%);animation-delay:-3.2s}
+    .desktop-shell::before,.desktop-shell::after{content:"";position:absolute;pointer-events:none;opacity:.22;mix-blend-mode:screen;animation:tvStaticPulse 2.6s steps(4,end) infinite}
+    .desktop-shell::before{left:2%;top:8%;width:26vw;height:28vh;max-width:340px;max-height:260px;background:repeating-linear-gradient(0deg, rgba(255,255,255,.09) 0 2px, rgba(0,0,0,0) 2px 5px), repeating-linear-gradient(90deg, rgba(255,255,255,.05) 0 3px, rgba(0,0,0,0) 3px 7px), radial-gradient(circle, rgba(255,255,255,.18) 0%, rgba(255,255,255,0) 68%);filter:blur(10px)}
+    .desktop-shell::after{right:3%;bottom:9%;width:30vw;height:24vh;max-width:380px;max-height:220px;background:repeating-linear-gradient(0deg, rgba(130,170,255,.08) 0 2px, rgba(0,0,0,0) 2px 6px), repeating-linear-gradient(90deg, rgba(255,255,255,.04) 0 4px, rgba(0,0,0,0) 4px 8px), radial-gradient(circle, rgba(130,170,255,.16) 0%, rgba(130,170,255,0) 72%);filter:blur(12px);animation-delay:-1.1s}
     .monitor{width:min(1220px, 100%);height:min(92vh, 900px);display:grid;grid-template-rows:1fr auto;filter:drop-shadow(0 28px 60px rgba(0,0,0,.72))}
     .monitor-screen{position:relative;overflow:hidden;border:4px solid #161616;background:#0d0d0d;box-shadow:0 0 0 3px #5e6464, 0 0 0 8px #1d2020, inset 0 0 0 3px #0d0f0f, inset 0 0 0 10px #272b2b}
     .monitor-bottom{padding:10px 14px;background:linear-gradient(180deg,#737979,#464b4b);border:4px solid #171919;border-top:0;color:#d9ddd7;display:flex;align-items:center;justify-content:space-between;font-size:12px;letter-spacing:.08em;text-transform:uppercase}
@@ -56,21 +56,22 @@
     .noise{position:absolute;inset:-30%;background-image:radial-gradient(rgba(255,255,255,.22) .45px, transparent .7px);background-size:5px 5px;opacity:.07;animation:noiseDrift 10s linear infinite}
     .rgb-split{position:absolute;inset:0;background:linear-gradient(90deg, rgba(255,0,50,.045), transparent 32%, transparent 68%, rgba(0,120,255,.045));mix-blend-mode:screen;opacity:.25}
     .dust-overlay{position:absolute;inset:0;pointer-events:none;z-index:2;opacity:.22;background-image:radial-gradient(rgba(255,255,255,.55) .6px, transparent .95px), radial-gradient(rgba(255,255,255,.22) .45px, transparent .78px);background-size:6px 6px, 10px 10px;background-position:0 0, 3px 4px;mix-blend-mode:screen;animation:dustFloat 18s linear infinite}
-    .light-flickers{position:absolute;inset:0;pointer-events:none;z-index:0;opacity:.38}
-    .light-flickers::before,.light-flickers::after{content:"";position:absolute;inset:auto;display:block;filter:blur(18px);animation:lightFlicker 6s steps(2,end) infinite}
-    .light-flickers::before{left:10%;top:8%;width:22%;height:22%;background:radial-gradient(circle, rgba(255,233,180,.24) 0%, rgba(255,233,180,0) 70%)}
-    .light-flickers::after{right:7%;bottom:14%;width:28%;height:20%;background:radial-gradient(circle, rgba(112,142,255,.18) 0%, rgba(112,142,255,0) 72%);animation-delay:-1.7s}
+    .light-flickers{position:absolute;inset:0;pointer-events:none;z-index:0;opacity:.26;overflow:hidden}
+    .light-flickers::before,.light-flickers::after{content:"";position:absolute;display:block;filter:blur(8px);animation:tvStaticPulse 1.9s steps(3,end) infinite}
+    .light-flickers::before{left:7%;top:5%;width:24%;height:18%;background:repeating-linear-gradient(0deg, rgba(255,255,255,.14) 0 2px, transparent 2px 5px), repeating-linear-gradient(90deg, rgba(255,255,255,.08) 0 3px, transparent 3px 7px), radial-gradient(circle, rgba(255,255,255,.15) 0%, rgba(255,255,255,0) 70%)}
+    .light-flickers::after{right:6%;bottom:11%;width:27%;height:16%;background:repeating-linear-gradient(0deg, rgba(110,150,255,.12) 0 2px, transparent 2px 5px), repeating-linear-gradient(90deg, rgba(255,255,255,.06) 0 4px, transparent 4px 8px), radial-gradient(circle, rgba(110,150,255,.12) 0%, rgba(110,150,255,0) 72%);animation-delay:-.7s}
 
     .desktop-header{position:absolute;left:0;right:0;top:0;height:28px;padding:0 12px;display:flex;align-items:center;justify-content:space-between;background:linear-gradient(180deg, rgba(10,12,12,.88), rgba(10,12,12,.68));border-bottom:1px solid rgba(255,255,255,.08);color:#dbe0d8;font-size:11px;letter-spacing:.1em;text-transform:uppercase;z-index:3}
     .desktop-title{display:flex;align-items:center;gap:8px}
     .status-light{width:8px;height:8px;background:#57c894;box-shadow:0 0 0 2px rgba(17,54,36,.75), 0 0 8px rgba(87,200,148,.38)}
 
-    .icons-region{position:absolute;inset:42px 16px 46px 16px;z-index:2;display:flex;align-items:flex-start;justify-content:flex-start}
-    .icon-grid{display:grid;grid-template-columns:repeat(2, 112px);grid-auto-rows:min-content;gap:18px 14px;align-content:start}
-    .desktop-icon{background:transparent;border:0;padding:2px;display:flex;flex-direction:column;align-items:center;gap:6px;width:112px;color:#fff;text-shadow:1px 1px 0 #000}
+    .icons-region{position:absolute;inset:42px 16px 46px 16px;z-index:2;display:block}
+    .icon-grid{position:relative;width:100%;height:100%}
+    .desktop-icon{position:absolute;left:0;top:0;background:transparent;border:0;padding:2px;display:flex;flex-direction:column;align-items:center;gap:6px;width:112px;color:#fff;text-shadow:1px 1px 0 #000;touch-action:none;user-select:none;-webkit-user-select:none}
     .desktop-icon.selected .icon-label{background:rgba(22,73,141,.78);outline:1px dotted #eff2ff}
     .desktop-icon .icon-label{padding:2px 5px;font-size:12px;line-height:1.15;text-align:center;max-width:100%;overflow-wrap:anywhere}
     .desktop-icon:hover .icon-sprite{transform:translateY(-1px)}
+    .desktop-icon.dragging{opacity:.92;z-index:5}
     .icon-sprite{width:46px;height:46px;position:relative;transition:transform .08s steps(2,end)}
     .icon-sprite.file::before{content:"";position:absolute;left:8px;top:4px;width:26px;height:34px;background:#f1f1e8;border:2px solid #53595a;box-shadow:inset -4px -4px 0 #d3d7d8}
     .icon-sprite.file::after{content:"";position:absolute;right:8px;top:4px;width:10px;height:10px;background:#dde0e1;border-top:2px solid #53595a;border-right:2px solid #53595a;clip-path:polygon(0 0, 100% 0, 100% 100%)}
@@ -152,8 +153,7 @@
     @keyframes tracking{0%{transform:translateY(-14%)}100%{transform:translateY(560%)}}
     @keyframes noiseDrift{0%{transform:translate(0,0)}50%{transform:translate(-4%,1.5%)}100%{transform:translate(3%,-1%)}}
     @keyframes dustFloat{0%{transform:translate3d(0,0,0)}50%{transform:translate3d(-1.5%,1%,0)}100%{transform:translate3d(1%,-1%,0)}}
-    @keyframes ambientPulse{0%,100%{opacity:.12}18%{opacity:.2}24%{opacity:.1}56%{opacity:.18}72%{opacity:.08}84%{opacity:.17}}
-    @keyframes lightFlicker{0%,100%{opacity:.16}8%{opacity:.33}11%{opacity:.1}27%{opacity:.22}31%{opacity:.06}48%{opacity:.28}62%{opacity:.12}79%{opacity:.24}86%{opacity:.08}}
+    @keyframes tvStaticPulse{0%,100%{opacity:.12;transform:translate3d(0,0,0)}9%{opacity:.28;transform:translate3d(-1%,1%,0)}17%{opacity:.08}28%{opacity:.24;transform:translate3d(1%,-1%,0)}39%{opacity:.1}56%{opacity:.21;transform:translate3d(-.5%,.5%,0)}71%{opacity:.07}84%{opacity:.26;transform:translate3d(.8%,-.8%,0)}92%{opacity:.11}}
 
     @media (max-width: 920px){
       .icons-region{inset:42px 10px 46px 10px}
@@ -361,31 +361,107 @@
     const windowLayer = document.getElementById('windowLayer');
     const taskButton = document.getElementById('taskButton');
     let selectedId = null;
+    let iconZCounter = 20;
     let infoWindow = null;
     let pongWindow = null;
     let currentTaskLabel = 'archive.html';
 
-    function makeIcon(item){
+    function makeIcon(item, index){
       const btn = document.createElement('button');
       btn.className = 'desktop-icon';
       btn.type = 'button';
       btn.dataset.id = item.id;
       btn.dataset.type = item.type;
       btn.innerHTML = `<span class="icon-sprite ${item.icon}" aria-hidden="true"></span><span class="icon-label">${item.name}</span>`;
-      btn.addEventListener('click', () => selectIcon(item.id));
+      positionIcon(btn, index);
+      btn.addEventListener('click', () => { if (btn.dataset.dragMoved !== '1') selectIcon(item.id); btn.dataset.dragMoved='0'; });
       btn.addEventListener('dblclick', () => openItem(item.id));
       btn.addEventListener('touchend', (e) => {
-        if (window.matchMedia('(pointer:coarse)').matches) {
+        if (window.matchMedia('(pointer:coarse)').matches && btn.dataset.dragMoved !== '1') {
           e.preventDefault();
           openItem(item.id);
         }
+        btn.dataset.dragMoved='0';
       }, {passive:false});
+      makeIconDraggable(btn, item.id);
       return btn;
     }
 
     function selectIcon(id){
       selectedId = id;
       document.querySelectorAll('.desktop-icon').forEach(el => el.classList.toggle('selected', el.dataset.id === id));
+    }
+
+    function positionIcon(el, index){
+      const isMobile = window.innerWidth <= 640;
+      const cols = isMobile ? 2 : 2;
+      const cellW = isMobile ? 98 : 118;
+      const cellH = isMobile ? 104 : 112;
+      const col = index % cols;
+      const row = Math.floor(index / cols);
+      el.style.left = `${col * cellW}px`;
+      el.style.top = `${row * cellH}px`;
+    }
+
+    function clampIconToRegion(el){
+      const region = iconGrid.getBoundingClientRect();
+      const rect = el.getBoundingClientRect();
+      const maxX = Math.max(0, region.width - rect.width);
+      const maxY = Math.max(0, region.height - rect.height);
+      const currentX = parseFloat(el.style.left || '0');
+      const currentY = parseFloat(el.style.top || '0');
+      el.style.left = `${Math.min(Math.max(0, currentX), maxX)}px`;
+      el.style.top = `${Math.min(Math.max(0, currentY), maxY)}px`;
+    }
+
+    function makeIconDraggable(el, id){
+      let dragging = false;
+      let startX = 0, startY = 0, originX = 0, originY = 0;
+      let moved = false;
+      const onMove = (e) => {
+        if (!dragging) return;
+        const dx = e.clientX - startX;
+        const dy = e.clientY - startY;
+        if (Math.abs(dx) > 4 || Math.abs(dy) > 4) moved = true;
+        const region = iconGrid.getBoundingClientRect();
+        const rect = el.getBoundingClientRect();
+        const maxX = Math.max(0, region.width - rect.width);
+        const maxY = Math.max(0, region.height - rect.height);
+        const nextX = Math.min(Math.max(0, originX + dx), maxX);
+        const nextY = Math.min(Math.max(0, originY + dy), maxY);
+        el.style.left = `${nextX}px`;
+        el.style.top = `${nextY}px`;
+      };
+      const endDrag = () => {
+        if (!dragging) return;
+        dragging = false;
+        el.classList.remove('dragging');
+        el.releasePointerCapture?.(activePointerId);
+        document.removeEventListener('pointermove', onMove);
+        document.removeEventListener('pointerup', endDrag);
+        document.removeEventListener('pointercancel', endDrag);
+        if (moved) {
+          el.dataset.dragMoved = '1';
+          setTimeout(() => { el.dataset.dragMoved = '0'; }, 80);
+        }
+      };
+      let activePointerId = null;
+      el.addEventListener('pointerdown', (e) => {
+        if (e.button !== undefined && e.button !== 0) return;
+        activePointerId = e.pointerId;
+        dragging = true; moved = false;
+        selectIcon(id);
+        iconZCounter += 1;
+        el.style.zIndex = iconZCounter;
+        el.classList.add('dragging');
+        startX = e.clientX; startY = e.clientY;
+        originX = parseFloat(el.style.left || '0');
+        originY = parseFloat(el.style.top || '0');
+        el.setPointerCapture?.(activePointerId);
+        document.addEventListener('pointermove', onMove);
+        document.addEventListener('pointerup', endDrag);
+        document.addEventListener('pointercancel', endDrag);
+      });
     }
 
     function updateTask(label, visible=true){
@@ -466,7 +542,7 @@
       }
     }
 
-    FILES.forEach(item => iconGrid.appendChild(makeIcon(item)));
+    FILES.forEach((item, index) => iconGrid.appendChild(makeIcon(item, index)));
     selectIcon(FILES[0].id);
     taskButton.addEventListener('click', () => {
       const win = currentTaskLabel === 'dcut_pong.exe' ? pongWindow : infoWindow;
@@ -479,6 +555,7 @@
     }
     updateClock();
     setInterval(updateClock, 30000);
+    window.addEventListener('resize', () => { document.querySelectorAll('.desktop-icon').forEach(clampIconToRegion); });
 
     const cursor = document.getElementById('archiveCursor');
     const fine = window.matchMedia('(hover:hover) and (pointer:fine)').matches;
