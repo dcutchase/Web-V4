@@ -78,6 +78,97 @@
         </div>
       </div>
     </footer>
+
+    <section class="contact-hub" id="contact" aria-labelledby="contact-title">
+      <div class="contact-shell">
+        <div class="contact-kicker">DIRECT LINE // DCUT</div>
+        <h2 class="contact-title" id="contact-title">CONTACT ME</h2>
+        <p class="contact-intro">Tell me who you are and what you want to create.</p>
+
+        <form
+          class="contact-form"
+          id="contactForm"
+          action="https://formsubmit.co/chasefilms@icloud.com"
+          method="POST"
+        >
+          <input type="hidden" name="_subject" value="New DCUT Website Inquiry">
+          <input type="hidden" name="_template" value="table">
+          <input class="contact-honey" type="text" name="_honey" tabindex="-1" autocomplete="off">
+
+          <div class="contact-grid">
+            <label class="field">
+              <span class="field-label">FIRST NAME</span>
+              <input
+                type="text"
+                name="first_name"
+                autocomplete="given-name"
+                maxlength="80"
+                required
+                placeholder="FIRST"
+              >
+            </label>
+
+            <label class="field">
+              <span class="field-label">LAST NAME</span>
+              <input
+                type="text"
+                name="last_name"
+                autocomplete="family-name"
+                maxlength="80"
+                required
+                placeholder="LAST"
+              >
+            </label>
+
+            <label class="field">
+              <span class="field-label">IG HANDLE</span>
+              <input
+                type="text"
+                name="instagram"
+                maxlength="100"
+                placeholder="@YOURHANDLE"
+              >
+            </label>
+
+            <label class="field">
+              <span class="field-label">EMAIL</span>
+              <input
+                type="email"
+                name="email"
+                autocomplete="email"
+                maxlength="160"
+                required
+                placeholder="YOU@EMAIL.COM"
+              >
+            </label>
+
+            <label class="field field-message">
+              <span class="field-label">WHY ARE YOU REACHING OUT?</span>
+              <textarea
+                name="message"
+                rows="7"
+                maxlength="4000"
+                required
+                placeholder="TELL ME ABOUT THE PROJECT, IDEA, TIMELINE, OR WHAT YOU NEED..."
+              ></textarea>
+            </label>
+          </div>
+
+          <div class="contact-actions">
+            <button class="contact-submit" id="contactSubmit" type="submit">
+              <span class="submit-idle">SEND MESSAGE</span>
+              <span class="submit-sending">TRANSMITTING...</span>
+            </button>
+
+            <div class="contact-state" id="contactState" aria-live="polite">
+              <span class="contact-state-light"></span>
+              <span class="contact-state-text">LINE READY</span>
+            </div>
+          </div>
+        </form>
+      </div>
+    </section>
+
   </main>
 
   <script src="site-data.js"></script>

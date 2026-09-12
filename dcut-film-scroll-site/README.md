@@ -39,3 +39,23 @@ A pixel-art social network terminal has been added to the bottom of the page wit
 - TikTok @dcut.collective
 
 The cards use the existing 8-bit cursor interaction and open in a new tab.
+
+
+## V8 contact form
+Added an 8-bit contact terminal below the social links.
+
+Fields:
+- First name
+- Last name
+- Instagram handle
+- Email
+- Reason for reaching out / project details
+
+Submissions are sent to:
+chasefilms@icloud.com
+
+The form uses FormSubmit's AJAX endpoint so users stay on the DCUT page and receive a coded success/error state.
+
+IMPORTANT FIRST-TIME ACTIVATION:
+The first form submission triggers a FormSubmit activation email to chasefilms@icloud.com.
+Open that email and confirm the form once. After confirmation, future website inquiries are delivered to that inbox.

@@ -186,3 +186,79 @@ if (typeof finePointer !== "undefined" && finePointer.matches && pixelCursor) {
     });
   });
 }
+
+
+/* =========================
+   V8 CONTACT FORM
+   ========================= */
+const contactForm = document.querySelector("#contactForm");
+const contactSubmit = document.querySelector("#contactSubmit");
+const contactState = document.querySelector("#contactState");
+const contactStateText = contactState?.querySelector(".contact-state-text");
+const contactControls = [
+  ...document.querySelectorAll(".contact-submit")
+];
+
+if (typeof finePointer !== "undefined" && finePointer.matches && pixelCursor) {
+  contactControls.forEach((control) => {
+    control.addEventListener("mouseenter", () => {
+      pixelCursor.classList.add("hovering");
+    });
+    control.addEventListener("mouseleave", () => {
+      pixelCursor.classList.remove("hovering");
+    });
+  });
+}
+
+function setContactState(state, text) {
+  contactForm?.classList.remove("is-sending", "is-success", "is-error");
+  if (state) contactForm?.classList.add(`is-${state}`);
+  if (contactStateText) contactStateText.textContent = text;
+}
+
+if (contactForm) {
+  contactForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    if (!contactForm.reportValidity()) return;
+
+    setContactState("sending", "TRANSMITTING");
+    contactSubmit.disabled = true;
+
+    const formData = new FormData(contactForm);
+    formData.append("_url", window.location.href);
+
+    try {
+      const response = await fetch(
+        "https://formsubmit.co/ajax/chasefilms@icloud.com",
+        {
+          method: "POST",
+          body: formData,
+          headers: {
+            "Accept": "application/json"
+          }
+        }
+      );
+
+      const result = await response.json().catch(() => ({}));
+
+      if (!response.ok || result.success === "false" || result.success === false) {
+        throw new Error(result.message || "Submission failed");
+      }
+
+      contactForm.reset();
+      setContactState("success", "MESSAGE SENT");
+    } catch (error) {
+      console.error("Contact form error:", error);
+      setContactState("error", "SEND FAILED — TRY AGAIN");
+    } finally {
+      contactSubmit.disabled = false;
+    }
+  });
+}
+
+/* If a normal FormSubmit fallback redirect ever returns with ?sent=1 */
+const sentParams = new URLSearchParams(window.location.search);
+if (sentParams.get("sent") === "1" && contactForm) {
+  setContactState("success", "MESSAGE SENT");
+}
