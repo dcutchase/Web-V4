@@ -1,20 +1,33 @@
-# DCUT Archive Desktop V27
+# DCUT Full Master V28
 
-This update focuses on the Archive page.
+This is the merged master project.
 
 ## Included
-- `archive.html`
-- `archive/index.html` (redirect fallback)
-- `assets/archive-wallpaper.jpg`
+- Homepage archive/film-scroll site
+- Category thumbnails and homepage interactions
+- Social links hub
+- Contact form with 24-hour lockdown
+- Static reel + atmosphere FX
+- `/film/` page with the 9-video 3x3 CRT wall and mobile stacked layout
+- `/archive.html` 80s desktop OS archive page
+- `/archive/index.html` redirect fallback
+- Archive desktop wallpaper + VHS overlay
+- `dcut_pong.exe` on the Archive desktop
 
-## Added
-- 80s/old Windows-style desktop look
-- 8-bit desktop file/app icons
-- the provided photo as Archive wallpaper
-- coded VHS / analog overlay on the desktop background
-- a new `dcut_pong.exe` icon that opens a playable Pong game
-- placeholder archive files still ready for customization
+## Main project files
+- `index.html`
+- `styles.css`
+- `app.js`
+- `site-data.js`
+- `vercel.json`
+- `assets/`
+- `film/`
+- `archive/`
+- `archive.html`
 
 ## Notes
-- Double click icons on desktop to open them on desktop browsers.
-- On mobile/touch, a single tap opens the icon.
+- Homepage ARCHIVE navigation goes directly to `/archive.html`.
+- Desktop on Archive page uses double click to open icons.
+- Mobile/touch on Archive page uses single tap to open icons.
+
+Use this ZIP as your new master copy. Replace the repo contents with everything inside this folder.
