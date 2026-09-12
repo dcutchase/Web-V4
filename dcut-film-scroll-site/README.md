@@ -29,3 +29,13 @@ To use real category thumbnails:
 - Pixel glitch bars appear around the hovered film frame.
 - Labels/connectors pick up subtle RGB-style pixel offsets.
 - Touch devices automatically fall back to normal cursor/hover behavior.
+
+
+## V7 social hub
+A pixel-art social network terminal has been added to the bottom of the page with:
+- Instagram @dcut.chase
+- Instagram @dcut.collective
+- TikTok @dcut.chase
+- TikTok @dcut.collective
+
+The cards use the existing 8-bit cursor interaction and open in a new tab.

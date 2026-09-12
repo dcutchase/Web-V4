@@ -168,3 +168,21 @@ if (finePointer.matches && pixelCursor) {
     });
   });
 }
+
+
+/* =========================
+   V7 SOCIAL HUB INTERACTION
+   ========================= */
+const socialCards = [...document.querySelectorAll(".social-card")];
+
+if (typeof finePointer !== "undefined" && finePointer.matches && pixelCursor) {
+  socialCards.forEach((card) => {
+    card.addEventListener("mouseenter", () => {
+      pixelCursor.classList.add("hovering");
+    });
+
+    card.addEventListener("mouseleave", () => {
+      pixelCursor.classList.remove("hovering");
+    });
+  });
+}
