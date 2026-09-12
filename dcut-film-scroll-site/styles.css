@@ -1553,3 +1553,14 @@ body.frame-hover .pixel-noise{
   z-index:4;
   transform:none !important;
 }
+
+
+/* =========================
+   V15: STATIC REEL OVERRIDES
+   ========================= */
+.reel-sprite,
+.reel-letter-glows,
+.reel-rotating-face{
+  transform:none !important;
+  animation:none !important;
+}

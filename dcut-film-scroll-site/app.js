@@ -430,3 +430,25 @@ const reelGlowLayer = document.querySelector(".reel-letter-glows");
 
   update();
 })();
+
+
+/* =========================
+   V15: STATIC REEL
+   ========================= */
+(function(){
+  const originalUpdate = update;
+  update = function(){
+    originalUpdate();
+    if (typeof reelSprite !== 'undefined' && reelSprite) {
+      reelSprite.style.transform = 'none';
+    }
+    if (typeof reelGlowLayer !== 'undefined' && reelGlowLayer) {
+      reelGlowLayer.style.transform = 'none';
+    }
+    const rotatingFace = document.querySelector('.reel-rotating-face');
+    if (rotatingFace) {
+      rotatingFace.style.transform = 'none';
+    }
+  };
+  update();
+})();

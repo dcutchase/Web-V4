@@ -112,3 +112,8 @@ All effects are CSS/JavaScript. No new rendered background image was added.
 - Only the spool face rotates around its axle as film is released.
 - Rotation is tied to revealed film length and uses 4-degree mechanical steps.
 - This removes the previous orbiting/spinning-image effect.
+
+
+## V15 static reel
+- Removed reel/spool rotation entirely.
+- Reel is now a fully static asset while the film still feeds downward.
