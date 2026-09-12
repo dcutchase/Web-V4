@@ -78,8 +78,6 @@ function update(){
   filmReveal.style.height = `${reveal}px`;
 
   // Subtle reel movement tied directly to released film.
-  reelSprite.style.transform =
-    `translateY(${Math.min(5,reveal*.002)}px) rotate(${reveal*.045}deg)`;
 
   // Only show label once that category frame has actually emerged.
   categoryRows.forEach(row=>{
@@ -398,10 +396,11 @@ if (dustField && !window.matchMedia("(prefers-reduced-motion: reduce)").matches)
 }
 
 /* Keep the glow layer rotating with the reel sprite so it never drifts
-   away from the colored DCUT marks. */
+   away from the colored DCUT marks, and make the reel perform actual visible
+   rotations as the film feeds out. */
 const reelGlowLayer = document.querySelector(".reel-letter-glows");
 
-if (reelGlowLayer) {
+(function(){
   const originalUpdate = update;
 
   update = function(){
@@ -415,9 +414,20 @@ if (reelGlowLayer) {
       Math.min(film.scrollHeight, revealHead - filmTop)
     );
 
-    reelGlowLayer.style.transform =
-      `translateY(${Math.min(5,reveal*.002)}px) rotate(${reveal*.045}deg)`;
+    // Stronger spin: roughly one full rotation per ~360px of released film.
+    // Then quantize to stepped motion so it feels mechanical / pixel-world.
+    const rawRotation = reveal * 1.0;
+    const steppedRotation = Math.round(rawRotation / 6) * 6;
+    const yOffset = Math.min(6, reveal * 0.0022);
+
+    reelSprite.style.transform =
+      `translateY(${yOffset}px) rotate(${steppedRotation}deg)`;
+
+    if (reelGlowLayer) {
+      reelGlowLayer.style.transform =
+        `translateY(${yOffset}px) rotate(${steppedRotation}deg)`;
+    }
   };
 
   update();
-}
+})();

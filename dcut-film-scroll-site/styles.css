@@ -1512,3 +1512,13 @@ body.frame-hover .pixel-noise{
   .film-reveal{top:calc(var(--reel-top) + 164px)}
   .reel-letter-glow{left:20.5%; width:10px; height:8px}
 }
+
+
+/* =========================
+   V12: STRONGER REEL ROTATION
+   ========================= */
+.reel-sprite,
+.reel-letter-glows{
+  transform-origin:50% 50%;
+  will-change:transform;
+}

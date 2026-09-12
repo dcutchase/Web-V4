@@ -90,3 +90,9 @@ All effects are CSS/JavaScript. No new rendered background image was added.
 - Replaced the boxed reel crop with a transparent 2D reel sprite.
 - Reel now sits cleanly inside the vignette without a black rectangle around it.
 - Film mouth/reveal positions were adjusted so the strip appears to emerge from the reel itself.
+
+
+## V12 reel rotation
+- Reel now performs strong, visible rotations tied to film release.
+- Rotation is quantized into 6-degree steps so it feels more mechanical / pixel-art instead of buttery-smooth.
+- Glow overlay rotates with the reel asset.
