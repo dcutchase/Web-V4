@@ -31,3 +31,11 @@ This is the merged master project.
 - Mobile/touch on Archive page uses single tap to open icons.
 
 Use this ZIP as your new master copy. Replace the repo contents with everything inside this folder.
+
+
+## V29 Archive routing fix
+- Archive now uses the exact same folder-page structure as FILM.
+- `/archive/index.html` contains the full Archive desktop OS.
+- Homepage links directly to `/archive/`.
+- Root `archive.html` is only a redirect fallback.
+- Wallpaper path is absolute so it loads correctly from inside `/archive/`.

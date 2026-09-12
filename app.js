@@ -24,7 +24,7 @@ function categoryFrame(cat,index){
     row.setAttribute("role", "link");
     row.setAttribute("aria-label", cat.id === "film" ? "Open Film category" : "Open Archive category");
 
-    const destination = cat.id === "film" ? "/film/" : "/archive.html";
+    const destination = cat.id === "film" ? "/film/" : "/archive/";
     const navigate = () => window.location.assign(destination);
 
     row.addEventListener("click", (event) => {
@@ -48,7 +48,7 @@ function categoryFrame(cat,index){
   }
 
   if (cat.id === "archive") {
-    frame.href = "/archive.html";
+    frame.href = "/archive/";
     frame.setAttribute("aria-label", "Open Archive category");
   }
 
@@ -452,6 +452,6 @@ document.querySelectorAll('.category-row').forEach((row) => {
 
   if (id === 'archive') {
     frame.style.cursor = 'pointer';
-    frame.addEventListener('click', () => { window.location.href = '/archive.html'; });
+    frame.addEventListener('click', () => { window.location.href = '/archive/'; });
   }
 });
