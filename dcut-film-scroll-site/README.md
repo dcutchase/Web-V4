@@ -104,3 +104,11 @@ All effects are CSS/JavaScript. No new rendered background image was added.
 - VFX + DESIGN: IMG_0389.jpeg
 - BTS: A7404877.jpeg
 - ARCHIVE remains the existing placeholder.
+
+
+## V14 corrected reel motion
+- Reel side/body and DCUT lettering remain stationary.
+- Front spool face is isolated as its own transparent asset.
+- Only the spool face rotates around its axle as film is released.
+- Rotation is tied to revealed film length and uses 4-degree mechanical steps.
+- This removes the previous orbiting/spinning-image effect.

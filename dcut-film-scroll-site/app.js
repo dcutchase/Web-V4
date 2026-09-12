@@ -1,6 +1,7 @@
 const film = document.querySelector("#film");
 const filmReveal = document.querySelector("#filmReveal");
-const reelSprite = document.querySelector("#reelSprite");
+const reelBody = document.querySelector("#reelBody");
+const reelFaceRotor = document.querySelector("#reelFaceRotor");
 const scrollTrack = document.querySelector("#scrollTrack");
 
 function blankFrame(){
@@ -395,9 +396,7 @@ if (dustField && !window.matchMedia("(prefers-reduced-motion: reduce)").matches)
   }
 }
 
-/* Keep the glow layer rotating with the reel sprite so it never drifts
-   away from the colored DCUT marks, and make the reel perform actual visible
-   rotations as the film feeds out. */
+/* Reel body stays still. Only the front spool face turns as film is released. */
 const reelGlowLayer = document.querySelector(".reel-letter-glows");
 
 (function(){
@@ -414,18 +413,18 @@ const reelGlowLayer = document.querySelector(".reel-letter-glows");
       Math.min(film.scrollHeight, revealHead - filmTop)
     );
 
-    // Stronger spin: roughly one full rotation per ~360px of released film.
-    // Then quantize to stepped motion so it feels mechanical / pixel-world.
-    const rawRotation = reveal * 1.0;
-    const steppedRotation = Math.round(rawRotation / 6) * 6;
-    const yOffset = Math.min(6, reveal * 0.0022);
+    // About one full spool revolution per 300px of released film.
+    // 4-degree quantization keeps it mechanical / 8-bit.
+    const rawRotation = reveal * 1.2;
+    const steppedRotation = Math.round(rawRotation / 4) * 4;
 
-    reelSprite.style.transform =
-      `translateY(${yOffset}px) rotate(${steppedRotation}deg)`;
+    if (reelFaceRotor) {
+      reelFaceRotor.style.transform = `rotate(${steppedRotation}deg)`;
+    }
 
+    // DCUT side lettering belongs to the stationary reel body, so its glow stays put.
     if (reelGlowLayer) {
-      reelGlowLayer.style.transform =
-        `translateY(${yOffset}px) rotate(${steppedRotation}deg)`;
+      reelGlowLayer.style.transform = "none";
     }
   };
 

@@ -1522,3 +1522,34 @@ body.frame-hover .pixel-noise{
   transform-origin:50% 50%;
   will-change:transform;
 }
+
+
+/* =========================
+   V14: TRUE REEL UNSPOOL MOTION
+   ========================= */
+.reel-body{
+  position:absolute;
+  inset:0 auto auto 0;
+  width:var(--reel-w);
+  height:auto;
+  transform:none !important;
+  z-index:2;
+}
+.reel-face-rotor{
+  position:absolute;
+  inset:0 auto auto 0;
+  display:block;
+  width:var(--reel-w);
+  height:auto;
+  z-index:3;
+  pointer-events:none;
+  image-rendering:pixelated;
+  filter:contrast(1.14) brightness(.92);
+  /* face center in the source sprite, not the center of the whole angled reel */
+  transform-origin:71.9% 46.3%;
+  will-change:transform;
+}
+.reel-letter-glows{
+  z-index:4;
+  transform:none !important;
+}
