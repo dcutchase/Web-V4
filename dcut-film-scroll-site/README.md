@@ -131,3 +131,9 @@ All effects are CSS/JavaScript. No new rendered background image was added.
 - Fixed Vercel clean URL behavior causing /film to load root CSS instead of /film/styles.css.
 - FILM page now uses absolute CSS/JS paths.
 - Explicit 3x3 desktop CRT grid preserved.
+
+
+## V19 mobile fix
+- Mobile CRT wall now uses a vertical flex stack instead of grid.
+- Each CRT uses an explicit 4:3 padding box instead of CSS aspect-ratio.
+- First three YouTube embeds load eagerly to avoid a blank first viewport on mobile.
