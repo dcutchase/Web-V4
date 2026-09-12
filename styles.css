@@ -1,0 +1,1579 @@
+
+:root{
+  --film-w: 104px;
+  --frame-w: 84px;
+  --row-h: 172px;
+  --reel-top: 10vh;
+  --reel-w: 126px;
+  --mouth-top: calc(var(--reel-top) + 188px);
+  --label-gap: 64px;
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;background:#000;color:#e3e3dc;min-height:100%;overflow-x:hidden}
+body{
+  font-family:"Courier New",ui-monospace,monospace;
+  image-rendering:pixelated;
+}
+
+/* The actual concept image is the environment now. */
+.world-plate{
+  position:fixed;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  background:
+    #000 url("assets/dcut-world-reference.png") center top / auto 100vh no-repeat;
+  image-rendering:pixelated;
+}
+
+/* Hide the film/reel/labels that were baked into the reference image.
+   We preserve the exact surrounding room art. */
+.center-matte{
+  position:fixed;
+  z-index:1;
+  top:0;bottom:0;
+  left:50%;
+  width:min(57vw,590px);
+  transform:translateX(-50%);
+  pointer-events:none;
+  background:
+    linear-gradient(90deg,transparent 0,#000 8%,#000 92%,transparent 100%);
+}
+
+/* Harder 8-bit atmosphere rather than smooth gradients. */
+.pixel-noise,.scanlines{
+  position:fixed;inset:0;pointer-events:none;z-index:40
+}
+.pixel-noise{
+  opacity:.12;
+  background:
+    radial-gradient(circle,#8b8b82 0 1px,transparent 1px) 0 0/7px 7px;
+  mix-blend-mode:screen;
+  mask-image:linear-gradient(to bottom,rgba(0,0,0,.34),transparent 72%);
+}
+.scanlines{
+  opacity:.12;
+  background:repeating-linear-gradient(to bottom,transparent 0 3px,rgba(255,255,255,.15) 4px);
+}
+
+#page{position:relative;z-index:4;min-height:100vh}
+.archive{position:relative;width:100%;min-height:100vh}
+
+/* Reel is in document flow-space, not fixed to the viewport. */
+.reel-anchor{
+  position:absolute;
+  z-index:15;
+  top:var(--reel-top);
+  left:50%;
+  width:var(--reel-w);
+  height:205px;
+  transform:translateX(-50%);
+  overflow:visible;
+}
+.reel-sprite{
+  display:block;
+  width:var(--reel-w);
+  height:auto;
+  image-rendering:pixelated;
+  filter:contrast(1.12) brightness(.88);
+  transform-origin:59% 48%;
+  will-change:transform;
+}
+
+/* Where the strip visibly exits the reel. */
+.film-mouth{
+  position:absolute;
+  z-index:11;
+  top:var(--mouth-top);
+  left:50%;
+  width:var(--film-w);
+  height:22px;
+  transform:translateX(-50%);
+  background:#111;
+  border-left:9px solid #3a3a37;
+  border-right:9px solid #3a3a37;
+  box-shadow:0 4px 0 #080808;
+}
+
+/* This height is changed in JS.
+   Using real height instead of clip-path fixes the failed reveal behavior. */
+.film-reveal{
+  position:absolute;
+  z-index:10;
+  top:calc(var(--mouth-top) + 18px);
+  left:50%;
+  width:min(820px,100vw);
+  height:0;
+  transform:translateX(-50%);
+  overflow:hidden;
+  will-change:height;
+}
+
+.film{
+  position:absolute;
+  top:0;
+  left:50%;
+  width:var(--film-w);
+  transform:translateX(-50%);
+  padding:0 0 60px;
+}
+.film:before,.film:after{
+  content:"";
+  position:absolute;
+  top:0;bottom:0;
+  width:9px;
+  z-index:7;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      #565650 0 5px,
+      #080808 5px 12px,
+      #2f302d 12px 15px
+    );
+  border-left:2px solid #121312;
+  border-right:2px solid #121312;
+}
+.film:before{left:0}
+.film:after{right:0}
+
+.frame-row{
+  position:relative;
+  height:var(--row-h);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.frame{
+  position:relative;
+  z-index:4;
+  width:var(--frame-w);
+  height:142px;
+  padding:0;
+  border:0;
+  border-top:4px solid #333431;
+  border-bottom:4px solid #333431;
+  background:#101110;
+  box-shadow:
+    inset 0 0 0 3px #070807,
+    0 0 0 1px #1e201d;
+  overflow:hidden;
+}
+.frame.blank:after{
+  content:"";
+  position:absolute;
+  inset:7px;
+  background:
+    linear-gradient(135deg,#0a0b0a 0 25%,#101210 25% 50%,#090a09 50% 75%,#111310 75%);
+  background-size:18px 18px;
+  opacity:.55;
+}
+.frame.category{
+  border-top-color:#74746c;
+  border-bottom-color:#74746c;
+}
+.media{
+  position:absolute;
+  inset:8px;
+  background:center/cover no-repeat;
+  image-rendering:auto;
+}
+.media.placeholder{
+  image-rendering:pixelated;
+  background:
+    linear-gradient(90deg,transparent 45%,rgba(235,235,220,.11) 45% 55%,transparent 55%),
+    linear-gradient(0deg,#090a09 0 30%,#2c2f2a 30% 62%,#121411 62%);
+}
+.media.placeholder:after{
+  content:"";
+  position:absolute;
+  width:28px;height:44px;
+  left:50%;top:52%;
+  transform:translate(-50%,-50%);
+  background:#050505;
+  box-shadow:
+    -18px 12px 0 #050505,
+    17px 18px 0 #050505,
+    0 -18px 0 #31342f;
+}
+
+/* labels mimic the concept more literally */
+.label{
+  position:absolute;
+  top:50%;
+  width:260px;
+  opacity:0;
+  z-index:9;
+  text-transform:uppercase;
+  transition:
+    opacity .12s steps(2,end),
+    transform .18s steps(3,end);
+}
+.label.left{
+  right:calc(50% + var(--label-gap));
+  text-align:right;
+  transform:translate(-14px,-50%);
+}
+.label.right{
+  left:calc(50% + var(--label-gap));
+  text-align:left;
+  transform:translate(14px,-50%);
+}
+.label.visible{
+  opacity:1;
+  transform:translate(0,-50%);
+}
+.label h2{
+  margin:0;
+  font-weight:700;
+  color:#ededE8;
+  font-size:20px;
+  line-height:1;
+  letter-spacing:.08em;
+  text-shadow:3px 3px 0 #000;
+}
+.label p{
+  margin:8px 0 0;
+  color:#969990;
+  font-size:10px;
+  line-height:1.45;
+  letter-spacing:.055em;
+}
+.connector{
+  position:absolute;
+  top:9px;
+  width:58px;
+  height:2px;
+  background:#d2d2ca;
+}
+.label.left .connector{right:-68px}
+.label.right .connector{left:-68px}
+
+/* This is the invisible page height that makes scroll possible
+   while the film itself grows independently. */
+.scroll-track{
+  height:2400px;
+  pointer-events:none;
+}
+
+.footer-mark{
+  position:relative;
+  z-index:6;
+  height:42vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-start;
+  align-items:flex-end;
+  padding:13vh 7vw 0 0;
+  color:#51534e;
+  font-weight:700;
+  letter-spacing:.12em;
+  font-size:23px;
+}
+.footer-mark div{display:flex;gap:5px;margin-top:9px}
+.footer-mark i{display:block;width:16px;height:7px}
+.footer-mark i:nth-child(1){background:#f25461}
+.footer-mark i:nth-child(2){background:#5c63ff}
+.footer-mark i:nth-child(3){background:#54bd91}
+.footer-mark i:nth-child(4){background:#ddb64d}
+
+@media(max-width:720px){
+  :root{
+    --film-w:90px;
+    --frame-w:72px;
+    --row-h:150px;
+    --reel-w:108px;
+    --mouth-top:calc(var(--reel-top) + 161px);
+    --label-gap:55px;
+  }
+  .world-plate{
+    background-size:auto 100vh;
+    opacity:.92;
+  }
+  .center-matte{width:72vw}
+  .reel-anchor{height:175px}
+  .film-reveal{width:100vw}
+  .frame{height:119px}
+  .label{width:115px}
+  .label h2{font-size:12px;line-height:1.05}
+  .label p{font-size:7px;line-height:1.3;margin-top:5px}
+  .connector{width:24px;height:2px;top:5px}
+  .label.left .connector{right:-31px}
+  .label.right .connector{left:-31px}
+  .pixel-noise{opacity:.08}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .label{transition:none}
+}
+
+
+/* =========================
+   V6: 8-BIT CURSOR
+   ========================= */
+@media (hover:hover) and (pointer:fine){
+  html,body,.frame.category{cursor:none !important}
+}
+
+.pixel-cursor{
+  position:fixed;
+  left:0;top:0;
+  width:18px;height:18px;
+  z-index:100;
+  pointer-events:none;
+  opacity:0;
+  transform:translate(-50%,-50%);
+  transition:
+    opacity .08s steps(2,end),
+    width .10s steps(2,end),
+    height .10s steps(2,end);
+  image-rendering:pixelated;
+  mix-blend-mode:difference;
+}
+.pixel-cursor.visible{opacity:1}
+
+.cursor-core{
+  position:absolute;
+  left:6px;top:6px;
+  width:6px;height:6px;
+  background:#fff;
+  box-shadow:
+    0 -6px 0 #fff,
+    0 6px 0 #fff,
+    -6px 0 0 #fff,
+    6px 0 0 #fff;
+}
+.cursor-corner{
+  position:absolute;
+  width:4px;height:4px;
+  background:#fff;
+}
+.c1{left:0;top:0}.c2{right:0;top:0}.c3{left:0;bottom:0}.c4{right:0;bottom:0}
+
+.pixel-cursor.hovering{
+  width:30px;height:30px;
+  mix-blend-mode:normal;
+}
+.pixel-cursor.hovering .cursor-core{
+  left:12px;top:12px;
+  background:#f1f1e8;
+  box-shadow:
+    0 -12px 0 #f1f1e8,
+    0 12px 0 #f1f1e8,
+    -12px 0 0 #f1f1e8,
+    12px 0 0 #f1f1e8;
+}
+.pixel-cursor.hovering .cursor-corner:nth-of-type(2){background:#f25461}
+.pixel-cursor.hovering .cursor-corner:nth-of-type(3){background:#5c63ff}
+.pixel-cursor.hovering .cursor-corner:nth-of-type(4){background:#54bd91}
+.pixel-cursor.hovering .cursor-corner:nth-of-type(5){background:#ddb64d}
+
+/* =========================
+   V6: FILM FRAME HOVER FX
+   ========================= */
+
+/* Media remains sharp. Only frame chrome/world FX react. */
+.frame.category{
+  transition:
+    transform .12s steps(3,end),
+    box-shadow .12s steps(3,end),
+    border-color .12s steps(2,end);
+  transform-origin:center;
+}
+.frame.category:hover,
+.frame.category.is-hovered{
+  transform:scale(1.055);
+  border-top-color:#d4d4cb;
+  border-bottom-color:#d4d4cb;
+  box-shadow:
+    inset 0 0 0 3px #050505,
+    4px 0 0 rgba(242,84,97,.65),
+    -4px 0 0 rgba(92,99,255,.55),
+    0 4px 0 rgba(84,189,145,.35),
+    0 0 0 2px #dddcd4;
+}
+
+/* Keep actual content crisp and neutral. */
+.frame.category:hover .media,
+.frame.category.is-hovered .media{
+  transform:none;
+  filter:none;
+  image-rendering:auto;
+}
+
+/* Pixel glitch blocks around the hovered frame */
+.frame.category::before,
+.frame.category::after{
+  content:"";
+  position:absolute;
+  z-index:10;
+  pointer-events:none;
+  opacity:0;
+}
+.frame.category::before{
+  left:-8px;right:-8px;top:18%;
+  height:8px;
+  background:
+    linear-gradient(90deg,
+      #f25461 0 14%,
+      transparent 14% 28%,
+      #5c63ff 28% 42%,
+      transparent 42% 66%,
+      #54bd91 66% 78%,
+      transparent 78%);
+}
+.frame.category::after{
+  left:-5px;right:-5px;bottom:18%;
+  height:5px;
+  background:
+    linear-gradient(90deg,
+      transparent 0 18%,
+      #ddb64d 18% 31%,
+      transparent 31% 58%,
+      #e8e8df 58% 69%,
+      transparent 69%);
+}
+.frame.category:hover::before,
+.frame.category:hover::after,
+.frame.category.is-hovered::before,
+.frame.category.is-hovered::after{
+  opacity:.82;
+  animation:pixel-glitch-bars .38s steps(4,end) infinite;
+}
+
+@keyframes pixel-glitch-bars{
+  0%{transform:translate(0,0)}
+  25%{transform:translate(5px,-2px)}
+  50%{transform:translate(-4px,3px)}
+  75%{transform:translate(2px,1px)}
+  100%{transform:translate(0,0)}
+}
+
+/* The surrounding 8-bit world reacts, not the crisp image. */
+body.frame-hover .world-plate{
+  animation:world-shift .32s steps(4,end) infinite;
+}
+body.frame-hover .center-matte{
+  animation:matte-pulse .32s steps(3,end) infinite;
+}
+body.frame-hover .scanlines{
+  opacity:.20;
+}
+body.frame-hover .pixel-noise{
+  opacity:.18;
+}
+
+@keyframes world-shift{
+  0%{transform:translate(0,0);filter:contrast(1)}
+  25%{transform:translate(2px,0);filter:contrast(1.12)}
+  50%{transform:translate(-2px,1px);filter:contrast(1.04)}
+  75%{transform:translate(1px,-1px);filter:contrast(1.15)}
+  100%{transform:translate(0,0);filter:contrast(1)}
+}
+@keyframes matte-pulse{
+  0%{opacity:1}
+  50%{opacity:.92}
+  100%{opacity:1}
+}
+
+/* Make labels react in blocky steps too */
+.category-row:has(.frame.category:hover) .label,
+.category-row.hovered .label{
+  color:#fff;
+  text-shadow:2px 0 0 rgba(242,84,97,.45),-2px 0 0 rgba(92,99,255,.42);
+}
+.category-row:has(.frame.category:hover) .connector,
+.category-row.hovered .connector{
+  box-shadow:3px 0 0 #f25461,-3px 0 0 #5c63ff;
+}
+
+/* Touch devices keep normal behavior; no fake cursor. */
+@media (hover:none), (pointer:coarse){
+  .pixel-cursor{display:none !important}
+  html,body,.frame.category{cursor:auto !important}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .frame.category:hover::before,
+  .frame.category:hover::after,
+  .frame.category.is-hovered::before,
+  .frame.category.is-hovered::after,
+  body.frame-hover .world-plate,
+  body.frame-hover .center-matte{
+    animation:none !important;
+  }
+}
+
+
+/* =========================
+   V7: SOCIAL LINKS HUB
+   ========================= */
+
+.footer-mark{display:none !important}
+
+.social-hub{
+  position:relative;
+  z-index:8;
+  min-height:66vh;
+  padding:9vh 20px 14vh;
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
+}
+
+.social-shell{
+  position:relative;
+  width:min(760px,92vw);
+  padding:24px;
+  background:#050605;
+  border:3px solid #343731;
+  box-shadow:
+    8px 8px 0 #000,
+    inset 0 0 0 2px #0d0f0d;
+  image-rendering:pixelated;
+}
+
+.social-shell:before,
+.social-shell:after{
+  content:"";
+  position:absolute;
+  width:12px;height:12px;
+  background:#6e726a;
+}
+.social-shell:before{left:-3px;top:-3px}
+.social-shell:after{right:-3px;bottom:-3px}
+
+.social-kicker{
+  color:#6c716a;
+  font-size:9px;
+  letter-spacing:.18em;
+  margin-bottom:7px;
+}
+
+.social-title{
+  color:#ecece5;
+  font-size:22px;
+  font-weight:700;
+  letter-spacing:.11em;
+  margin-bottom:19px;
+  text-shadow:3px 3px 0 #000;
+}
+
+.social-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+}
+
+.social-card{
+  position:relative;
+  min-height:86px;
+  padding:16px 42px 14px 15px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:5px;
+  color:inherit;
+  text-decoration:none;
+  background:#090a09;
+  border:2px solid #292c27;
+  box-shadow:inset 0 0 0 2px #030403;
+  transition:
+    transform .12s steps(2,end),
+    border-color .12s steps(2,end),
+    background .12s steps(2,end);
+}
+
+.social-card:hover,
+.social-card:focus-visible{
+  outline:none;
+  transform:translate(-2px,-2px);
+  background:#0d0f0d;
+  border-color:#d5d6cf;
+  box-shadow:
+    inset 0 0 0 2px #030403,
+    3px 0 0 rgba(242,84,97,.62),
+    -3px 0 0 rgba(92,99,255,.52),
+    0 3px 0 rgba(84,189,145,.34);
+}
+
+.social-platform{
+  color:#6f746d;
+  font-size:9px;
+  letter-spacing:.16em;
+}
+
+.social-handle{
+  color:#ecece5;
+  font-size:14px;
+  letter-spacing:.04em;
+  word-break:break-word;
+}
+
+.social-arrow{
+  position:absolute;
+  right:14px;
+  top:50%;
+  transform:translateY(-50%);
+  color:#a6aaa1;
+  font-size:18px;
+}
+
+.social-card:hover .social-arrow,
+.social-card:focus-visible .social-arrow{
+  animation:social-arrow-jump .28s steps(2,end) infinite alternate;
+}
+
+@keyframes social-arrow-jump{
+  from{transform:translateY(-50%) translate(0,0)}
+  to{transform:translateY(-50%) translate(3px,-3px)}
+}
+
+.social-status{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-top:18px;
+  color:#656a63;
+  font-size:8px;
+  letter-spacing:.16em;
+}
+
+.status-light{
+  width:7px;height:7px;
+  background:#54bd91;
+  box-shadow:0 0 0 2px #153629;
+  animation:status-blink 1.3s steps(2,end) infinite;
+}
+
+@keyframes status-blink{
+  0%,70%{opacity:1}
+  71%,100%{opacity:.28}
+}
+
+.social-brand{
+  position:absolute;
+  right:20px;
+  bottom:-41px;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  color:#555952;
+  font-size:20px;
+  font-weight:700;
+  letter-spacing:.13em;
+}
+
+.social-brand div{
+  display:flex;
+  gap:4px;
+  margin-top:6px;
+}
+
+.social-brand i{
+  width:14px;height:6px;display:block;
+}
+.social-brand i:nth-child(1){background:#f25461}
+.social-brand i:nth-child(2){background:#5c63ff}
+.social-brand i:nth-child(3){background:#54bd91}
+.social-brand i:nth-child(4){background:#ddb64d}
+
+/* Let the custom cursor recognize the social cards too. */
+@media (hover:hover) and (pointer:fine){
+  .social-card{cursor:none !important}
+}
+
+@media(max-width:720px){
+  .social-hub{
+    min-height:74vh;
+    padding-top:7vh;
+    padding-bottom:15vh;
+  }
+  .social-shell{
+    padding:18px;
+  }
+  .social-title{
+    font-size:17px;
+  }
+  .social-grid{
+    grid-template-columns:1fr;
+  }
+  .social-card{
+    min-height:72px;
+  }
+  .social-handle{
+    font-size:12px;
+  }
+}
+
+
+/* =========================
+   V8: CONTACT TERMINAL
+   ========================= */
+
+.contact-hub{
+  position:relative;
+  z-index:8;
+  min-height:92vh;
+  padding:2vh 20px 16vh;
+  display:flex;
+  justify-content:center;
+  align-items:flex-start;
+}
+
+.contact-shell{
+  position:relative;
+  width:min(760px,92vw);
+  padding:24px;
+  background:#050605;
+  border:3px solid #343731;
+  box-shadow:
+    8px 8px 0 #000,
+    inset 0 0 0 2px #0d0f0d;
+}
+
+.contact-shell:before,
+.contact-shell:after{
+  content:"";
+  position:absolute;
+  width:12px;height:12px;
+  background:#6e726a;
+}
+.contact-shell:before{left:-3px;bottom:-3px}
+.contact-shell:after{right:-3px;top:-3px}
+
+.contact-kicker{
+  color:#6c716a;
+  font-size:9px;
+  letter-spacing:.18em;
+  margin-bottom:7px;
+}
+
+.contact-title{
+  margin:0;
+  color:#ecece5;
+  font-size:22px;
+  line-height:1;
+  letter-spacing:.11em;
+  text-shadow:3px 3px 0 #000;
+}
+
+.contact-intro{
+  margin:10px 0 22px;
+  max-width:520px;
+  color:#777c74;
+  font-size:10px;
+  line-height:1.5;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+}
+
+.contact-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+.field{
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+}
+
+.field-message{
+  grid-column:1 / -1;
+}
+
+.field-label{
+  color:#71766f;
+  font-size:8px;
+  letter-spacing:.16em;
+}
+
+.field input,
+.field textarea{
+  width:100%;
+  border:2px solid #292c27;
+  border-radius:0;
+  outline:none;
+  background:#090a09;
+  color:#eeeeE8;
+  padding:12px 13px;
+  font:inherit;
+  font-size:11px;
+  line-height:1.35;
+  letter-spacing:.05em;
+  caret-color:#54bd91;
+  box-shadow:inset 0 0 0 2px #030403;
+  transition:
+    border-color .1s steps(2,end),
+    box-shadow .1s steps(2,end),
+    transform .1s steps(2,end);
+}
+
+.field textarea{
+  min-height:164px;
+  resize:vertical;
+}
+
+.field input::placeholder,
+.field textarea::placeholder{
+  color:#474b46;
+  opacity:1;
+}
+
+.field input:focus,
+.field textarea:focus{
+  border-color:#d5d6cf;
+  transform:translate(-1px,-1px);
+  box-shadow:
+    inset 0 0 0 2px #030403,
+    3px 0 0 rgba(242,84,97,.45),
+    -3px 0 0 rgba(92,99,255,.42),
+    0 3px 0 rgba(84,189,145,.28);
+}
+
+.contact-honey{
+  display:none !important;
+}
+
+.contact-actions{
+  display:flex;
+  align-items:center;
+  gap:18px;
+  margin-top:16px;
+}
+
+.contact-submit{
+  position:relative;
+  min-width:178px;
+  min-height:48px;
+  border:2px solid #747870;
+  border-radius:0;
+  background:#111310;
+  color:#e8e9e2;
+  padding:12px 18px;
+  font:inherit;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:.14em;
+  box-shadow:
+    inset 0 0 0 2px #040504,
+    4px 4px 0 #000;
+  transition:
+    transform .1s steps(2,end),
+    border-color .1s steps(2,end);
+}
+
+.contact-submit:hover,
+.contact-submit:focus-visible{
+  outline:none;
+  transform:translate(-2px,-2px);
+  border-color:#efefe8;
+  box-shadow:
+    inset 0 0 0 2px #040504,
+    3px 0 0 rgba(242,84,97,.6),
+    -3px 0 0 rgba(92,99,255,.52),
+    0 3px 0 rgba(84,189,145,.38),
+    5px 5px 0 #000;
+}
+
+.contact-submit:disabled{
+  opacity:.58;
+}
+
+.submit-sending{
+  display:none;
+}
+.contact-form.is-sending .submit-idle{
+  display:none;
+}
+.contact-form.is-sending .submit-sending{
+  display:inline;
+  animation:terminal-blink .6s steps(2,end) infinite;
+}
+
+.contact-state{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  color:#666b64;
+  font-size:8px;
+  letter-spacing:.14em;
+}
+
+.contact-state-light{
+  width:7px;height:7px;
+  background:#54bd91;
+  box-shadow:0 0 0 2px #153629;
+}
+
+.contact-form.is-sending .contact-state-light{
+  background:#ddb64d;
+  box-shadow:0 0 0 2px #423614;
+  animation:terminal-blink .45s steps(2,end) infinite;
+}
+
+.contact-form.is-success .contact-state-light{
+  background:#54bd91;
+  box-shadow:0 0 0 2px #153629,0 0 10px rgba(84,189,145,.35);
+}
+
+.contact-form.is-error .contact-state-light{
+  background:#f25461;
+  box-shadow:0 0 0 2px #45171d;
+}
+
+.contact-form.is-success .contact-shell{
+  border-color:#54bd91;
+}
+
+@keyframes terminal-blink{
+  0%,49%{opacity:1}
+  50%,100%{opacity:.25}
+}
+
+.contact-confirm{
+  margin-top:14px;
+  color:#555a54;
+  font-size:7px;
+  line-height:1.5;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+@media (hover:hover) and (pointer:fine){
+  .contact-submit{cursor:none !important}
+}
+
+@media(max-width:720px){
+  .contact-hub{
+    min-height:100vh;
+    padding:0 20px 15vh;
+  }
+  .contact-shell{
+    padding:18px;
+  }
+  .contact-title{
+    font-size:17px;
+  }
+  .contact-grid{
+    grid-template-columns:1fr;
+  }
+  .field-message{
+    grid-column:auto;
+  }
+  .contact-actions{
+    align-items:flex-start;
+    flex-direction:column;
+    gap:12px;
+  }
+  .contact-submit{
+    width:100%;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .submit-sending,
+  .contact-form.is-sending .contact-state-light{
+    animation:none !important;
+  }
+}
+
+
+/* =========================
+   V9: 24-HOUR TERMINAL LOCKDOWN
+   ========================= */
+
+.contact-lock[hidden]{display:none !important}
+
+.contact-lock{
+  min-height:430px;
+  display:grid;
+  grid-template-columns:160px 1fr;
+  gap:28px;
+  align-items:center;
+  padding:28px;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(255,255,255,.018) 0 3px,
+      transparent 3px 7px
+    ),
+    #070807;
+  border:2px solid #343731;
+  box-shadow:
+    inset 0 0 0 3px #020302,
+    6px 6px 0 #000;
+  position:relative;
+  overflow:hidden;
+}
+
+.contact-lock:before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:
+    linear-gradient(90deg,transparent 0 48%,rgba(242,84,97,.035) 48% 49%,transparent 49%),
+    linear-gradient(0deg,transparent 0 61%,rgba(92,99,255,.03) 61% 62%,transparent 62%);
+  animation:lock-screen-jitter .55s steps(4,end) infinite;
+}
+
+.contact-lock:after{
+  content:"ACCESS RESTRICTED";
+  position:absolute;
+  right:14px;
+  top:12px;
+  color:#482229;
+  font-size:8px;
+  letter-spacing:.18em;
+}
+
+.lock-icon{
+  position:relative;
+  width:128px;
+  height:150px;
+  margin:0 auto;
+  filter:drop-shadow(8px 8px 0 #000);
+}
+
+.lock-shackle{
+  position:absolute;
+  left:30px;
+  top:0;
+  width:68px;
+  height:74px;
+  border:14px solid #7b7e77;
+  border-bottom:0;
+  background:transparent;
+}
+
+.lock-shackle:before,
+.lock-shackle:after{
+  content:"";
+  position:absolute;
+  width:10px;height:10px;
+  background:#b7b9b1;
+}
+.lock-shackle:before{left:-14px;top:-14px}
+.lock-shackle:after{right:-14px;top:-14px}
+
+.lock-body{
+  position:absolute;
+  left:13px;
+  right:13px;
+  bottom:0;
+  height:92px;
+  background:#1b1d1a;
+  border:8px solid #6e716a;
+  box-shadow:
+    inset 0 0 0 5px #0b0c0b,
+    6px 6px 0 #000;
+}
+
+.lock-body i{
+  position:absolute;
+  display:block;
+  background:#050605;
+}
+.lock-body i:nth-child(1){
+  width:20px;height:20px;
+  left:50%;top:21px;
+  transform:translateX(-50%);
+}
+.lock-body i:nth-child(2){
+  width:10px;height:28px;
+  left:50%;top:36px;
+  transform:translateX(-50%);
+}
+.lock-body i:nth-child(3){
+  left:11px;right:11px;bottom:9px;height:5px;
+  background:
+    linear-gradient(90deg,
+      #f25461 0 22%,
+      transparent 22% 28%,
+      #5c63ff 28% 50%,
+      transparent 50% 56%,
+      #54bd91 56% 78%,
+      transparent 78% 84%,
+      #ddb64d 84% 100%
+    );
+}
+
+.lock-copy{
+  position:relative;
+  z-index:2;
+}
+
+.lock-kicker{
+  color:#8f484f;
+  font-size:8px;
+  letter-spacing:.19em;
+  margin-bottom:8px;
+}
+
+.lock-copy h3{
+  margin:0 0 14px;
+  color:#e9eae3;
+  font-size:20px;
+  line-height:1;
+  letter-spacing:.10em;
+  text-shadow:
+    3px 0 0 rgba(242,84,97,.25),
+    -3px 0 0 rgba(92,99,255,.22);
+}
+
+.lock-copy p{
+  margin:0;
+  color:#777c74;
+  font-size:9px;
+  line-height:1.65;
+  letter-spacing:.07em;
+}
+
+.lock-countdown{
+  margin-top:26px;
+  padding:14px;
+  border:2px solid #2c2f2a;
+  background:#050605;
+  box-shadow:inset 0 0 0 2px #0c0e0c;
+}
+
+.lock-label{
+  display:block;
+  color:#60655e;
+  font-size:7px;
+  letter-spacing:.17em;
+  margin-bottom:7px;
+}
+
+.lock-countdown strong{
+  display:block;
+  color:#ededE7;
+  font-size:26px;
+  line-height:1;
+  letter-spacing:.12em;
+  text-shadow:3px 3px 0 #000;
+}
+
+.lock-bars{
+  display:flex;
+  gap:5px;
+  margin-top:18px;
+}
+.lock-bars i{
+  display:block;
+  height:6px;
+  flex:1;
+  opacity:.65;
+  animation:lock-bars-pulse 1.1s steps(4,end) infinite;
+}
+.lock-bars i:nth-child(1){background:#f25461;animation-delay:0s}
+.lock-bars i:nth-child(2){background:#5c63ff;animation-delay:.12s}
+.lock-bars i:nth-child(3){background:#54bd91;animation-delay:.24s}
+.lock-bars i:nth-child(4){background:#ddb64d;animation-delay:.36s}
+
+.contact-shell.is-locked{
+  border-color:#4b2b2f;
+}
+.contact-shell.is-locked .contact-title{
+  color:#8a8c85;
+}
+.contact-shell.is-locked .contact-intro{
+  color:#4f534e;
+}
+
+@keyframes lock-screen-jitter{
+  0%{transform:translate(0,0)}
+  25%{transform:translate(1px,0)}
+  50%{transform:translate(-1px,1px)}
+  75%{transform:translate(0,-1px)}
+  100%{transform:translate(0,0)}
+}
+
+@keyframes lock-bars-pulse{
+  0%,45%{opacity:.85}
+  46%,100%{opacity:.22}
+}
+
+@media(max-width:720px){
+  .contact-lock{
+    grid-template-columns:1fr;
+    min-height:520px;
+    gap:18px;
+    padding:22px 16px;
+    text-align:center;
+  }
+  .lock-icon{
+    transform:scale(.84);
+    transform-origin:center bottom;
+    margin-bottom:-10px;
+  }
+  .lock-copy h3{
+    font-size:15px;
+  }
+  .lock-copy p{
+    font-size:8px;
+  }
+  .lock-countdown strong{
+    font-size:22px;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .contact-lock:before,
+  .lock-bars i{
+    animation:none !important;
+  }
+}
+
+
+/* =========================
+   V10: ATMOSPHERE / LIGHT FX
+   ========================= */
+
+/* Soft projector/spotlight feeling across the whole site.
+   It darkens edges but keeps the center of the film path readable. */
+.spotlight-vignette{
+  position:fixed;
+  inset:-4%;
+  z-index:34;
+  pointer-events:none;
+  background:
+    radial-gradient(
+      ellipse 36% 72% at 50% 37%,
+      rgba(231,229,208,.075) 0%,
+      rgba(176,178,163,.035) 30%,
+      rgba(0,0,0,.12) 56%,
+      rgba(0,0,0,.55) 79%,
+      rgba(0,0,0,.84) 100%
+    );
+  box-shadow:
+    inset 0 0 150px 38px rgba(0,0,0,.64),
+    inset 0 0 320px 110px rgba(0,0,0,.42);
+  opacity:.88;
+  transform:scale(1.01);
+  animation:spotlight-flicker 7.8s steps(1,end) infinite;
+}
+
+/* Irregular rather than rhythmic so it feels like an old practical light. */
+@keyframes spotlight-flicker{
+  0%,7%,9%,23%,25%,53%,55%,78%,80%,100%{
+    opacity:.88;
+    transform:scale(1.01) translate(0,0);
+  }
+  8%{
+    opacity:.82;
+    transform:scale(1.012) translate(1px,0);
+  }
+  24%{
+    opacity:.91;
+    transform:scale(1.008) translate(-1px,1px);
+  }
+  54%{
+    opacity:.84;
+    transform:scale(1.014) translate(0,-1px);
+  }
+  79%{
+    opacity:.90;
+    transform:scale(1.009) translate(1px,1px);
+  }
+}
+
+/* Dust lives over the environment but below the custom cursor. */
+.dust-field{
+  position:fixed;
+  inset:0;
+  z-index:35;
+  pointer-events:none;
+  overflow:hidden;
+}
+
+.dust-particle{
+  --dust-size:2px;
+  --dust-opacity:.18;
+  --dust-drift:20px;
+  --dust-duration:16s;
+  --dust-delay:0s;
+
+  position:absolute;
+  top:-7vh;
+  width:var(--dust-size);
+  height:var(--dust-size);
+  background:rgba(232,231,215,.95);
+  opacity:0;
+  image-rendering:pixelated;
+  box-shadow:0 0 2px rgba(224,222,205,.18);
+  animation:
+    dust-fall var(--dust-duration) linear var(--dust-delay) infinite,
+    dust-twinkle 4.8s steps(3,end) var(--dust-delay) infinite;
+  will-change:transform,opacity;
+}
+
+.dust-particle.big{
+  box-shadow:
+    0 0 3px rgba(225,223,207,.18),
+    1px 1px 0 rgba(255,255,255,.08);
+}
+
+@keyframes dust-fall{
+  0%{
+    transform:translate3d(0,-8vh,0);
+  }
+  35%{
+    transform:translate3d(calc(var(--dust-drift) * .35),36vh,0);
+  }
+  70%{
+    transform:translate3d(calc(var(--dust-drift) * -.20),79vh,0);
+  }
+  100%{
+    transform:translate3d(var(--dust-drift),114vh,0);
+  }
+}
+
+@keyframes dust-twinkle{
+  0%,100%{opacity:0}
+  8%{opacity:calc(var(--dust-opacity) * .35)}
+  22%{opacity:var(--dust-opacity)}
+  47%{opacity:calc(var(--dust-opacity) * .58)}
+  67%{opacity:var(--dust-opacity)}
+  90%{opacity:calc(var(--dust-opacity) * .28)}
+}
+
+/* Tiny glows are positioned directly over the colored DCUT pixels
+   already baked into the reel sprite. */
+.reel-letter-glows{
+  position:absolute;
+  inset:0;
+  z-index:5;
+  pointer-events:none;
+  mix-blend-mode:screen;
+  transform-origin:59% 48%;
+  will-change:transform;
+}
+
+.reel-letter-glow{
+  position:absolute;
+  left:27.5%;
+  width:11px;
+  height:10px;
+  opacity:.08;
+  background:currentColor;
+  image-rendering:pixelated;
+}
+
+.glow-d{
+  top:33%;
+  color:#ff5360;
+  animation:reel-glow-d 6.2s steps(1,end) infinite;
+}
+.glow-c{
+  top:40.6%;
+  color:#636cff;
+  animation:reel-glow-c 8.1s steps(1,end) .7s infinite;
+}
+.glow-u{
+  top:48.3%;
+  color:#59d99d;
+  animation:reel-glow-u 7.1s steps(1,end) 1.8s infinite;
+}
+.glow-t{
+  top:55.8%;
+  color:#efc24c;
+  animation:reel-glow-t 9.3s steps(1,end) 2.4s infinite;
+}
+
+/* Different timing per letter prevents them from blinking together. */
+@keyframes reel-glow-d{
+  0%,11%,13%,46%,48%,74%,76%,100%{
+    opacity:.06;
+    box-shadow:none;
+  }
+  12%,47%,75%{
+    opacity:.42;
+    box-shadow:
+      0 0 5px 2px currentColor,
+      0 0 11px 3px currentColor;
+  }
+}
+@keyframes reel-glow-c{
+  0%,20%,22%,58%,60%,89%,91%,100%{
+    opacity:.05;
+    box-shadow:none;
+  }
+  21%,59%,90%{
+    opacity:.38;
+    box-shadow:
+      0 0 5px 2px currentColor,
+      0 0 10px 3px currentColor;
+  }
+}
+@keyframes reel-glow-u{
+  0%,15%,17%,40%,42%,82%,84%,100%{
+    opacity:.05;
+    box-shadow:none;
+  }
+  16%,41%,83%{
+    opacity:.35;
+    box-shadow:
+      0 0 5px 2px currentColor,
+      0 0 10px 3px currentColor;
+  }
+}
+@keyframes reel-glow-t{
+  0%,31%,33%,65%,67%,94%,96%,100%{
+    opacity:.05;
+    box-shadow:none;
+  }
+  32%,66%,95%{
+    opacity:.38;
+    box-shadow:
+      0 0 5px 2px currentColor,
+      0 0 10px 3px currentColor;
+  }
+}
+
+/* Slightly reduce atmosphere on smaller screens so content remains legible. */
+@media(max-width:720px){
+  .spotlight-vignette{
+    background:
+      radial-gradient(
+        ellipse 56% 72% at 50% 35%,
+        rgba(231,229,208,.065) 0%,
+        rgba(176,178,163,.028) 32%,
+        rgba(0,0,0,.14) 58%,
+        rgba(0,0,0,.62) 84%,
+        rgba(0,0,0,.82) 100%
+      );
+    box-shadow:
+      inset 0 0 90px 22px rgba(0,0,0,.54),
+      inset 0 0 180px 56px rgba(0,0,0,.38);
+  }
+
+  .dust-field{
+    opacity:.72;
+  }
+
+  .reel-letter-glow{
+    left:27.5%;
+    width:9px;
+    height:8px;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .spotlight-vignette,
+  .dust-particle,
+  .reel-letter-glow{
+    animation:none !important;
+  }
+
+  .spotlight-vignette{opacity:.88}
+  .dust-field{display:none}
+  .reel-letter-glow{opacity:.08;box-shadow:none}
+}
+
+
+/* =========================
+   V11: TRANSPARENT 2D REEL ASSET
+   ========================= */
+.reel-anchor{
+  background:transparent !important;
+  isolation:isolate;
+}
+.reel-sprite{
+  background:transparent !important;
+  filter:contrast(1.14) brightness(.92) drop-shadow(0 10px 18px rgba(0,0,0,.55));
+}
+/* The film mouth should tuck directly under the reel asset. */
+.film-mouth{
+  top:calc(var(--reel-top) + 170px);
+  box-shadow:0 4px 0 #080808, 0 0 0 1px rgba(255,255,255,.04);
+}
+.film-reveal{
+  top:calc(var(--reel-top) + 188px);
+}
+/* Move glow overlays to match the transparent reel crop. */
+.reel-letter-glows{
+  left:0; top:0; right:0; bottom:0;
+}
+.reel-letter-glow{
+  left:20.5%;
+  width:12px;
+  height:10px;
+}
+.glow-d{top:35.5%}
+.glow-c{top:43.0%}
+.glow-u{top:50.6%}
+.glow-t{top:58.0%}
+@media(max-width:720px){
+  .film-mouth{top:calc(var(--reel-top) + 146px)}
+  .film-reveal{top:calc(var(--reel-top) + 164px)}
+  .reel-letter-glow{left:20.5%; width:10px; height:8px}
+}
+
+
+/* =========================
+   V12: STRONGER REEL ROTATION
+   ========================= */
+.reel-sprite,
+.reel-letter-glows{
+  transform-origin:50% 50%;
+  will-change:transform;
+}
+
+
+/* =========================
+   V14: TRUE REEL UNSPOOL MOTION
+   ========================= */
+.reel-body{
+  position:absolute;
+  inset:0 auto auto 0;
+  width:var(--reel-w);
+  height:auto;
+  transform:none !important;
+  z-index:2;
+}
+.reel-face-rotor{
+  position:absolute;
+  inset:0 auto auto 0;
+  display:block;
+  width:var(--reel-w);
+  height:auto;
+  z-index:3;
+  pointer-events:none;
+  image-rendering:pixelated;
+  filter:contrast(1.14) brightness(.92);
+  /* face center in the source sprite, not the center of the whole angled reel */
+  transform-origin:71.9% 46.3%;
+  will-change:transform;
+}
+.reel-letter-glows{
+  z-index:4;
+  transform:none !important;
+}
+
+
+/* =========================
+   V16: CLEAN STATIC REEL
+   ========================= */
+.reel-body,
+.reel-face-rotor,
+.reel-letter-glows{
+  animation:none !important;
+}
+.reel-body,
+.reel-face-rotor{
+  transform:none !important;
+}
+.reel-letter-glows{
+  transform:none !important;
+}
+
+
+/* V17: category navigation */
+a.frame.category{
+  color:inherit;
+  text-decoration:none;
+}

@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#000000">
+  <title>DCUT</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="world-plate" aria-hidden="true"></div>
+  <div class="center-matte" aria-hidden="true"></div>
+  <div class="pixel-noise" aria-hidden="true"></div>
+  <div class="scanlines" aria-hidden="true"></div>
+  <div class="spotlight-vignette" aria-hidden="true"></div>
+  <div class="dust-field" id="dustField" aria-hidden="true"></div>
+
+  <div class="pixel-cursor" id="pixelCursor" aria-hidden="true">
+    <span class="cursor-core"></span>
+    <span class="cursor-corner c1"></span>
+    <span class="cursor-corner c2"></span>
+    <span class="cursor-corner c3"></span>
+    <span class="cursor-corner c4"></span>
+  </div>
+
+  <main id="page">
+    <section class="archive">
+      <div class="reel-anchor" id="reelAnchor">
+        <img class="reel-sprite reel-body" id="reelBody" src="assets/reel-body-static.png" alt="">
+        <img class="reel-face-rotor" id="reelFaceRotor" src="assets/reel-face-rotor.png" alt="">
+        <div class="reel-letter-glows" aria-hidden="true">
+          <i class="reel-letter-glow glow-d"></i>
+          <i class="reel-letter-glow glow-c"></i>
+          <i class="reel-letter-glow glow-u"></i>
+          <i class="reel-letter-glow glow-t"></i>
+        </div>
+      </div>
+
+      <div class="film-mouth" aria-hidden="true"></div>
+
+      <div class="film-reveal" id="filmReveal">
+        <div class="film" id="film"></div>
+      </div>
+
+      <div class="scroll-track" id="scrollTrack" aria-hidden="true"></div>
+    </section>
+
+    <footer class="social-hub" aria-label="DCUT social links">
+      <div class="social-shell">
+        <div class="social-kicker">DCUT NETWORK</div>
+        <div class="social-title">SOCIAL LINKS</div>
+
+        <div class="social-grid">
+          <a class="social-card" href="https://www.instagram.com/dcut.chase/" target="_blank" rel="noopener noreferrer">
+            <span class="social-platform">INSTAGRAM</span>
+            <span class="social-handle">@dcut.chase</span>
+            <span class="social-arrow">↗</span>
+          </a>
+
+          <a class="social-card" href="https://www.instagram.com/dcut.collective/" target="_blank" rel="noopener noreferrer">
+            <span class="social-platform">INSTAGRAM</span>
+            <span class="social-handle">@dcut.collective</span>
+            <span class="social-arrow">↗</span>
+          </a>
+
+          <a class="social-card" href="https://www.tiktok.com/@dcut.chase" target="_blank" rel="noopener noreferrer">
+            <span class="social-platform">TIKTOK</span>
+            <span class="social-handle">@dcut.chase</span>
+            <span class="social-arrow">↗</span>
+          </a>
+
+          <a class="social-card" href="https://www.tiktok.com/@dcut.collective" target="_blank" rel="noopener noreferrer">
+            <span class="social-platform">TIKTOK</span>
+            <span class="social-handle">@dcut.collective</span>
+            <span class="social-arrow">↗</span>
+          </a>
+        </div>
+
+        <div class="social-status">
+          <span class="status-light"></span>
+          <span>NETWORK ONLINE</span>
+        </div>
+
+        <div class="social-brand">
+          <span>DCUT</span>
+          <div><i></i><i></i><i></i><i></i></div>
+        </div>
+      </div>
+    </footer>
+
+    <section class="contact-hub" id="contact" aria-labelledby="contact-title">
+      <div class="contact-shell">
+        <div class="contact-kicker">DIRECT LINE // DCUT</div>
+        <h2 class="contact-title" id="contact-title">CONTACT ME</h2>
+        <p class="contact-intro">Tell me who you are and what you want to create.</p>
+
+        <form
+          class="contact-form"
+          id="contactForm"
+          action="https://formsubmit.co/chasefilms@icloud.com"
+          method="POST"
+        >
+          <input type="hidden" name="_subject" value="New DCUT Website Inquiry">
+          <input type="hidden" name="_template" value="table">
+          <input class="contact-honey" type="text" name="_honey" tabindex="-1" autocomplete="off">
+
+          <div class="contact-grid">
+            <label class="field">
+              <span class="field-label">FIRST NAME</span>
+              <input
+                type="text"
+                name="first_name"
+                autocomplete="given-name"
+                maxlength="80"
+                required
+                placeholder="FIRST"
+              >
+            </label>
+
+            <label class="field">
+              <span class="field-label">LAST NAME</span>
+              <input
+                type="text"
+                name="last_name"
+                autocomplete="family-name"
+                maxlength="80"
+                required
+                placeholder="LAST"
+              >
+            </label>
+
+            <label class="field">
+              <span class="field-label">IG HANDLE</span>
+              <input
+                type="text"
+                name="instagram"
+                maxlength="100"
+                placeholder="@YOURHANDLE"
+              >
+            </label>
+
+            <label class="field">
+              <span class="field-label">EMAIL</span>
+              <input
+                type="email"
+                name="email"
+                autocomplete="email"
+                maxlength="160"
+                required
+                placeholder="YOU@EMAIL.COM"
+              >
+            </label>
+
+            <label class="field field-message">
+              <span class="field-label">WHY ARE YOU REACHING OUT?</span>
+              <textarea
+                name="message"
+                rows="7"
+                maxlength="4000"
+                required
+                placeholder="TELL ME ABOUT THE PROJECT, IDEA, TIMELINE, OR WHAT YOU NEED..."
+              ></textarea>
+            </label>
+          </div>
+
+          <div class="contact-actions">
+            <button class="contact-submit" id="contactSubmit" type="submit">
+              <span class="submit-idle">SEND MESSAGE</span>
+              <span class="submit-sending">TRANSMITTING...</span>
+            </button>
+
+            <div class="contact-state" id="contactState" aria-live="polite">
+              <span class="contact-state-light"></span>
+              <span class="contact-state-text">LINE READY</span>
+            </div>
+          </div>
+        </form>
+
+        <div class="contact-lock" id="contactLock" hidden aria-live="polite">
+          <div class="lock-icon" aria-hidden="true">
+            <span class="lock-shackle"></span>
+            <span class="lock-body">
+              <i></i><i></i><i></i>
+            </span>
+          </div>
+
+          <div class="lock-copy">
+            <div class="lock-kicker">TRANSMISSION LIMIT ACTIVE</div>
+            <h3>CONTACT TERMINAL LOCKED</h3>
+            <p>
+              YOUR MESSAGE WAS RECEIVED.<br>
+              THIS TERMINAL ACCEPTS ONE TRANSMISSION EVERY 24 HOURS.
+            </p>
+
+            <div class="lock-countdown">
+              <span class="lock-label">NEXT TRANSMISSION IN</span>
+              <strong id="lockCountdown">24:00:00</strong>
+            </div>
+
+            <div class="lock-bars" aria-hidden="true">
+              <i></i><i></i><i></i><i></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="site-data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
